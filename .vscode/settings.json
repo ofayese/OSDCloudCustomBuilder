@@ -1,0 +1,35 @@
+<<<<<<< HEAD
+{
+    "cSpell.words": [
+        "Fayese",
+        "OSDCloud",
+        "Oluwaseun",
+        "PowerShell",
+        "Pwsh",
+        "WinPE",
+        "WIMs"
+    ],
+    "editor.wordWrap": "on",
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "editor.codeActions.triggerOnFocusChange": true,
+    "editor.experimentalEditContextEnabled": true,
+    "editor.smoothScrolling": true,
+    "powershell.codeFormatting.autoCorrectAliases": true,
+    "powershell.codeFormatting.useCorrectCasing": true,
+    "powershell.scriptAnalysis.enable": true
+=======
+{
+    "cSpell.words": [
+        "amazonwebservices",
+        "AWSCLI",
+        "azurecli",
+        "Contoso",
+        "dpkg",
+        "iputils",
+        "Pwsh",
+        "usermod"
+    ],
+    "CodeGPT.apiKey": "CodeGPT Plus Beta",
+    "codium.codeCompletion.enable": true
+>>>>>>> 8576c024e7d41f92195c4737d0c7f818a8ab6111
+}
