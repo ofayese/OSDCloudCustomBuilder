@@ -76,21 +76,16 @@ COPY --from=node-exporter /node-exporter /node-exporter
 COPY --from=search-indexer /search-indexer /search-indexer
 
 # ---- Development Environment Setup ----
-
 RUN apt-get update && apt-get install -y wget curl unzip git jq gnupg lsb-release && rm -rf /var/lib/apt/lists/*
 
-RUN pwsh -Command @'
-    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted;
-    Install-Module -Name PSScriptAnalyzer -Force -Scope AllUsers;
-    Install-Module -Name PowerShellProTools -Force -Scope AllUsers;
-    Install-Module -Name OSD -Force -Scope AllUsers;
-    Install-Module -Name PSReadLine -Force -Scope AllUsers;
-    Install-Module -Name Terminal-Icons -Force -Scope AllUsers;
-    Install-Module -Name Az -Force -Scope AllUsers;
-    Install-Module -Name Evergreen -Force -Scope AllUsers;
-    Install-Module -Name EGH -Force -Scope AllUsers;
-'@
+SHELL ["pwsh", "-Command"]
 
-RUN mkdir -p /opt/winadk &&     curl -LO https://go.microsoft.com/fwlink/?linkid=2166019 &&     curl -LO https://go.microsoft.com/fwlink/?linkid=2166224 || true
+RUN Set-PSRepository -Name PSGallery -InstallationPolicy Trusted; \
+    Install-Module -Name PSScriptAnalyzer,PowerShellProTools,OSD,Az,Terminal-Icons,Evergreen,EGH -Force -Scope AllUsers
+
+# Optional Windows ADK downloads (may fail silently)
+RUN mkdir -p /opt/winadk && \
+    curl -fLO https://go.microsoft.com/fwlink/?linkid=2166019 && \
+    curl -fLO https://go.microsoft.com/fwlink/?linkid=2166224 || echo "ADK download skipped."
 
 CMD [ "pwsh" ]

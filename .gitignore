@@ -1,3 +1,43 @@
-.qodo
+# System
+.DS_Store
+Thumbs.db
 
-.fake
+# Logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+.env.*
+
+# Dependency directories
+node_modules/
+bower_components/
+
+# Compiled files
+dist/
+build/
+out/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Secrets
+.secrets/
+*.key
+*.pem
+
+# DevContainer
+.devcontainer/*.local
+.devcontainer/.env
