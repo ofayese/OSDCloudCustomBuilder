@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  powershell:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    container_name: osdcloud-powershell
+    volumes:
+      - ..:/workspace:cached
+    environment:
+      - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+      - PSModulePath=/workspace/Modules:/usr/local/share/powershell/Modules:/opt/microsoft/powershell/7/Modules
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    networks:
+      - osdcloud-network
+  
+  # Optional: Add a Windows container for more comprehensive testing if needed
+  # This requires Docker Desktop with Windows containers enabled
+  # windows-test:
+  #   image: mcr.microsoft.com/windows/servercore:ltsc2022
+  #   container_name: osdcloud-windows
+  #   volumes:
+  #     - ..:/workspace:cached
+  #   networks:
+  #     - osdcloud-network
+
+networks:
+  osdcloud-network:
+    driver: bridge

@@ -1,0 +1,44 @@
+{
+  "name": "PowerShell OSDCloudCustomBuilder Test Environment",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "powershell",
+  "workspaceFolder": "/workspace",
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.powershell",
+        "ms-azuretools.vscode-docker",
+        "streetsidesoftware.code-spell-checker",
+        "DanielSanMedium.dscodegpt",
+        "sourcegraph.cody-ai",
+        "Bito.Bito",
+        "saoudrizwan.claude-dev",
+        "ms-azuretools.vscode-docker",
+        "docker.docker",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "EditorConfig.EditorConfig",
+        "VisualStudioExptTeam.vscodeintellicode",
+        "pspester.pester-test",
+        "ironmansoftware.powershellprotools",
+        "TabNine.tabnine-vscode",
+        "stylelint.vscode-stylelint",
+        "ms-vscode.vscode-websearchforcopilot",
+        "ms-vscode.test-adapter-converter"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "pwsh",
+        "powershell.powerShellDefaultVersion": "PowerShell",
+        "powershell.enableProfileLoading": true,
+        "powershell.pester.useLegacyCodeLens": false,
+        "powershell.integratedConsole.showOnStartup": true,
+        "editor.formatOnSave": true
+      }
+    }
+  },
+
+  "remoteUser": "vscode",
+  
+  "postCreateCommand": "pwsh -Command \"Install-Module Pester -Force -SkipPublisherCheck; Install-Module ThreadJob -Force; Write-Host 'Environment setup complete!' -ForegroundColor Green\""
+}
