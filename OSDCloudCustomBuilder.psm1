@@ -56,12 +56,48 @@ else {
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-# Make sure we're running on the required PowerShell version
-$requiredPSVersion = [Version]'5.1'
-if ($PSVersionTable.PSVersion -lt $requiredPSVersion) {
-    $errorMsg = "PowerShell $($requiredPSVersion) or higher is required. Current version: $($PSVersionTable.PSVersion)"
-    Write-Error $errorMsg
-    throw $errorMsg
+# Check environment compatibility
+try {
+    # Import SharedUtilities module for Test-EnvironmentCompatibility
+    $sharedUtilitiesPath = Join-Path -Path $PSModuleRoot -ChildPath "Shared\SharedUtilities.psm1"
+    if (Test-Path -Path $sharedUtilitiesPath) {
+        Import-Module -Name $sharedUtilitiesPath -Force -ErrorAction Stop
+    }
+    
+    # Define required modules
+    $requiredModules = @{
+        "ThreadJob" = @{ MinimumVersion = "2.0.0"; Required = $false }
+    }
+    
+    # Check environment compatibility
+    $compatibility = Test-EnvironmentCompatibility -RequiredModules $requiredModules -MinimumPSVersion ([Version]'5.1')
+    
+    # Display warnings for optional modules
+    foreach ($warning in $compatibility.Warnings) {
+        Write-Warning $warning
+    }
+    
+    # Throw error if environment is not compatible
+    if (-not $compatibility.IsCompatible) {
+        $errorMsg = "Environment is not compatible: $($compatibility.Issues -join '; ')"
+        Write-Error $errorMsg
+        throw $errorMsg
+    }
+}
+catch {
+    if ($_.Exception.Message -like "The term 'Test-EnvironmentCompatibility' is not recognized*") {
+        # Fallback to basic PowerShell version check if Test-EnvironmentCompatibility is not available
+        $requiredPSVersion = [Version]'5.1'
+        if ($PSVersionTable.PSVersion -lt $requiredPSVersion) {
+            $errorMsg = "PowerShell $($requiredPSVersion) or higher is required. Current version: $($PSVersionTable.PSVersion)"
+            Write-Error $errorMsg
+            throw $errorMsg
+        }
+    }
+    else {
+        # Re-throw other errors
+        throw
+    }
 }
 
 # Define path to PowerShell 7 package in the OSDCloud folder
@@ -110,13 +146,9 @@ function Initialize-ModuleLogging {
                     [ValidateSet('Info', 'Warning', 'Error', 'Debug')]
                     [string] $Level = 'Info',
                     [Parameter()]
-<<<<<<< HEAD
                     [string] $Component = 'OSDCloudCustomBuilder',
                     [Parameter()]
                     [System.Exception] $Exception
-=======
-                    [string] $Component = 'OSDCloudCustomBuilder'
->>>>>>> 8576c024e7d41f92195c4737d0c7f818a8ab6111
                 )
                 
                 $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -128,7 +160,6 @@ function Initialize-ModuleLogging {
                     'Error'   { Write-Error $Message }
                     'Debug'   { Write-Debug $logMessage }
                     default   { Write-Host $logMessage }
-<<<<<<< HEAD
                 }
                 
                 # If an exception was provided, output additional details
@@ -143,8 +174,6 @@ function Initialize-ModuleLogging {
                         'Debug'   { Write-Debug $exceptionMessage; Write-Debug $stackTraceMessage }
                         default   { Write-Host $exceptionMessage; Write-Host $stackTraceMessage }
                     }
-=======
->>>>>>> 8576c024e7d41f92195c4737d0c7f818a8ab6111
                 }
             }
         }
@@ -155,7 +184,6 @@ function Initialize-ModuleLogging {
 Initialize-ModuleLogging
 
 #region Function Import
-<<<<<<< HEAD
 # Check for required dependencies
 $requiredModules = @{
     "ThreadJob" = @{
@@ -185,8 +213,6 @@ foreach ($moduleName in $requiredModules.Keys) {
     }
 }
 
-=======
->>>>>>> 8576c024e7d41f92195c4737d0c7f818a8ab6111
 # Import Private Functions
 $PrivateFunctions = @(Get-ChildItem -Path "$PSModuleRoot\Private" -Filter "*.ps1" -Recurse -ErrorAction SilentlyContinue)
 foreach ($Private in $PrivateFunctions) {
@@ -226,13 +252,9 @@ if ($Manifest -and $Manifest.AliasesToExport) {
 else {
     Export-ModuleMember -Function $FunctionsToExport
 }
-<<<<<<< HEAD
 #endregion Function Import
 
 # Display module information
 Write-Verbose "OSDCloudCustomBuilder v$script:ModuleVersion loaded successfully."
 Write-Verbose "Use 'Get-Command -Module OSDCloudCustomBuilder' to see available commands."
 Write-Verbose "Use 'Get-Help <command-name> -Full' for detailed help on each command."
-=======
-#endregion Function Import
->>>>>>> 8576c024e7d41f92195c4737d0c7f818a8ab6111

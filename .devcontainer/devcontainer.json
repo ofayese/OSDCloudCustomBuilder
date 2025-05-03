@@ -3,7 +3,6 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "powershell",
   "workspaceFolder": "/workspace",
-  
   "customizations": {
     "vscode": {
       "extensions": [
@@ -25,7 +24,8 @@
         "TabNine.tabnine-vscode",
         "stylelint.vscode-stylelint",
         "ms-vscode.vscode-websearchforcopilot",
-        "ms-vscode.test-adapter-converter"
+        "ms-vscode.test-adapter-converter",
+        "skyramp.skyramp"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "pwsh",
@@ -37,8 +37,6 @@
       }
     }
   },
-
   "remoteUser": "vscode",
-  
   "postCreateCommand": "pwsh -Command \"Install-Module Pester -Force -SkipPublisherCheck; Install-Module ThreadJob -Force; Write-Host 'Environment setup complete!' -ForegroundColor Green\""
 }
