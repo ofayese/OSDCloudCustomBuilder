@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Script for running OSDCloudCustomBuilder tests
 Set-StrictMode -Version Latest
 <#
@@ -250,4 +249,3 @@ Write-Host "  - NotRun: $($testResults.NotRunCount)" -ForegroundColor Gray
 
 # Return test results in case this script is called from another script
 return $testResults
->>>>>>> 8576c024e7d41f92195c4737d0c7f818a8ab6111
