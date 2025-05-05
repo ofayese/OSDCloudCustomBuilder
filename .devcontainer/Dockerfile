@@ -4,12 +4,12 @@ FROM mcr.microsoft.com/powershell:7.5.1-windowsservercore-ltsc2022
 # Set shell to PowerShell 7
 SHELL ["pwsh", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
-# Install required PowerShell modules
-RUN Install-Module -Name Pester -Force -SkipPublisherCheck
-RUN Install-Module -Name PSScriptAnalyzer -Force -SkipPublisherCheck
-RUN Install-Module -Name ThreadJob -Force -SkipPublisherCheck
-RUN Install-Module -Name OSD -Force -SkipPublisherCheck
-RUN Install-Module -Name OSDCloud -Force -SkipPublisherCheck
+# Install required PowerShell modules with minimum versions
+RUN Install-Module -Name Pester -MinimumVersion 5.4.0 -Force -SkipPublisherCheck
+RUN Install-Module -Name PSScriptAnalyzer -MinimumVersion 1.21.0 -Force -SkipPublisherCheck
+RUN Install-Module -Name ThreadJob -MinimumVersion 2.0.3 -Force -SkipPublisherCheck
+RUN Install-Module -Name OSD -MinimumVersion 23.5.26 -Force -SkipPublisherCheck
+RUN Install-Module -Name OSDCloud -MinimumVersion 23.5.26 -Force -SkipPublisherCheck
 
 # Ensure DISM and other Windows deployment tools are available
 # These are typically included in Windows Server Core, but we'll verify

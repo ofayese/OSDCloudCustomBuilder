@@ -1,16 +1,24 @@
 # Test-Environment.ps1
 # This script verifies that the development container is properly configured
 # for OSDCloudCustomBuilder development
+# Add at the beginning of the script
+$ErrorActionPreference = 'Continue'
+$VerbosePreference = 'Continue'
 
 function Test-ModuleAvailability {
     param (
         [string]$ModuleName,
-        [bool]$Required = $true
+        [bool]$Required = $true,
+        [version]$MinimumVersion = $null
     )
 
-    $module = Get-Module -Name $ModuleName -ListAvailable
+    $module = Get-Module -Name $ModuleName -ListAvailable | Sort-Object Version -Descending | Select-Object -First 1
 
     if ($module) {
+        if ($MinimumVersion -and $module.Version -lt $MinimumVersion) {
+            Write-Host "⚠️ $ModuleName module version $($module.Version) is below minimum required version $MinimumVersion" -ForegroundColor Yellow
+            return $false
+        }
         Write-Host "✅ $ModuleName module is available (v$($module.Version))" -ForegroundColor Green
         return $true
     }
@@ -79,14 +87,14 @@ Write-Host "OS: $([System.Environment]::OSVersion.VersionString)"
 Write-Host "Container User: $([System.Environment]::UserName)"
 Write-Host "Working Directory: $((Get-Location).Path)"
 
-# Test required PowerShell modules
+# Test required PowerShell modules with minimum versions
 Write-Host "`n=== PowerShell Modules ===" -ForegroundColor Cyan
 $modulesOK = $true
-$modulesOK = $modulesOK -and (Test-ModuleAvailability -ModuleName "Pester" -Required $true)
-$modulesOK = $modulesOK -and (Test-ModuleAvailability -ModuleName "PSScriptAnalyzer" -Required $true)
-$modulesOK = $modulesOK -and (Test-ModuleAvailability -ModuleName "ThreadJob" -Required $true)
-$modulesOK = $modulesOK -and (Test-ModuleAvailability -ModuleName "OSDCloud" -Required $true)
-$modulesOK = $modulesOK -and (Test-ModuleAvailability -ModuleName "OSD" -Required $true)
+$modulesOK = $modulesOK -and (Test-ModuleAvailability -ModuleName "Pester" -Required $true -MinimumVersion "5.4.0")
+$modulesOK = $modulesOK -and (Test-ModuleAvailability -ModuleName "PSScriptAnalyzer" -Required $true -MinimumVersion "1.21.0")
+$modulesOK = $modulesOK -and (Test-ModuleAvailability -ModuleName "ThreadJob" -Required $true -MinimumVersion "2.0.3")
+$modulesOK = $modulesOK -and (Test-ModuleAvailability -ModuleName "OSDCloud" -Required $true -MinimumVersion "23.5.26")
+$modulesOK = $modulesOK -and (Test-ModuleAvailability -ModuleName "OSD" -Required $true -MinimumVersion "23.5.26")
 
 # Test required commands
 Write-Host "`n=== Required Commands ===" -ForegroundColor Cyan
@@ -164,3 +172,18 @@ else {
         Write-Host "  - Windows ADK or Windows PE add-on is missing" -ForegroundColor Red
     }
 }
+
+# Add at the end of the script
+# Check for common Windows container issues
+Write-Host "`n=== Container Diagnostics ===" -ForegroundColor Cyan
+try {
+    # Check if Docker is available
+    $dockerInfo = Invoke-Expression "docker info" -ErrorAction SilentlyContinue
+    Write-Host "✅ Docker is accessible from within the container" -ForegroundColor Green
+} catch {
+    Write-Host "⚠️ Docker is not accessible from within the container" -ForegroundColor Yellow
+}
+
+# Check disk space
+$diskSpace = Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Root -eq 'C:\' }
+Write-Host "Disk space: $([math]::Round($diskSpace.Free / 1GB, 2)) GB free of $([math]::Round($diskSpace.Used / 1GB + $diskSpace.Free / 1GB, 2)) GB" -ForegroundColor Cyan

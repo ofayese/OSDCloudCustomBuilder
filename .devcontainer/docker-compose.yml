@@ -8,23 +8,20 @@ services:
     container_name: osdcloud-powershell
     volumes:
       - ..:/workspace:cached
+      - osdcloud-modules:C:/Users/ContainerAdministrator/Documents/PowerShell/Modules
     environment:
       - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
-      - PSModulePath=/workspace/Modules:/usr/local/share/powershell/Modules:/opt/microsoft/powershell/7/Modules
-    command: /bin/sh -c "while sleep 1000; do :; done"
+      - PSModulePath=C:/workspace/Modules:C:/Program Files/PowerShell/Modules:C:/Program Files/PowerShell/7/Modules:C:/Windows/System32/WindowsPowerShell/v1.0/Modules
+    # Use PowerShell command to keep container running
+    command: ["pwsh", "-Command", "while($true) { Start-Sleep -Seconds 3600 }"]
     networks:
       - osdcloud-network
-  
-  # Optional: Add a Windows container for more comprehensive testing if needed
-  # This requires Docker Desktop with Windows containers enabled
-  # windows-test:
-  #   image: mcr.microsoft.com/windows/servercore:ltsc2022
-  #   container_name: osdcloud-windows
-  #   volumes:
-  #     - ..:/workspace:cached
-  #   networks:
-  #     - osdcloud-network
+    mem_limit: 4g
+    restart: unless-stopped
 
 networks:
   osdcloud-network:
     driver: bridge
+
+volumes:
+  osdcloud-modules:

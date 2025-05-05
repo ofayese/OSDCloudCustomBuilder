@@ -9,11 +9,11 @@ The development environment uses:
 - Windows Server Core LTSC 2022 as the base image
 - PowerShell 7.5.1 as the default shell
 - Pre-installed tools:
-  - Pester for testing
-  - PSScriptAnalyzer for code quality
-  - ThreadJob for parallel processing
-  - OSDCloud module for integration testing
-  - OSD module for deployment tasks
+  - Pester 5.4.0+ for testing
+  - PSScriptAnalyzer 1.21.0+ for code quality
+  - ThreadJob 2.0.3+ for parallel processing
+  - OSDCloud 23.5.26+ module for integration testing
+  - OSD 23.5.26+ module for deployment tasks
   - Windows ADK (Assessment and Deployment Kit)
   - Windows PE add-on for ADK
   - PowerShell 7.5.1 package for testing PowerShell 7 integration
@@ -47,11 +47,17 @@ The container includes a verification script that checks if all required tools a
 ```
 
 This script checks for:
-- Required PowerShell modules (Pester, PSScriptAnalyzer, ThreadJob, OSDCloud, OSD)
+- Required PowerShell modules with minimum versions:
+  - Pester 5.4.0+
+  - PSScriptAnalyzer 1.21.0+
+  - ThreadJob 2.0.3+
+  - OSDCloud 23.5.26+
+  - OSD 23.5.26+
 - Required commands (git, DISM.exe)
 - PowerShell 7.5.1 package availability
 - Windows ADK and Windows PE add-on installation
 - Workspace mounting
+- Container diagnostics (Docker access, disk space)
 
 ### Important Notes
 
