@@ -6,7 +6,7 @@ A PowerShell module for creating custom OSDCloud ISOs with Windows Image (WIM) f
 
 OSDCloudCustomBuilder enables you to:
 
-- Create doc custom OSDCloud ISO files with PowerShell 7 integration
+- Create custom OSDCloud ISO files with PowerShell 7 integration
 - Customize Windows PE environments for modern deployment scenarios
 - Include organization-specific scripts and tools in your deployment media
 - Generate comprehensive documentation from code comments
@@ -66,8 +66,8 @@ New-CustomOSDCloudISO -PwshVersion "7.4.1"
 # Update a WIM file with PowerShell 7
 Update-CustomWimWithPwsh7 -WimPath "D:\WimFiles\boot.wim" -OutputPath "D:\WimFiles\boot_pwsh7.wim"
 
-# Use the backward compatible alias 
-Add-CustomWimWithPwsh7 -WimPath "D:\WimFiles\boot.wim" -OutputPath "D:\WimFiles\boot_pwsh7.wim" 
+# Use the backward compatible alias
+Add-CustomWimWithPwsh7 -WimPath "D:\WimFiles\boot.wim" -OutputPath "D:\WimFiles\boot_pwsh7.wim"
 ```
 
 ### Configuring the Module
@@ -136,7 +136,7 @@ New-CustomOSDCloudISO -PwshVersion "7.5.0" -SkipCleanup -Verbose
 # Enable telemetry with standard detail level
 Enable-OSDCloudTelemetry -DetailLevel "Standard" -StoragePath "D:\Telemetry"
 
-# Disable telemetry 
+# Disable telemetry
 Enable-OSDCloudTelemetry -Enable $false
 ```
 
@@ -180,6 +180,7 @@ Set-OSDCloudCustomBuilderConfig -LogPath "D:\Logs\OSDCloud"
 
 # View logs using standard PowerShell commands
 Get-Content -Path "$env:TEMP\OSDCloudCustomBuilder.log" -Tail 20
+```
 
 ## Requirements
 
