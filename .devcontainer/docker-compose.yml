@@ -11,17 +11,18 @@ services:
       - osdcloud-modules:C:/Users/ContainerAdministrator/Documents/PowerShell/Modules
     environment:
       - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
-      - PSModulePath=C:/workspace/Modules:C:/Program Files/PowerShell/Modules:C:/Program Files/PowerShell/7/Modules:C:/Windows/System32/WindowsPowerShell/v1.0/Modules
+      - PSModulePath=C:/workspace/Modules;C:/Program Files/PowerShell/Modules;C:/Program Files/PowerShell/7/Modules;C:/Windows/System32/WindowsPowerShell/v1.0/Modules
     # Use PowerShell command to keep container running
-    command: ["pwsh", "-Command", "while($true) { Start-Sleep -Seconds 3600 }"]
+    command: pwsh -Command "while($true) { Start-Sleep -Seconds 3600 }"
     networks:
       - osdcloud-network
     mem_limit: 4g
     restart: unless-stopped
+    isolation: process
 
 networks:
   osdcloud-network:
-    driver: bridge
+    driver: nat
 
 volumes:
   osdcloud-modules:

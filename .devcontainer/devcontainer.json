@@ -1,50 +1,35 @@
 {
-    "name": "OSDCloudCustomBuilder Development",
-    "build": {
-        "dockerfile": "Dockerfile",
-        "context": ".."
-    },
+    "name": "OSDCloud PowerShell Development",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "powershell",
+    "workspaceFolder": "/workspace",
     "customizations": {
         "vscode": {
             "extensions": [
                 "ms-vscode.powershell",
                 "streetsidesoftware.code-spell-checker",
-                "redhat.vscode-yaml",
-                "DavidAnson.vscode-markdownlint",
-                "eamodio.gitlens",
-                "ryanluker.vscode-coverage-gutters",
-                "TylerLeonhardt.vscode-pester-test-adapter",
-                "github.vscode-pull-request-github",
-                "ms-azuretools.vscode-docker"
+                "GitHub.copilot",
+                "esbenp.prettier-vscode",
+                "DavidAnson.vscode-markdownlint"
             ],
             "settings": {
-				"terminal.integrated.defaultProfile.windows": "PowerShell 7",
-                "powershell.codeFormatting.preset": "OTBS",
-                "powershell.pester.useLegacyCodeLens": false,
-                "powershell.pester.codeLens": true,
-                "powershell.scriptAnalysis.enable": true,
-                "powershell.integratedConsole.focusConsoleOnExecute": true,
-                "editor.formatOnSave": true,
-                "files.trimTrailingWhitespace": true,
-                "files.associations": {
-                    "*.ps1": "powershell",
-                    "*.psm1": "powershell",
-                    "*.psd1": "powershell"
+                "terminal.integrated.defaultProfile.windows": "PowerShell",
+                "terminal.integrated.profiles.windows": {
+                    "PowerShell": {
+                        "path": "pwsh",
+                        "args": []
+                    }
                 },
-                "editor.rulers": [120],
-                "powershell.cwd": "${workspaceFolder}"
+                "powershell.scriptAnalysis.enable": true,
+                "powershell.pester.useLegacyCodeLens": false,
+                "editor.formatOnSave": true,
+                "files.eol": "\r\n"
             }
         }
     },
-    "features": {
-        "ghcr.io/devcontainers/features/git:1": {},
-        "ghcr.io/devcontainers/features/common-utils:2": {}
-    },
+    "initializeCommand": "powershell -Command \"if (-not (Get-Command -Name docker -ErrorAction SilentlyContinue)) { Write-Error 'Docker is not installed or not in PATH'; exit 1 } else { & docker info | Select-String -Pattern 'OSType: windows' -Quiet | ForEach-Object { if (-not $_) { Write-Error 'Docker is not configured for Windows containers'; exit 1 } } }\"",
     "remoteUser": "ContainerAdministrator",
-    "postCreateCommand": "pwsh -File ./.devcontainer/test-environment.ps1",
-    "mounts": [
-        "source=${localWorkspaceFolder},target=C:/workspace,type=bind,consistency=cached"
-    ],
-    "workspaceFolder": "C:/workspace",
-    "runArgs": ["--isolation=process", "--memory=4g"]
+    "containerUser": "ContainerAdministrator",
+    "postCreateCommand": "pwsh -Command ./test-environment.ps1",
+    "forwardPorts": []
 }

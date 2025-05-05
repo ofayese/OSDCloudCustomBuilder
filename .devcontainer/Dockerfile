@@ -1,47 +1,53 @@
-# Use the official PowerShell 7.5.1 image on Windows Server Core
-FROM mcr.microsoft.com/powershell:7.5.1-windowsservercore-ltsc2022
+# Use Windows Server Core LTSC 2022 as the base image
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+
+# Set shell to PowerShell
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+# Install PowerShell 7.5.1
+RUN Invoke-WebRequest -Uri https://github.com/PowerShell/PowerShell/releases/download/v7.5.1/PowerShell-7.5.1-win-x64.msi -OutFile PowerShell.msi ; \
+    Start-Process -FilePath msiexec.exe -ArgumentList '/i', 'PowerShell.msi', '/quiet', '/norestart' -Wait ; \
+    Remove-Item -Path PowerShell.msi
 
 # Set shell to PowerShell 7
 SHELL ["pwsh", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
-# Install required PowerShell modules with minimum versions
-RUN Install-Module -Name Pester -MinimumVersion 5.4.0 -Force -SkipPublisherCheck
-RUN Install-Module -Name PSScriptAnalyzer -MinimumVersion 1.21.0 -Force -SkipPublisherCheck
-RUN Install-Module -Name ThreadJob -MinimumVersion 2.0.3 -Force -SkipPublisherCheck
-RUN Install-Module -Name OSD -MinimumVersion 23.5.26 -Force -SkipPublisherCheck
-RUN Install-Module -Name OSDCloud -MinimumVersion 23.5.26 -Force -SkipPublisherCheck
+# Install necessary PowerShell modules
+RUN Install-Module -Name Pester -RequiredVersion 5.4.0 -Force -SkipPublisherCheck ; \
+    Install-Module -Name PSScriptAnalyzer -RequiredVersion 1.21.0 -Force ; \
+    Install-Module -Name ThreadJob -RequiredVersion 2.0.3 -Force ; \
+    Install-Module -Name OSDCloud -RequiredVersion 23.5.26 -Force ; \
+    Install-Module -Name OSD -RequiredVersion 23.5.26 -Force
 
-# Ensure DISM and other Windows deployment tools are available
-# These are typically included in Windows Server Core, but we'll verify
-RUN if (-not (Get-Command -Name 'DISM.exe' -ErrorAction SilentlyContinue)) { \
-    Write-Warning 'DISM not found. Some OSDCloudCustomBuilder features may not work properly.' \
-    }
+# Install Git
+RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 ; \
+    Invoke-WebRequest -Uri https://github.com/git-for-windows/git/releases/download/v2.40.0.windows.1/MinGit-2.40.0-64-bit.zip -OutFile C:\mingit.zip ; \
+    Expand-Archive -Path C:\mingit.zip -DestinationPath C:\Git ; \
+    Remove-Item -Path C:\mingit.zip ; \
+    $env:Path += ';C:\Git\cmd' ; \
+    [Environment]::SetEnvironmentVariable('Path', $env:Path, [System.EnvironmentVariableTarget]::Machine)
 
-# Download PowerShell 7.5.1 package for testing
-RUN New-Item -Path 'C:\OSDCloud' -ItemType Directory -Force
-RUN Invoke-WebRequest -Uri 'https://github.com/PowerShell/PowerShell/releases/download/v7.5.1/PowerShell-7.5.1-win-x64.zip' -OutFile 'C:\OSDCloud\PowerShell-7.5.1-win-x64.zip'
+# Install Windows ADK (Assessment and Deployment Kit) and Windows PE add-on
+RUN New-Item -Path C:\ADK -ItemType Directory ; \
+    Invoke-WebRequest -Uri https://go.microsoft.com/fwlink/?linkid=2243390 -OutFile C:\ADK\adksetup.exe ; \
+    Start-Process -FilePath C:\ADK\adksetup.exe -ArgumentList '/quiet', '/installpath', 'C:\ADK', '/features', 'OptionId.DeploymentTools', 'OptionId.UserStateMigrationTool', 'OptionId.ImagingAndConfigurationDesigner' -Wait ; \
+    Invoke-WebRequest -Uri https://go.microsoft.com/fwlink/?linkid=2243391 -OutFile C:\ADK\adkwinpesetup.exe ; \
+    Start-Process -FilePath C:\ADK\adkwinpesetup.exe -ArgumentList '/quiet', '/installpath', 'C:\ADK', '/features', '+' -Wait ; \
+    Remove-Item -Path C:\ADK\adksetup.exe ; \
+    Remove-Item -Path C:\ADK\adkwinpesetup.exe
 
-# Install Windows ADK and Windows PE add-on
-# Create a temporary directory for the installers
-RUN New-Item -Path 'C:\Temp' -ItemType Directory -Force
-
-# Download Windows ADK installer
-RUN Invoke-WebRequest -Uri 'https://go.microsoft.com/fwlink/?linkid=2243390' -OutFile 'C:\Temp\adksetup.exe'
-
-# Install Windows ADK (silent installation with required components)
-RUN Start-Process -FilePath 'C:\Temp\adksetup.exe' -ArgumentList '/quiet', '/features', 'OptionId.DeploymentTools OptionId.UserStateMigrationTool OptionId.ImagingAndConfigurationDesigner' -Wait
-
-# Download Windows PE add-on
-RUN Invoke-WebRequest -Uri 'https://go.microsoft.com/fwlink/?linkid=2243391' -OutFile 'C:\Temp\adkwinpesetup.exe'
-
-# Install Windows PE add-on
-RUN Start-Process -FilePath 'C:\Temp\adkwinpesetup.exe' -ArgumentList '/quiet' -Wait
-
-# Clean up temporary files
-RUN Remove-Item -Path 'C:\Temp' -Recurse -Force
-
-# Set working directory
+# Create workspace directory
 WORKDIR C:/workspace
 
-# Set PowerShell 7 as the default entrypoint
-ENTRYPOINT ["pwsh", "-NoLogo", "-ExecutionPolicy", "Bypass"]
+# Create test-environment.ps1 script
+COPY .devcontainer/test-environment.ps1 /test-environment.ps1
+
+# Set environment variables
+ENV POWERSHELL_TELEMETRY_OPTOUT=1
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+
+# Update Path to include DISM
+RUN $env:Path += ';C:\ADK\Assessment and Deployment Kit\Deployment Tools\amd64\DISM' ; \
+    [Environment]::SetEnvironmentVariable('Path', $env:Path, [System.EnvironmentVariableTarget]::Machine)
+
+CMD ["pwsh"]
