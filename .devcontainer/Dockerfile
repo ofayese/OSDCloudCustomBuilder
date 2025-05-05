@@ -1,53 +1,47 @@
-FROM mcr.microsoft.com/powershell/test-deps:lts-ubuntu-22.04
+# Use the official PowerShell 7.5.1 image on Windows Server Core
+FROM mcr.microsoft.com/powershell:7.5.1-windowsservercore-ltsc2022
 
-# Install additional dependencies
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    unzip \
-    wget \
-    apt-transport-https \
-    software-properties-common \
-    && rm -rf /var/lib/apt/lists/*
+# Set shell to PowerShell 7
+SHELL ["pwsh", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
-# Set up PowerShell modules directory
-RUN mkdir -p /usr/local/share/powershell/Modules
+# Install required PowerShell modules
+RUN Install-Module -Name Pester -Force -SkipPublisherCheck
+RUN Install-Module -Name PSScriptAnalyzer -Force -SkipPublisherCheck
+RUN Install-Module -Name ThreadJob -Force -SkipPublisherCheck
+RUN Install-Module -Name OSD -Force -SkipPublisherCheck
+RUN Install-Module -Name OSDCloud -Force -SkipPublisherCheck
 
-# Create a non-root user to use if preferred
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+# Ensure DISM and other Windows deployment tools are available
+# These are typically included in Windows Server Core, but we'll verify
+RUN if (-not (Get-Command -Name 'DISM.exe' -ErrorAction SilentlyContinue)) { \
+    Write-Warning 'DISM not found. Some OSDCloudCustomBuilder features may not work properly.' \
+    }
 
-# Create the user
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    # Add sudo support
-    && apt-get update \
-    && apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME \
-    # Clean up
-    && apt-get autoremove -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
+# Download PowerShell 7.5.1 package for testing
+RUN New-Item -Path 'C:\OSDCloud' -ItemType Directory -Force
+RUN Invoke-WebRequest -Uri 'https://github.com/PowerShell/PowerShell/releases/download/v7.5.1/PowerShell-7.5.1-win-x64.zip' -OutFile 'C:\OSDCloud\PowerShell-7.5.1-win-x64.zip'
 
-# Switch to vscode user
-USER $USERNAME
+# Install Windows ADK and Windows PE add-on
+# Create a temporary directory for the installers
+RUN New-Item -Path 'C:\Temp' -ItemType Directory -Force
 
-# Create workspace directory and set up PowerShell profile
-RUN mkdir -p /home/$USERNAME/.config/powershell \
-    && echo "# PowerShell Profile for OSDCloudCustomBuilder testing" > /home/$USERNAME/.config/powershell/Microsoft.PowerShell_profile.ps1 \
-    && echo "Write-Host 'OSDCloudCustomBuilder Test Environment' -ForegroundColor Cyan" >> /home/$USERNAME/.config/powershell/Microsoft.PowerShell_profile.ps1
+# Download Windows ADK installer
+RUN Invoke-WebRequest -Uri 'https://go.microsoft.com/fwlink/?linkid=2243390' -OutFile 'C:\Temp\adksetup.exe'
 
-# Set the default shell to PowerShell
-SHELL ["pwsh", "-Command"]
+# Install Windows ADK (silent installation with required components)
+RUN Start-Process -FilePath 'C:\Temp\adksetup.exe' -ArgumentList '/quiet', '/features', 'OptionId.DeploymentTools OptionId.UserStateMigrationTool OptionId.ImagingAndConfigurationDesigner' -Wait
 
-# Install PowerShell modules needed for testing
-RUN Install-Module Pester -Force -SkipPublisherCheck; \
-    Install-Module ThreadJob -Force; \
-    Install-Module PSScriptAnalyzer -Force
+# Download Windows PE add-on
+RUN Invoke-WebRequest -Uri 'https://go.microsoft.com/fwlink/?linkid=2243391' -OutFile 'C:\Temp\adkwinpesetup.exe'
 
-# Set the default shell back to bash for compatibility with VS Code
-SHELL ["/bin/bash", "-c"]
+# Install Windows PE add-on
+RUN Start-Process -FilePath 'C:\Temp\adkwinpesetup.exe' -ArgumentList '/quiet' -Wait
 
-WORKDIR /workspace
+# Clean up temporary files
+RUN Remove-Item -Path 'C:\Temp' -Recurse -Force
+
+# Set working directory
+WORKDIR C:/workspace
+
+# Set PowerShell 7 as the default entrypoint
+ENTRYPOINT ["pwsh", "-NoLogo", "-ExecutionPolicy", "Bypass"]

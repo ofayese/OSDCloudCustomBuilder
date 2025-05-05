@@ -1,42 +1,45 @@
 {
-  "name": "PowerShell OSDCloudCustomBuilder Test Environment",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "powershell",
-  "workspaceFolder": "/workspace",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-vscode.powershell",
-        "ms-azuretools.vscode-docker",
-        "streetsidesoftware.code-spell-checker",
-        "DanielSanMedium.dscodegpt",
-        "sourcegraph.cody-ai",
-        "Bito.Bito",
-        "saoudrizwan.claude-dev",
-        "ms-azuretools.vscode-docker",
-        "docker.docker",
-        "GitHub.copilot",
-        "GitHub.copilot-chat",
-        "EditorConfig.EditorConfig",
-        "VisualStudioExptTeam.vscodeintellicode",
-        "pspester.pester-test",
-        "ironmansoftware.powershellprotools",
-        "TabNine.tabnine-vscode",
-        "stylelint.vscode-stylelint",
-        "ms-vscode.vscode-websearchforcopilot",
-        "ms-vscode.test-adapter-converter",
-        "skyramp.skyramp"
-      ],
-      "settings": {
-        "terminal.integrated.defaultProfile.linux": "pwsh",
-        "powershell.powerShellDefaultVersion": "PowerShell",
-        "powershell.enableProfileLoading": true,
-        "powershell.pester.useLegacyCodeLens": false,
-        "powershell.integratedConsole.showOnStartup": true,
-        "editor.formatOnSave": true
-      }
-    }
-  },
-  "remoteUser": "vscode",
-  "postCreateCommand": "pwsh -Command \"Install-Module Pester -Force -SkipPublisherCheck; Install-Module ThreadJob -Force; Write-Host 'Environment setup complete!' -ForegroundColor Green\""
+	"name": "OSDCloudCustomBuilder Development",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.powershell",
+				"streetsidesoftware.code-spell-checker",
+				"redhat.vscode-yaml",
+				"DavidAnson.vscode-markdownlint",
+				"eamodio.gitlens",
+				"ryanluker.vscode-coverage-gutters",
+				"TylerLeonhardt.vscode-pester-test-adapter"
+			],
+			"settings": {
+				"terminal.integrated.defaultProfile.windows": "PowerShell",
+				"powershell.codeFormatting.preset": "OTBS",
+				"powershell.pester.useLegacyCodeLens": false,
+				"powershell.pester.codeLens": true,
+				"powershell.scriptAnalysis.enable": true,
+				"powershell.integratedConsole.focusConsoleOnExecute": true,
+				"editor.formatOnSave": true,
+				"files.trimTrailingWhitespace": true,
+				"files.associations": {
+					"*.ps1": "powershell",
+					"*.psm1": "powershell",
+					"*.psd1": "powershell"
+				}
+			}
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {}
+	},
+	"remoteUser": "ContainerAdministrator",
+	"postCreateCommand": "pwsh -File ./.devcontainer/test-environment.ps1",
+	"mounts": [
+		"source=${localWorkspaceFolder},target=C:/workspace,type=bind,consistency=cached"
+	],
+	"workspaceFolder": "C:/workspace",
+	"runArgs": ["--isolation=process"]
 }

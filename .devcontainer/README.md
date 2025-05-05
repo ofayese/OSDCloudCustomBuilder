@@ -1,102 +1,73 @@
-# OSDCloudCustomBuilder Test Environment
+# Development Container for OSDCloudCustomBuilder
 
-This directory contains the configuration for a development container that provides a consistent test environment for OSDCloudCustomBuilder PowerShell module development.
+This directory contains configuration for a Windows-based development container that can be used with Visual Studio Code's Remote - Containers extension or GitHub Codespaces.
 
-## Overview
+## Container Configuration
 
-The dev container configuration:
+The development environment uses:
 
-1. Uses `mcr.microsoft.com/powershell/test-deps:lts-ubuntu-22.04` as the base image
-2. Creates a multi-container environment using Docker Compose
-3. Includes necessary PowerShell modules for testing (Pester, ThreadJob, PSScriptAnalyzer)
-4. Provides a consistent development environment across different machines
-5. Includes a comprehensive set of VS Code extensions for PowerShell and AI development
+- Windows Server Core LTSC 2022 as the base image
+- PowerShell 7.5.1 as the default shell
+- Pre-installed tools:
+  - Pester for testing
+  - PSScriptAnalyzer for code quality
+  - ThreadJob for parallel processing
+  - OSDCloud module for integration testing
+  - OSD module for deployment tasks
+  - Windows ADK (Assessment and Deployment Kit)
+  - Windows PE add-on for ADK
+  - PowerShell 7.5.1 package for testing PowerShell 7 integration
+  - DISM and Windows deployment tools
+  - Git for version control
 
-## Prerequisites
+## Requirements
 
-- [Docker](https://www.docker.com/products/docker-desktop/) installed and running
-- [Visual Studio Code](https://code.visualstudio.com/) with the [Remote Development extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
+To use this development container, you need:
 
-## Getting Started
+1. Docker Desktop with Windows container support enabled
+2. Visual Studio Code with the Remote - Containers extension installed
 
-### Option 1: Using Visual Studio Code
+## Usage
 
-1. Open the OSDCloudCustomBuilder repository folder in VS Code
-2. When prompted, click "Reopen in Container" or use the command palette (F1) and select "Remote-Containers: Reopen in Container"
-3. VS Code will build and start the dev container, then open the workspace inside it
-4. You can now develop and test the module in a consistent environment
+### Local Development
 
-### Option 2: Using the Command Line
+1. Ensure Docker Desktop is running in Windows containers mode
+2. Open this repository in VS Code
+3. When prompted, click "Reopen in Container" or run the "Remote-Containers: Reopen in Container" command
+4. VS Code will build the container and connect to it
+5. The test-environment.ps1 script will run automatically to verify the container setup
 
-1. Navigate to the repository root directory
-2. Run the bootstrap script:
-   ```powershell
-   ./start-test-environment.ps1
-   ```
-3. Connect to the running container:
-   ```
-   docker exec -it osdcloud-powershell pwsh
-   ```
-4. Run tests with:
-   ```powershell
-   ./Run-Tests.ps1
-   ```
+### Verifying the Environment
 
-## Container Structure
-
-- **PowerShell Container**: Based on `mcr.microsoft.com/powershell/test-deps:lts-ubuntu-22.04`, has all PowerShell testing dependencies installed
-- **Shared Volumes**: The repository root is mounted at `/workspace` in the container
-- **Environment Setup**: PowerShell modules needed for testing are automatically installed
-- **Test Framework**: Pester 5.0+ is installed for running tests
-
-## Included VS Code Extensions
-
-This devcontainer comes with the following VS Code extensions pre-configured:
-
-- **PowerShell Development**: PowerShell, Pester Test Explorer, PowerShell Pro Tools
-- **AI Assistants**: GitHub Copilot, GitHub Copilot Chat, Cody AI, Claude Dev, DScodeGPT, Bito, TabNine
-- **Docker**: Docker, Azure Tools for Docker 
-- **Code Quality**: EditorConfig, IntelliCode, StyleLint
-- **Testing**: Test Adapter Converter, Pester Test
-
-## Running Tests
-
-Inside the container, you can run tests using the included `Run-Tests.ps1` script:
+The container includes a verification script that checks if all required tools and modules are available:
 
 ```powershell
-# Run basic tests
-./Run-Tests.ps1
-
-# Run tests with specialized test categories included
-./Run-Tests.ps1 -IncludeSpecialized
-
-# Run tests with code coverage reporting
-./Run-Tests.ps1 -CodeCoverage
+# Run this to verify the container setup
+./devcontainer/test-environment.ps1
 ```
 
-## Customizing the Environment
+This script checks for:
+- Required PowerShell modules (Pester, PSScriptAnalyzer, ThreadJob, OSDCloud, OSD)
+- Required commands (git, DISM.exe)
+- PowerShell 7.5.1 package availability
+- Windows ADK and Windows PE add-on installation
+- Workspace mounting
 
-If you need to customize the development environment:
+### Important Notes
 
-1. Edit the `.devcontainer/Dockerfile` to add additional tools or dependencies
-2. Modify `.devcontainer/docker-compose.yml` to adjust container configuration or add more services
-3. Update `.devcontainer/setup-test-environment.ps1` to add setup steps that should run when the container starts
-4. Rebuild the container by running:
-   ```powershell
-   ./start-test-environment.ps1 -BuildContainer
-   ```
+- The container uses process isolation (`--isolation=process`) for better performance
+- The workspace is mounted at `C:/workspace` inside the container
+- PowerShell modules installed in the container are separate from your host system
+
+## Customization
+
+If you need additional tools or PowerShell modules:
+
+1. Edit the `Dockerfile` to add installation steps
+2. Edit `devcontainer.json` to configure VS Code settings or extensions
 
 ## Troubleshooting
 
-- **Container doesn't build**: Make sure Docker is running and you have permissions to build containers
-- **PowerShell modules don't load**: Check the PSModulePath environment variable inside the container
-- **Tests fail**: Ensure you have the correct module dependencies installed
-- **Permission issues**: The container runs as the `vscode` user, which may not have permissions for certain operations
-
-For more serious issues, you can rebuild the container from scratch:
-
-```powershell
-docker-compose -f .devcontainer/docker-compose.yml down
-docker-compose -f .devcontainer/docker-compose.yml build --no-cache
-docker-compose -f .devcontainer/docker-compose.yml up -d
-```
+- If you encounter issues with Windows containers, ensure Hyper-V and Windows container features are enabled
+- For permission issues, the container runs as `ContainerAdministrator`
+- Docker Desktop must be configured to use Windows containers (not Linux containers)
