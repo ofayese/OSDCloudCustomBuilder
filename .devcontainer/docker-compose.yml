@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  powershell:
+  osdcloudcustombuilder:
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
@@ -12,8 +12,9 @@ services:
     environment:
       - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
       - PSModulePath=C:/workspace/Modules;C:/Program Files/PowerShell/Modules;C:/Program Files/PowerShell/7/Modules;C:/Windows/System32/WindowsPowerShell/v1.0/Modules
-    # Use PowerShell command to keep container running
-    command: pwsh -Command "while($true) { Start-Sleep -Seconds 3600 }"
+      - SHELL=C:/Program Files/PowerShell/7/pwsh.exe
+    # Keep container running
+    command: ["pwsh", "-Command", "while($true) { Start-Sleep -Seconds 3600 }"]
     networks:
       - osdcloud-network
     mem_limit: 4g

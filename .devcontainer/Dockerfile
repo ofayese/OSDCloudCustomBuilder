@@ -50,4 +50,5 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 RUN $env:Path += ';C:\ADK\Assessment and Deployment Kit\Deployment Tools\amd64\DISM' ; \
     [Environment]::SetEnvironmentVariable('Path', $env:Path, [System.EnvironmentVariableTarget]::Machine)
 
+# Default to PowerShell 7
 CMD ["pwsh"]

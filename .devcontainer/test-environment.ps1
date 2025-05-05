@@ -225,7 +225,7 @@ if ($tls -band [Net.SecurityProtocolType]::Tls12) {
     Write-Information "✅ TLS 1.2 enabled"
 }
 else {
-    Write-Warning "⚠️ TLS 1.2 may not be enabled — consider enabling for PowerShell Gallery"
+    Write-Warning "⚠️ TLS 1.2 may not be enabled - consider enabling for PowerShell Gallery"
 }
 
 Write-Section "Environment Verification Results"

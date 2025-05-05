@@ -1,7 +1,7 @@
 {
     "name": "OSDCloud PowerShell Development",
     "dockerComposeFile": "docker-compose.yml",
-    "service": "powershell",
+    "service": "osdcloudcustombuilder",
     "workspaceFolder": "/workspace",
     "customizations": {
         "vscode": {
@@ -16,10 +16,10 @@
                 "terminal.integrated.defaultProfile.windows": "PowerShell",
                 "terminal.integrated.profiles.windows": {
                     "PowerShell": {
-                        "path": "pwsh",
-                        "args": []
+                        "path": "pwsh"
                     }
                 },
+                "powershell.powerShellDefaultVersion": "PowerShell",
                 "powershell.scriptAnalysis.enable": true,
                 "powershell.pester.useLegacyCodeLens": false,
                 "editor.formatOnSave": true,
