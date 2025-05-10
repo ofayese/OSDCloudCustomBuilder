@@ -8,7 +8,6 @@
       "script": "${workspaceFolder}/Run-Tests.ps1",
       "cwd": "${workspaceFolder}",
       "args": [],
-      "console": "integratedTerminal"
     }
   ]
 }
