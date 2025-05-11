@@ -9,18 +9,20 @@ services:
     volumes:
       - ..:/workspace:cached
       - osdcloud-modules:C:/Users/ContainerAdministrator/Documents/PowerShell/Modules
+      - osdcloud-temp:C:/Temp
     environment:
       - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
       - PSModulePath=C:/workspace/Modules;C:/Program Files/PowerShell/Modules;C:/Program Files/PowerShell/7/Modules;C:/Windows/System32/WindowsPowerShell/v1.0/Modules
       - SHELL=C:/Program Files/PowerShell/7/pwsh.exe
+      - TEMP=C:/Temp
+      - TMP=C:/Temp
     # Keep container running
-    command: ["pwsh", "-Command", "while($true) { Start-Sleep -Seconds 3600 }"]
+    command: ["pwsh", "-Command", "& { try { . C:/workspace/.devcontainer/container-init.ps1 } catch { Write-Error $_ }; while($true) { Start-Sleep -Seconds 3600 } }"]
     networks:
       - osdcloud-network
     mem_limit: 4g
     restart: unless-stopped
     # Windows containers require process isolation
-    # Comment this line if using Linux containers
     isolation: process
 
 networks:
@@ -29,3 +31,4 @@ networks:
 
 volumes:
   osdcloud-modules:
+  osdcloud-temp:

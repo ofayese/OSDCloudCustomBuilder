@@ -27,8 +27,9 @@
 			}
 		}
 	},
-	"initializeCommand": "powershell -Command \"if (-not (Get-Command -Name docker -ErrorAction SilentlyContinue)) { Write-Error 'Docker is not installed or not in PATH'; exit 1 } else { $dockerInfo = docker info; $isWindows = $dockerInfo | Select-String -Pattern 'OSType: windows' -Quiet; if (-not $isWindows) { Write-Warning 'Docker is not configured for Windows containers. This devcontainer requires Windows containers.' } }\"",
+	"initializeCommand": "powershell -Command \"if (-not (Get-Command -Name docker -ErrorAction SilentlyContinue)) { Write-Error 'Docker is not installed or not in PATH'; exit 1 } else { $dockerInfo = docker info; $isWindows = $dockerInfo | Select-String -Pattern 'OSType: windows' -Quiet; if (-not $isWindows) { Write-Error 'Docker is not configured for Windows containers. Please switch to Windows containers before continuing.' } }\"",
 	"remoteUser": "ContainerAdministrator",
-	"postCreateCommand": "pwsh -Command ./test-environment.ps1",
-	"forwardPorts": []
+	"postCreateCommand": "pwsh -NoProfile -Command \"& {. C:/workspace/.devcontainer/container-init.ps1}\"",
+	"forwardPorts": [],
+	"shutdownAction": "stopCompose"
 }
