@@ -5,6 +5,15 @@ services:
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
+      args:
+        POWERSHELL_VERSION: ${POWERSHELL_VERSION}
+        PESTER_VERSION: ${PESTER_VERSION}
+        PSSCRIPTANALYZER_VERSION: ${PSSCRIPTANALYZER_VERSION}
+        THREADJOB_VERSION: ${THREADJOB_VERSION}
+        OSD_VERSION: ${OSD_VERSION}
+        OSDCLOUD_VERSION: ${OSDCLOUD_VERSION}
+        MODULEBUILDER_VERSION: ${MODULEBUILDER_VERSION}
+        POWERSHELLPROTOOLS_VERSION: ${POWERSHELLPROTOOLS_VERSION}
     container_name: osdcloud-powershell
     volumes:
       - ..:/workspace:cached
@@ -12,22 +21,13 @@ services:
       - osdcloud-temp:C:/Temp
     environment:
       - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
-      - PSModulePath=C:/workspace/Modules;C:/Program Files/PowerShell/Modules;C:/Program Files/PowerShell/7/Modules;C:/Windows/System32/WindowsPowerShell/v1.0/Modules
-      - SHELL=C:/Program Files/PowerShell/7/pwsh.exe
-      - TEMP=C:/Temp
-      - TMP=C:/Temp
-    # Keep container running
-    command: ["pwsh", "-Command", "& { try { . C:/workspace/.devcontainer/container-init.ps1 } catch { Write-Error $_ }; while($true) { Start-Sleep -Seconds 3600 } }"]
-    networks:
-      - osdcloud-network
-    mem_limit: 4g
-    restart: unless-stopped
-    # Windows containers require process isolation
-    isolation: process
-
-networks:
-  osdcloud-network:
-    driver: nat
+      - PSModulePath=C:/workspace/Modules;C:/Program Files/PowerShell/Modules;C:/Program Files/PowerShell/7/Modules;C:/Users/ContainerAdministrator/Documents/PowerShell/Modules
+    isolation: ${ISOLATION}
+    security_opt:
+      - seccomp:unconfined
+      - credentialspec:Admin
+    platform: windows
+    mem_limit: ${CONTAINER_MEMORY}
 
 volumes:
   osdcloud-modules:

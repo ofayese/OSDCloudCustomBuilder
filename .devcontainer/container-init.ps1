@@ -1,16 +1,16 @@
-# This script runs when the container starts
+# This script runs when the container starts (initialization)
 Write-Host "Initializing OSDCloudCustomBuilder development environment..." -ForegroundColor Cyan
 
-# Verify we're running in Windows
+# Verify the container is running Windows
 if (-not [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows)) {
     Write-Error "This container must run on Windows!"
     exit 1
 }
 
-# Ensure TLS 1.2 is enabled for secure connections
+# Ensure TLS 1.2 is enabled for secure web connections
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-# Ensure PSGallery is trusted
+# Trust the PSGallery repository if not already trusted
 if ((Get-PSRepository -Name PSGallery -ErrorAction SilentlyContinue).InstallationPolicy -ne 'Trusted') {
     try {
         Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -ErrorAction Stop
@@ -21,13 +21,11 @@ if ((Get-PSRepository -Name PSGallery -ErrorAction SilentlyContinue).Installatio
     }
 }
 
-# Update PowerShell modules if needed
-Write-Host "Checking for module updates..." -ForegroundColor Cyan
-foreach ($module in @('Pester', 'PSScriptAnalyzer', 'ThreadJob', 'OSD', 'OSDCloud')) {
+# Update key PowerShell modules to latest versions if newer are available
+foreach ($module in @('Pester', 'PSScriptAnalyzer', 'ThreadJob', 'OSD', 'OSDCloud', 'PowerShellProTools', 'ModuleBuilder')) {
     try {
         $latest = Find-Module -Name $module -Repository PSGallery -ErrorAction Stop
         $current = Get-Module -Name $module -ListAvailable | Sort-Object Version -Descending | Select-Object -First 1
-
         if ($current -and $latest.Version -gt $current.Version) {
             Write-Host "Updating $module from $($current.Version) to $($latest.Version)..." -ForegroundColor Yellow
             Update-Module -Name $module -Force -ErrorAction Stop
@@ -41,13 +39,11 @@ foreach ($module in @('Pester', 'PSScriptAnalyzer', 'ThreadJob', 'OSD', 'OSDClou
     }
 }
 
-# Run the test environment script
+# Run the environment verification script
 Write-Host "Running test environment verification..." -ForegroundColor Cyan
 try {
     & "$PSScriptRoot/test-environment.ps1"
 }
 catch {
-    Write-Error "Error running test environment script: $_"
+    Write-Error "Environment verification failed: $_"
 }
-
-Write-Host "Container initialization complete!" -ForegroundColor Green
