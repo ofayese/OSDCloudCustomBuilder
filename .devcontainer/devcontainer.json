@@ -10,20 +10,47 @@
 				"streetsidesoftware.code-spell-checker",
 				"GitHub.copilot",
 				"esbenp.prettier-vscode",
-				"DavidAnson.vscode-markdownlint"
+				"DavidAnson.vscode-markdownlint",
+				"redhat.vscode-yaml",
+				"github.vscode-github-actions",
+				"ms-azuretools.vscode-docker",
+				"eamodio.gitlens"
 			],
 			"settings": {
 				"terminal.integrated.defaultProfile.windows": "PowerShell",
 				"terminal.integrated.profiles.windows": {
 					"PowerShell": {
-						"path": "pwsh"
+						"path": "pwsh",
+						"args": []
 					}
 				},
 				"powershell.powerShellDefaultVersion": "PowerShell",
 				"powershell.scriptAnalysis.enable": true,
 				"powershell.pester.useLegacyCodeLens": false,
+				"powershell.integratedConsole.showOnStartup": true,
+				"powershell.debugging.createTemporaryIntegratedConsole": true,
+				"powershell.codeFormatting.autoCorrectAliases": true,
+				"powershell.codeFormatting.useCorrectCasing": true,
+				"powershell.codeFormatting.alignPropertyValuePairs": true,
+				"powershell.enableProfileLoading": true,
 				"editor.formatOnSave": true,
-				"files.eol": "\r\n"
+				"editor.formatOnPaste": true,
+				"editor.bracketPairColorization.enabled": true,
+				"editor.guides.bracketPairs": "active",
+				"editor.renderWhitespace": "all",
+				"files.eol": "\r\n",
+				"files.trimTrailingWhitespace": true,
+				"files.insertFinalNewline": true,
+				"[powershell]": {
+					"editor.formatOnSave": true,
+					"editor.formatOnPaste": true,
+					"files.encoding": "utf8",
+					"editor.defaultFormatter": "ms-vscode.powershell"
+				},
+				"[markdown]": {
+					"editor.formatOnSave": true,
+					"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+				}
 			}
 		}
 	},

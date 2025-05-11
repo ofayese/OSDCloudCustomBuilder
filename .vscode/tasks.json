@@ -1,31 +1,54 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "\ud83e\uddea Run Pester Tests",
-      "type": "shell",
-      "command": "pwsh",
-      "args": [
-        "-NoProfile",
-        "-Command",
-        "./Run-Tests.ps1"
-      ],
-      "group": {
-        "kind": "test",
-        "isDefault": true
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "\ud83d\udce6 Build PowerShell Module (Copy)",
-      "type": "shell",
-      "command": "pwsh",
-      "args": [
-        "-NoProfile",
-        "-Command",
-        "Copy-Item -Recurse -Force ./OSDCloudCustomBuilder ./output"
-      ],
-      "group": "build"
-    }
-  ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "🧪 Run Pester Tests",
+			"type": "shell",
+			"command": "pwsh",
+			"args": ["-NoProfile", "-Command", "./Run-Tests.ps1"],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"problemMatcher": ["$pester"]
+		},
+		{
+			"label": "🔬 Run Tests with Coverage",
+			"type": "shell",
+			"command": "pwsh",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"./Run-Tests.ps1 -CodeCoverage -OutputFile ./TestResults/test-results.xml"
+			],
+			"group": "test",
+			"problemMatcher": ["$pester"]
+		},
+		{
+			"label": "🏗️ Build Module Package",
+			"type": "shell",
+			"command": "pwsh",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$env:PSModulePath = (Join-Path -Path $env:WORKSPACE -ChildPath 'Modules') + ';' + $env:PSModulePath; Import-Module -Name ModuleBuilder -Force; Build-Module -Path ."
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": ["$msCompile"]
+		},
+		{
+			"label": "📦 Build PowerShell Module (Copy)",
+			"type": "shell",
+			"command": "pwsh",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Copy-Item -Recurse -Force ./OSDCloudCustomBuilder ./output"
+			],
+			"group": "build"
+		}
+	]
 }
