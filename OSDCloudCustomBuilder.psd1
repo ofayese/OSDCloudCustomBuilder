@@ -3,7 +3,7 @@
     RootModule        = 'OSDCloudCustomBuilder.psm1'
     ModuleVersion     = '0.3.1'
     GUID              = 'e1e0a9c5-7b38-4b1a-9f9c-32743e2a6613'
-    Author            = 'Oluwaseun Fayese'
+    Author            = 'Laolu Fayese'
     CompanyName       = 'Modern Endpoint Management'
     Copyright         = '(c) 2025 Modern Endpoint Management. All rights reserved.'
     Description       = 'A specialized PowerShell module for enhancing OSDCloud with custom Windows image integration and PowerShell 7 support. This module streamlines the creation of custom deployment ISOs with integrated PowerShell 7, optimized WIM files, and advanced logging capabilities. Ideal for enterprise deployment scenarios requiring customized OSDCloud solutions with modern PowerShell support.'
@@ -22,6 +22,12 @@
         'Update-CustomWimWithPwsh7Advanced'
         'Test-ValidPowerShellVersion'
         'Write-Log'
+        'Write-OSDCloudLog'
+        'Invoke-OSDCloudLogger'
+        'Test-EnvironmentCompatibility'
+        'Measure-OSDCloudOperation'
+        'Get-ModuleConfiguration'
+        'Update-ModuleConfiguration'
     )
     CmdletsToExport   = @()
     VariablesToExport = @()

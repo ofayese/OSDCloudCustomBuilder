@@ -19,6 +19,8 @@ services:
       - osdcloud-network
     mem_limit: 4g
     restart: unless-stopped
+    # Windows containers require process isolation
+    # Comment this line if using Linux containers
     isolation: process
 
 networks:

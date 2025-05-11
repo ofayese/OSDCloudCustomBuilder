@@ -12,7 +12,7 @@
     - Documentation generation from code comments
 .NOTES
     Version: 0.3.1
-    Author: Oluwaseun Fayese
+    Author: Laolu Fayese
     Copyright: (c) 2025 Modern Endpoint Management. All rights reserved.
 #>
 #region Module Setup
@@ -101,7 +101,7 @@ catch {
 }
 
 # Define path to PowerShell 7 package in the OSDCloud folder
-$script:PowerShell7ZipPath = Join-Path -Path (Split-Path -Parent $script:ModuleRoot) -ChildPath "OSDCloud\PowerShell-7.5.0-win-x64.zip"
+$script:PowerShell7ZipPath = Join-Path -Path (Split-Path -Parent $script:ModuleRoot) -ChildPath "OSDCloud\PowerShell-7.5.1-win-x64.zip"
 if ([System.IO.File]::Exists($script:PowerShell7ZipPath)) {
     Write-Verbose "PowerShell 7 package found at: $script:PowerShell7ZipPath"
 }

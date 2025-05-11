@@ -13,7 +13,7 @@ $requiredModules = @{
     'ThreadJob'             = '2.0.3'
     'OSDCloud'              = '23.5.26'
     'OSD'                   = '23.5.26'
-    'OSDCloudCustomBuilder' = '0.0.1'
+    'OSDCloudCustomBuilder' = '0.3.1'
 }
 
 function Write-Section {
