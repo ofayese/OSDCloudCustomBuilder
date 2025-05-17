@@ -45,6 +45,57 @@ Install-Module OSDCloudCustomBuilder -Force
 Import-Module OSDCloudCustomBuilder
 ```
 
+## Development Environment
+
+### Dev Container
+
+This repository includes a development container configuration that provides a consistent environment for PowerShell module development, testing, and OSDCloud image building. The dev container includes:
+
+- Windows Server 2022 base image
+- PowerShell 7
+- Windows ADK with WinPE add-on
+- Git, .NET SDK, and other development tools
+- Pre-installed PowerShell modules for development and testing
+- VS Code integration with recommended extensions
+
+#### Using the Dev Container
+
+##### Option 1: VS Code Remote Containers
+
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+2. Install [VS Code](https://code.visualstudio.com/)
+3. Install the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension for VS Code
+4. Clone this repository and open it in VS Code
+5. When prompted, click "Reopen in Container" or run the "Remote-Containers: Reopen in Container" command from the Command Palette (F1)
+
+##### Option 2: PowerShell Script
+
+You can also use the included PowerShell script to build and run the container:
+
+```powershell
+# Build and start the container
+.\Start-DevContainer.ps1
+
+# Start in interactive mode
+.\Start-DevContainer.ps1 -Interactive
+
+# Force rebuild of the container
+.\Start-DevContainer.ps1 -Rebuild
+```
+
+#### Dev Container Features
+
+The dev container includes several tools and templates to streamline PowerShell module development:
+
+- PowerShell profile with custom functions for module development
+- Templates for build scripts, GitHub Actions workflows, and module manifests
+- Pre-configured VS Code settings and extensions
+- Integrated testing with Pester
+- Static code analysis with PSScriptAnalyzer
+- Documentation generation with platyPS
+
+For more information, see the [Dev Container README](.devcontainer/README.md).
+
 ## Basic Usage
 
 ### Creating a Custom OSDCloud ISO
@@ -161,6 +212,7 @@ OSDCloudCustomBuilder/
 │   ├── ErrorHandling/      # Error handling tests
 │   └── Logging/            # Logging tests
 ├── .github/                # GitHub workflows
+├── .devcontainer/          # Development container configuration
 ├── OSDCloudCustomBuilder.psd1  # Module manifest
 ├── OSDCloudCustomBuilder.psm1  # Module implementation
 └── README.md               # This file

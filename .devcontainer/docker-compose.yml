@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  osdcloud-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspace:cached
+    command: pwsh -Command "& { Write-Host 'OSDCloud Development Container is ready!' -ForegroundColor Green; while ($true) { Start-Sleep -Seconds 1 } }"
+    container_name: osdcloud-dev
+    # Uncomment the following lines to enable Windows isolation mode
+    # isolation: process
+    # Uncomment the following lines to expose ports
+    # ports:
+    #   - "8080:80"
+    #   - "8443:443"
