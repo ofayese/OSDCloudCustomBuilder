@@ -1,34 +1,30 @@
-# Base image: Windows Server 2022
-FROM mcr.microsoft.com/windows:ltsc2022
+FROM mcr.microsoft.com/powershell:latest
 
-# Set shell to PowerShell
-SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+RUN apt-get update && \
+    apt-get install -y \
+    git \
+    curl \
+    unzip \
+    vim \
+    nano \
+    less \
+    wget \
+    gnupg \
+    software-properties-common \
+    lsb-release \
+    ca-certificates && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install Chocolatey
-RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
-    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; \
-    iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
+    gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | \
+    tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
+    apt-get update && \
+    apt-get install -y gh && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install core tools
-RUN choco install -y git 7zip vscode powershell-core dotnet-sdk
-
-# Copy setup scripts
-COPY scripts/ C:/setup/
-
-# Run setup scripts
-RUN C:/setup/setup.ps1
-
-# Set PowerShell 7 as default shell
-SHELL ["pwsh", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
-
-# Set working directory
-WORKDIR C:/workspace
-
-# Set environment variables
-ENV PSModulePath="C:\Program Files\PowerShell\Modules;C:\Program Files\PowerShell\7\Modules;C:\Users\ContainerAdministrator\Documents\PowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules;C:\workspace"
-
-# Expose ports if needed
-# EXPOSE 80 443
-
-# Set default command
-CMD ["pwsh"]
+RUN useradd -m vscode
+USER vscode
+WORKDIR /home/vscode
