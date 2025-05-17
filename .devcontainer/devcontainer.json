@@ -5,13 +5,49 @@
     "context": ".."
   },
   "settings": {
-    "terminal.integrated.defaultProfile.linux": "pwsh"
+    "terminal.integrated.defaultProfile.linux": "pwsh",
+    "powershell.startAutomatically": true
   },
   "extensions": [
     "ms-vscode.powershell",
     "eamodio.gitlens",
-    "ms-docker.docker-extension"
+    "ms-azuretools.vscode-docker",
+    "github.copilot",
+    "github.copilot-chat",
+    "ms-toolsai.jupyter",
+    "sourcegraph.cody-ai",
+    "redhat.vscode-yaml",
+    "timonwong.shellcheck"
   ],
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/powershell:1": {
+      "version": "latest"
+    }
+  },
+  "mounts": [
+    "source=osdccb-dev-volume,target=/shared,type=volume"
+  ],
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/shared/bin",
+    "POWERSHELL_TELEMETRY_OPTOUT": "1",
+    "AI_TOOLS_PATH": "/shared/ai-tools",
+    "MCP_TOOLS_PATH": "/shared/mcp-tools"
+  },
   "postCreateCommand": "pwsh -File .devcontainer/devsetup.ps1",
-  "remoteUser": "vscode"
+  "remoteUser": "vscode",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.env.linux": {
+          "AI_TOOLS_PATH": "/shared/ai-tools",
+          "MCP_TOOLS_PATH": "/shared/mcp-tools"
+        },
+        "editor.formatOnSave": true,
+        "powershell.powerShellAdditionalExePaths": {
+          "Preview": "/usr/bin/pwsh-preview"
+        }
+      }
+    }
+  }
 }

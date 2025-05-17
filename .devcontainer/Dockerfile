@@ -1,30 +1,50 @@
 FROM mcr.microsoft.com/powershell:latest
 
-RUN apt-get update && \
-    apt-get install -y \
-    git \
-    curl \
-    unzip \
-    vim \
-    nano \
-    less \
-    wget \
-    gnupg \
-    software-properties-common \
-    lsb-release \
-    ca-certificates && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Install necessary packages
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends \
+        git \
+        curl \
+        unzip \
+        ca-certificates \
+        apt-transport-https \
+        software-properties-common \
+        python3 \
+        python3-pip \
+        docker.io \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
-    gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | \
-    tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
-    apt-get update && \
-    apt-get install -y gh && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Install PowerShell modules
+RUN pwsh -Command " \
+    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted; \
+    Install-Module -Name Pester -Force; \
+    Install-Module -Name PSScriptAnalyzer -Force; \
+    Install-Module -Name Az -Force; \
+    Install-Module -Name OSD -Force; \
+    Install-Module -Name WindowsAutoPilotIntune -Force"
 
-RUN useradd -m vscode
-USER vscode
-WORKDIR /home/vscode
+# Create workspace directory
+WORKDIR /workspace
+
+# Create a non-root user for better security
+ARG USERNAME=vscode
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && apt-get update \
+    && apt-get install -y sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+# Add user to docker group
+RUN usermod -aG docker $USERNAME
+
+# Set up directory for tool integration
+RUN mkdir -p /shared/bin /shared/ai-tools /shared/mcp-tools \
+    && chown -R $USERNAME:$USERNAME /shared
+
+# Switch to the non-root user
+USER $USERNAME
