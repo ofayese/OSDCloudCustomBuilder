@@ -1,6 +1,9 @@
 {
 	"name": "OSDCloud PowerShell Development",
-	"dockerComposeFile": "docker-compose.yml",
+	"dockerComposeFile": [
+		"docker-compose.yml",
+		"docker-compose.env.yml"
+	],
 	"service": "osdcloudcustombuilder",
 	"workspaceFolder": "/workspace",
 	"customizations": {

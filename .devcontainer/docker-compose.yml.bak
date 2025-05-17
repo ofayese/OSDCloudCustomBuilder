@@ -1,0 +1,33 @@
+# Docker Compose for OSDCloudCustomBuilder dev container
+
+services:
+  osdcloudcustombuilder:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        POWERSHELL_VERSION: ${POWERSHELL_VERSION}
+        PESTER_VERSION: ${PESTER_VERSION}
+        PSSCRIPTANALYZER_VERSION: ${PSSCRIPTANALYZER_VERSION}
+        THREADJOB_VERSION: ${THREADJOB_VERSION}
+        OSD_VERSION: ${OSD_VERSION}
+        OSDCLOUD_VERSION: ${OSDCLOUD_VERSION}
+        MODULEBUILDER_VERSION: ${MODULEBUILDER_VERSION}
+        POWERSHELLPROTOOLS_VERSION: ${POWERSHELLPROTOOLS_VERSION}
+    container_name: osdcloud-powershell
+    volumes:
+      - ..:/workspace:cached
+      - osdcloud-modules:C:/Users/ContainerAdministrator/Documents/PowerShell/Modules
+      - osdcloud-temp:C:/Temp    environment:
+      - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+      - PSModulePath=C:/workspace/Modules;C:/Program Files/PowerShell/Modules;C:/Program Files/PowerShell/7/Modules;C:/Users/ContainerAdministrator/Documents/PowerShell/Modules
+    isolation: ${ISOLATION:-process}
+    security_opt:
+      - seccomp:unconfined
+      - credentialspec:Admin
+    platform: windows
+    mem_limit: ${CONTAINER_MEMORY:-4g}
+
+volumes:
+  osdcloud-modules:
+  osdcloud-temp:
