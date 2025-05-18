@@ -93,7 +93,7 @@ function Get-IdleCommand {
 }
 
 # Function to determine if image is a Windows container
-function Is-WindowsContainer {
+function Test-WindowsContainer {
     param([string]$Image)
     
     return $Image -like "*windows*" -or $Image -like "*nanoserver*" -or $Image -like "*dotnet*framework*"
@@ -142,7 +142,7 @@ foreach ($image in $dockerImages) {
     $idleCommand = Get-IdleCommand -Image $image
     
     # Set appropriate isolation flag based on platform and container type
-    $isolationFlag = if (($env:OS -eq 'Windows_NT' -or [System.Environment]::OSVersion.Platform -eq 'Win32NT') -and (Is-WindowsContainer -Image $image)) { 
+    $isolationFlag = if (($env:OS -eq 'Windows_NT' -or [System.Environment]::OSVersion.Platform -eq 'Win32NT') -and (Test-WindowsContainer -Image $image)) { 
         "--isolation=process" 
     } else { 
         "" 
