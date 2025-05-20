@@ -2,7 +2,16 @@
   "name": "PowerShell Module Dev",
   "build": {
     "dockerfile": "Dockerfile",
-    "context": ".."
+    "cacheFrom": [
+      "type=local,src=.buildkit-cache"
+    ],
+    "cacheTo": "type=local,dest=.buildkit-cache,mode=max"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/powershell:1": {
+      "version": "latest"
+    }
   },
   "customizations": {
     "vscode": {
@@ -31,12 +40,6 @@
       ]
     }
   },
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/devcontainers/features/powershell:1": {
-      "version": "latest"
-    }
-  },
   "mounts": [
     "source=osdccb-dev-volume,target=/shared,type=volume"
   ],
@@ -47,5 +50,15 @@
     "MCP_TOOLS_PATH": "/shared/mcp-tools"
   },
   "postCreateCommand": "pwsh -File .devcontainer/devsetup.ps1",
-  "remoteUser": "vscode"
+  "remoteUser": "vscode",
+  "runArgs": [
+    "--init",
+    "--cap-add=SYS_ADMIN",
+    "--security-opt",
+    "seccomp=unconfined",
+    "--volume",
+    "shared-volume:/shared"
+  ],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace"
 }

@@ -1,43 +1,44 @@
-# System
+# PowerShell
+*.ps1xml
+*.pssc
+*.nupkg
+*.log
+
+# Module artifacts
+/out/
+/publish/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Dev Containers
+.devcontainer/.buildkit-cache/
+*.tar
+*.img
+
+# OS
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-npm-debug.log*
-
-# Environment variables
-.env
-.env.*
-
-# Dependency directories
-node_modules/
-bower_components/
-
-# Compiled files
-dist/
-build/
-out/
-
-# IDEs and editors
-.vscode/
-.idea/
-*.sublime*
-
 # Python
 __pycache__/
-*.pyc
-*.pyo
-
-# Docker
-.dockerignore
-docker-compose.override.yml
+*.py[cod]
+*.egg-info/
 
 # Secrets
-.secrets/
+.env
+secrets.json
 *.key
 *.pem
 
-# DevContainer
-.devcontainer/*.local
-.devcontainer/.env
+# Git merge conflict files
+*.orig
+*.rej
+
+# Archives and backups
+*.zip
+*.7z
+*.bak
+*.swp
+*.swo

@@ -2,12 +2,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "\u25b6\ufe0f Debug PowerShell Script",
+      "name": "Run Pester Tests",
       "type": "PowerShell",
       "request": "launch",
       "script": "${workspaceFolder}/Run-Tests.ps1",
-      "cwd": "${workspaceFolder}",
-      "args": [],
+      "cwd": "${workspaceFolder}"
     }
   ]
 }

@@ -1,8 +1,12 @@
-FROM mcr.microsoft.com/powershell:latest
+# syntax=docker/dockerfile:1
 
-# Install necessary packages
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends \
+FROM mcr.microsoft.com/powershell/test-deps:lts-ubuntu-22.04
+
+# Install packages with BuildKit cache mounts
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && export DEBIAN_FRONTEND=noninteractive && \
+    apt-get install -y --no-install-recommends \
         git \
         curl \
         unzip \
@@ -11,40 +15,37 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         software-properties-common \
         python3 \
         python3-pip \
-        docker.io \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+        docker.io && \
+    true
 
-# Install PowerShell modules
-RUN pwsh -Command " \
-    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted; \
-    Install-Module -Name Pester -Force; \
-    Install-Module -Name PSScriptAnalyzer -Force; \
-    Install-Module -Name Az -Force; \
-    Install-Module -Name OSD -Force; \
-    Install-Module -Name WindowsAutoPilotIntune -Force"
+# Install PowerShell modules (batched with heredoc for clarity)
+RUN pwsh -Command @'
+    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+    Install-Module -Name Pester -Force
+    Install-Module -Name PSScriptAnalyzer -Force
+    Install-Module -Name Az -Force
+    Install-Module -Name OSD -Force
+    Install-Module -Name WindowsAutoPilotIntune -Force
+'@
 
-# Create workspace directory
+# Prepare working directory
 WORKDIR /workspace
 
-# Create a non-root user for better security
+# Create a secure non-root user with docker and sudo privileges
 ARG USERNAME=vscode
 ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+ARG USER_GID=${USER_UID}
 
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && apt-get update \
-    && apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
+RUN groupadd --gid ${USER_GID} ${USERNAME} && \
+    useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends sudo && \
+    echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} && \
+    chmod 0440 /etc/sudoers.d/${USERNAME} && \
+    usermod -aG docker ${USERNAME}
 
-# Add user to docker group
-RUN usermod -aG docker $USERNAME
+# Setup shared workspace directories with ownership
+RUN install -d -o ${USERNAME} -g ${USERNAME} /shared/bin /shared/ai-tools /shared/mcp-tools
 
-# Set up directory for tool integration
-RUN mkdir -p /shared/bin /shared/ai-tools /shared/mcp-tools \
-    && chown -R $USERNAME:$USERNAME /shared
-
-# Switch to the non-root user
-USER $USERNAME
+# Drop to non-root user
+USER ${USERNAME}
