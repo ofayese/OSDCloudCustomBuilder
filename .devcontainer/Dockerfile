@@ -18,15 +18,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         docker.io && \
     true
 
-# Install PowerShell modules (batched with heredoc for clarity)
-RUN pwsh -Command @'
-    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-    Install-Module -Name Pester -Force
-    Install-Module -Name PSScriptAnalyzer -Force
-    Install-Module -Name Az -Force
-    Install-Module -Name OSD -Force
-    Install-Module -Name WindowsAutoPilotIntune -Force
-'@
+# Install PowerShell modules (batched in a single command for clarity)
+RUN pwsh -Command "Set-PSRepository -Name PSGallery -InstallationPolicy Trusted; Install-Module -Name Pester -Force; Install-Module -Name PSScriptAnalyzer -Force; Install-Module -Name Az -Force; Install-Module -Name OSD -Force; Install-Module -Name WindowsAutoPilotIntune -Force"
 
 # Prepare working directory
 WORKDIR /workspace

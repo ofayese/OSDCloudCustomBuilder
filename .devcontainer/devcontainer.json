@@ -41,7 +41,7 @@
     }
   },
   "mounts": [
-    "source=osdccb-dev-volume,target=/shared,type=volume"
+    "source=wsl2-dev-volume,target=/shared,type=volume"
   ],
   "remoteEnv": {
     "PATH": "${containerEnv:PATH}:/shared/bin",
@@ -57,7 +57,7 @@
     "--security-opt",
     "seccomp=unconfined",
     "--volume",
-    "shared-volume:/shared"
+    "wsl2-dev-volume:/shared"
   ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace"
