@@ -8,6 +8,21 @@
     Copyright         = '(c) 2025 Modern Endpoint Management. All rights reserved.'
     Description       = 'A specialized PowerShell module for enhancing OSDCloud with custom Windows image integration and PowerShell 7 support. This module streamlines the creation of custom deployment ISOs with integrated PowerShell 7, optimized WIM files, and advanced logging capabilities. Ideal for enterprise deployment scenarios requiring customized OSDCloud solutions with modern PowerShell support.'
     PowerShellVersion = '5.1'
+
+    # Type and Format files to load
+    TypesToProcess = @('Types/OSDCloudCustomBuilder.types.ps1xml')
+    FormatsToProcess = @('Formats/OSDCloudCustomBuilder.format.ps1xml')
+
+    # Script module or binary module file associated with this manifest.
+    RequiredModules = @(
+        @{ ModuleName = 'InvokeBuild'; ModuleVersion = '5.8.0' }
+        @{ ModuleName = 'ModuleBuilder'; ModuleVersion = '2.0.0' }
+        @{ ModuleName = 'Pester'; ModuleVersion = '5.3.0' }
+        @{ ModuleName = 'OSD'; ModuleVersion = '23.5.2' }
+        @{ ModuleName = 'ThreadJob'; ModuleVersion = '2.0.0' }
+    )
+
+    # Functions to export
     FunctionsToExport = @(
         'ConvertTo-OSDCloudDocumentation'
         'Enable-OSDCloudTelemetry'
