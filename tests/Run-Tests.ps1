@@ -1,1 +1,1 @@
-Invoke-Pester -Path "$PSScriptRoot/tests" -Output Detailed
+Invoke-Pester -Path "$PSScriptRoot" -Output Detailed

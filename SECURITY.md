@@ -12,7 +12,7 @@
 We take the security of OSDCloudCustomBuilder seriously. If you believe you've found a security vulnerability, please follow these steps:
 
 1. **Do not disclose the vulnerability publicly**
-2. **Email us** at security@example.com with details about the issue
+2. **Email us** at security@yourorganization.com with details about the issue
 3. Allow time for us to respond and address the issue before any public disclosure
 4. We will acknowledge receipt within 48 hours and provide an estimated timeline for a fix
 

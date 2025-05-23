@@ -133,11 +133,11 @@ function Get-PowerShellEdition {
     Checks if the current PowerShell session is running with administrator privileges.
     Returns $true if running as administrator, $false otherwise.
 .EXAMPLE
-    $isAdmin = Test-IsAdministrator
+    $isAdmin = Test-IsAdmin
 .OUTPUTS
     [System.Boolean]
 #>
-function Test-IsAdministrator {
+function Test-IsAdmin {
     [CmdletBinding()]
     [OutputType([bool])]
     param ()
@@ -281,7 +281,7 @@ Export-ModuleMember -Function @(
     'Test-EnvironmentCompatibility',
     'Test-PowerShellVersion',
     'Get-PowerShellEdition',
-    'Test-IsAdministrator',
+    'Test-IsAdmin',
     'New-CustomException',
     'Invoke-WithRetry'
 )

@@ -45,7 +45,7 @@ an individual is representing the community in public spaces.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the project team at conduct@example.com. All complaints will be
+reported to the project team at conduct@yourorganization.com. All complaints will be
 reviewed and investigated promptly and fairly.
 
 ## Attribution

@@ -64,7 +64,7 @@ Output goes to `out/` directory.
 ### 🚀 Publish to Gallery
 
 ```powershell
-$env:PSGALLERY_API_KEY = 'your-key-here'
+$env:PSGALLERY_API_KEY = '$env:API_KEY_VARIABLE'
 tools\Publish-Module.ps1
 ```
 
