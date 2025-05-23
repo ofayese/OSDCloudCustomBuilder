@@ -1,8 +1,6 @@
-# Initialize-TestEnvironment.ps1
 # Sets up the test environment for OSDCloudCustomBuilder tests
 
 function Initialize-TestEnvironment {
-    [CmdletBinding()]
     param (
         [Parameter()]
         [switch]$SkipModuleImport,
@@ -12,7 +10,7 @@ function Initialize-TestEnvironment {
 
         [Parameter()]
         [string]$TestDataPath = "$PSScriptRoot\..\TestData"
-    )
+}
 
     # Set strict mode for tests
     Set-StrictMode -Version Latest

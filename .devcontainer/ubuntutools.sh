@@ -26,8 +26,8 @@ sudo apt install -y \
 # Optional: Install Python tools
 sudo apt install -y python3 python3-pip python3-venv
 
-# Add Microsoft repository for PowerShell
-curl -sSL https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb -o packages-microsoft-prod.deb
+# Add Microsoft repository for PowerShell (correct for Ubuntu 22.04)
+curl -sSL https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -o packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
 

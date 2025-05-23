@@ -9,6 +9,7 @@ $modules = @(
     @{ Name = "PSScriptAnalyzer"; Description = "A static code analysis tool that checks your PowerShell code for best practices and style guidelines." },
     @{ Name = "PowerShellGet"; Description = "Allows you to discover, install, update, and publish PowerShell packages." },
     @{ Name = "PSDepend"; Description = "A simple dependency handler for PowerShell, useful for managing module dependencies." },
+$modules = @(
     @{ Name = "InvokeBuild"; Description = "A build and task automation module for PowerShell, similar to make or rake." },
     @{ Name = "ModuleBuilder"; Description = "Helps in building and packaging PowerShell modules, making it easier to distribute your work." },
     @{ Name = "PSModuleDevelopment"; Description = "Provides tools to assist in the development of PowerShell modules, including templates and testing support." },

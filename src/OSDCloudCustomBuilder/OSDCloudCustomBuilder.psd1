@@ -1,104 +1,56 @@
 # Module manifest for OSDCloudCustomBuilder
 @{
     RootModule        = 'OSDCloudCustomBuilder.psm1'
-    ModuleVersion     = '0.3.1'
-    GUID              = 'e1e0a9c5-7b38-4b1a-9f9c-32743e2a6613'
-    Author            = 'Laolu Fayese'
+    ModuleVersion     = '0.3.0'
+    GUID              = '69bae5f0-45c0-4003-b0a3-fcf89f8dd6df'
+    Author            = 'Modern Endpoint Management'
     CompanyName       = 'Modern Endpoint Management'
-    Copyright         = '(c) 2025 Modern Endpoint Management. All rights reserved.'
-    Description       = 'A specialized PowerShell module for enhancing OSDCloud with custom Windows image integration and PowerShell 7 support. This module streamlines the creation of custom deployment ISOs with integrated PowerShell 7, optimized WIM files, and advanced logging capabilities. Ideal for enterprise deployment scenarios requiring customized OSDCloud solutions with modern PowerShell support.'
+    Copyright         = '(c) 2023 Modern Endpoint Management. All rights reserved.'
+    Description       = 'Custom PowerShell module for building and customizing OSDCloud WinPE media.'
     PowerShellVersion = '5.1'
 
-    # Type and Format files to load
-    TypesToProcess = @('Types/OSDCloudCustomBuilder.types.ps1xml')
-    FormatsToProcess = @('Formats/OSDCloudCustomBuilder.format.ps1xml')
+    # PowerShell Edition compatibility
+    CompatiblePSEditions = @('Desktop', 'Core')
 
-    # Script module or binary module file associated with this manifest.
-    RequiredModules = @(
-        @{ ModuleName = 'InvokeBuild'; ModuleVersion = '5.8.0' }
-        @{ ModuleName = 'ModuleBuilder'; ModuleVersion = '2.0.0' }
-        @{ ModuleName = 'Pester'; ModuleVersion = '5.3.0' }
-        @{ ModuleName = 'OSD'; ModuleVersion = '23.5.2' }
-        @{ ModuleName = 'ThreadJob'; ModuleVersion = '2.0.0' }
-    )
-
-    # Functions to export
+    # Functions to export (wildcard pattern, supports *)
     FunctionsToExport = @(
-        'ConvertTo-OSDCloudDocumentation'
-        'Enable-OSDCloudTelemetry'
-        'Get-PWsh7WrappedContent'
-        'Escape-Markdown'
-        'Export-ModuleMember'
-        'Get-TelemetryDefaults'
-        'New-CustomOSDCloudISO'
-        'Set-OSDCloudCustomBuilderConfig'
-        'Set-OSDCloudTelemetry'
-        'Update-CustomWimWithPwsh7'
-        'Update-CustomWimWithPwsh7Advanced'
-        'Test-ValidPowerShellVersion'
-        'Write-Log'
-        'Write-OSDCloudLog'
-        'Invoke-OSDCloudLogger'
-        'Test-EnvironmentCompatibility'
-        'Measure-OSDCloudOperation'
-        'Get-ModuleConfiguration'
-        'Update-ModuleConfiguration'
+        'New-OSDCloudCustomMedia',
+        'Add-OSDCloudCustomDriver',
+        'Add-OSDCloudCustomScript',
+        'Set-OSDCloudCustomSettings',
+        'Export-OSDCloudCustomISO',
+        'Test-OSDCloudCustomRequirements'
     )
+
+    # Cmdlets to export
     CmdletsToExport   = @()
+    # Variables to export - don't export any for security
     VariablesToExport = @()
-    AliasesToExport   = @(
-        'Add-CustomWimWithPwsh7',
-        'Customize-WinPEWithPowerShell7'
+    # Aliases to export
+    AliasesToExport   = @()
+
+    # List of modules that must be imported before this module
+    RequiredModules = @(
+        @{ ModuleName = 'OSD'; ModuleVersion = '23.5.2' }
     )
+
+    # Private data to pass to the module specified in RootModule/ModuleToProcess
     PrivateData       = @{
         PSData = @{
-            Tags         = @('OSDCloud', 'WinPE', 'Deployment', 'Windows', 'PowerShell7', 'ISO', 'WIM')
-            LicenseUri   = 'https://github.com/ofayese/OSDCloudCustomBuilder/blob/main/LICENSE'
-            ProjectUri   = 'https://github.com/ofayese/OSDCloudCustomBuilder'
-            ReleaseNotes = @'
-# Version 0.3.1
-- Improved test coverage with comprehensive test files
-- Enhanced error handling in PowerShell 7 wrapper functions
-- Added better null/empty content handling in Get-PWsh7WrappedContent
-- Improved module loading and dependency checking
-- Fixed test isolation issues to prevent test failures
-- Added additional logging options for PowerShell 7 scripts
-- Updated documentation with more examples and parameter descriptions
+            # Tags applied to this module for discoverability
+            Tags = @('OSDCloud', 'WinPE', 'Deployment', 'Windows', 'ImageCustomization')
 
-# Version 0.3.0
-- Added optional telemetry system to help identify issues in production environments
-- Added documentation generation from code comments with ConvertTo-OSDCloudDocumentation
-- Added example scripts that demonstrate new capabilities
-- Added Set-OSDCloudTelemetry for configuring telemetry options
-- Enhanced Measure-OSDCloudOperation with detailed process and system metrics
-- Added telemetry privacy controls and storage path configuration
-- Improved documentation with comprehensive examples and parameter descriptions
-- Added support for converting code comments to Markdown documentation
+            # Project's URL
+            ProjectUri = 'https://github.com/your-org/OSDCloudCustomBuilder'
 
-# Version 0.2.0
-- Added comprehensive error handling with try/catch blocks
-- Implemented centralized logging system with Write-OSDCloudLog and Invoke-OSDCloudLogger
-- Enhanced configuration management with OSDCloudConfig and Get-ModuleConfiguration
-- Added PowerShell 7 package verification with hash validation
-- Improved security with proper command escaping and TLS 1.2 enforcement
-- Added caching mechanism for PowerShell 7 packages
-- Enhanced parallel processing with Copy-FilesInParallel
-- Added configurable timeouts for mount, dismount, and download operations
-- Implemented telemetry with Measure-OSDCloudOperation
-- Added SupportsShouldProcess to system-modifying functions
-- Improved parameter validation with Test-ValidPowerShellVersion
-- Added thorough documentation and examples
-- Optimized complex functions by breaking them into smaller, more manageable components
-- Increased test coverage with additional Pester tests
-- Enhanced integration between OSDCloud and OSDCloudCustomBuilder
-- Improved memory management with explicit garbage collection
-- Added backward compatibility aliases for renamed functions
-- Renamed Customize-WinPEWithPowerShell7 to Update-WinPEWithPowerShell7 for better verb-noun consistency
-- Renamed Add-CustomWimWithPwsh7 to Update-CustomWimWithPwsh7 for better verb-noun consistency
+            # License URI
+            LicenseUri = 'https://github.com/your-org/OSDCloudCustomBuilder/blob/main/LICENSE'
 
-# Version 0.1.0
-- Initial release of OSDCloudCustomBuilder
-'@
+            # Release notes
+            ReleaseNotes = 'https://github.com/your-org/OSDCloudCustomBuilder/blob/main/CHANGELOG.md'
+
+            # Flag to indicate whether the module requires explicit user acceptance for install
+            RequireLicenseAcceptance = $false
         }
     }
 }

@@ -1,4 +1,4 @@
-<# 
+<#
 .SYNOPSIS
     Advanced PowerShell module for enhancing OSDCloud with custom Windows image integration and PowerShell 7 support.
 .DESCRIPTION
@@ -63,20 +63,20 @@ try {
     if (Test-Path -Path $sharedUtilitiesPath) {
         Import-Module -Name $sharedUtilitiesPath -Force -ErrorAction Stop
     }
-    
+
     # Define required modules
     $requiredModules = @{
         "ThreadJob" = @{ MinimumVersion = "2.0.0"; Required = $false }
     }
-    
+
     # Check environment compatibility
     $compatibility = Test-EnvironmentCompatibility -RequiredModules $requiredModules -MinimumPSVersion ([Version]'5.1')
-    
+
     # Display warnings for optional modules
     foreach ($warning in $compatibility.Warnings) {
         Write-Warning $warning
     }
-    
+
     # Throw error if environment is not compatible
     if (-not $compatibility.IsCompatible) {
         $errorMsg = "Environment is not compatible: $($compatibility.Issues -join '; ')"
@@ -120,8 +120,8 @@ function Initialize-ModuleLogging {
     [OutputType([void])]
     [CmdletBinding()]
     param()
-    
-    if ($script:EnableVerboseLogging) { 
+
+    if ($script:EnableVerboseLogging) {
         Write-Verbose 'Verbose logging enabled.'
     }
     $script:LoggerExists = $false
@@ -133,7 +133,7 @@ function Initialize-ModuleLogging {
     catch {
         Write-Verbose "OSDCloud logger not available, using standard logging"
     }
-    
+
     # Create a fallback logging function if needed
     if (-not $script:LoggerExists) {
         if (-not (Get-Command -Name Write-OSDCloudLog -ErrorAction SilentlyContinue)) {
@@ -150,10 +150,10 @@ function Initialize-ModuleLogging {
                     [Parameter()]
                     [System.Exception] $Exception
                 )
-                
+
                 $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 $logMessage = "[$timestamp] [$Level] [$Component] $Message"
-                
+
                 switch ($Level) {
                     'Info'    { Write-Host $logMessage }
                     'Warning' { Write-Warning $Message }
@@ -161,12 +161,12 @@ function Initialize-ModuleLogging {
                     'Debug'   { Write-Debug $logMessage }
                     default   { Write-Host $logMessage }
                 }
-                
+
                 # If an exception was provided, output additional details
                 if ($Exception) {
                     $exceptionMessage = "[$timestamp] [$Level] [$Component] Exception: $($Exception.Message)"
                     $stackTraceMessage = "[$timestamp] [$Level] [$Component] Stack Trace: $($Exception.StackTrace)"
-                    
+
                     switch ($Level) {
                         'Info'    { Write-Host $exceptionMessage; Write-Host $stackTraceMessage }
                         'Warning' { Write-Warning $exceptionMessage; Write-Warning $stackTraceMessage }
@@ -195,11 +195,11 @@ $requiredModules = @{
 
 foreach ($moduleName in $requiredModules.Keys) {
     $moduleInfo = $requiredModules[$moduleName]
-    $module = Get-Module -Name $moduleName -ListAvailable | 
-              Where-Object { $_.Version -ge $moduleInfo.MinimumVersion } | 
-              Sort-Object -Property Version -Descending | 
+    $module = Get-Module -Name $moduleName -ListAvailable |
+              Where-Object { $_.Version -ge $moduleInfo.MinimumVersion } |
+              Sort-Object -Property Version -Descending |
               Select-Object -First 1
-    
+
     if (-not $module) {
         if ($moduleInfo.Required) {
             $errorMsg = "Required module $moduleName (minimum version: $($moduleInfo.MinimumVersion)) not found. Please install it using: Install-Module -Name $moduleName -MinimumVersion $($moduleInfo.MinimumVersion) -Force"
@@ -258,3 +258,54 @@ else {
 Write-Verbose "OSDCloudCustomBuilder v$script:ModuleVersion loaded successfully."
 Write-Verbose "Use 'Get-Command -Module OSDCloudCustomBuilder' to see available commands."
 Write-Verbose "Use 'Get-Help <command-name> -Full' for detailed help on each command."
+
+#requires -Version 5.1
+#requires -Modules @{ ModuleName="OSD"; ModuleVersion="23.5.2" }
+
+# Module version - must match the .psd1 file
+$script:ModuleVersion = '0.3.0'
+
+# Force TLS 1.2 for all web requests in PowerShell 5.1 (not needed in PowerShell Core)
+if ($PSVersionTable.PSEdition -eq 'Desktop') {
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+}
+
+# Enable verbose logging by default
+$script:EnableVerboseLogging = $true
+
+#region Module Import Logic
+# Get all script files
+$Public = @(Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue)
+$Private = @(Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue)
+$Shared = @(Get-ChildItem -Path $PSScriptRoot\Shared\*.ps1 -ErrorAction SilentlyContinue)
+
+# Dot source files
+foreach ($ImportItem in @($Shared; $Private; $Public)) {
+    try {
+        . $ImportItem.FullName
+    }
+    catch {
+        Write-Error -Message "Failed to import function $($ImportItem.FullName): $_"
+    }
+}
+
+# Export public functions
+Export-ModuleMember -Function $Public.BaseName
+#endregion Module Import Logic
+
+# Module initialization code - runs when module is imported
+$script:ModuleRoot = $PSScriptRoot
+$script:ConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "config.json"
+
+# Initialize default configuration if needed
+if (-not (Test-Path -Path $script:ConfigPath)) {
+    $defaultConfig = @{
+        OrganizationName = "Default Organization"
+        LoggingEnabled = $true
+        LogLevel = "Info"
+        SchemaVersion = "1.0"
+    }
+    $defaultConfig | ConvertTo-Json | Out-File -FilePath $script:ConfigPath -Encoding utf8 -Force
+}
+
+Write-Verbose "OSDCloudCustomBuilder module version $script:ModuleVersion loaded"

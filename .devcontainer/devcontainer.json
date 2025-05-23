@@ -1,20 +1,61 @@
 {
   "name": "OSDCloud Dev",
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "Dockerfile",
+    "context": "."
   },
   "workspaceFolder": "/workspace",
   "mounts": [
     "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
   ],
   "remoteUser": "vscode",
-  "features": {},
   "customizations": {
     "vscode": {
+      "extensions": [
+        "ms-vscode.powershell",
+        "redhat.vscode-yaml",
+        "github.vscode-github-actions",
+        "eamodio.gitlens",
+        "oderwat.indent-rainbow",
+        "streetsidesoftware.code-spell-checker",
+        "aaron-bond.better-comments",
+        "pkief.material-icon-theme"
+      ],
       "settings": {
-        "terminal.integrated.defaultProfile.linux": "pwsh"
+        "terminal.integrated.defaultProfile.linux": "pwsh",
+        "powershell.powerShellDefaultVersion": "PowerShell",
+        "powershell.pester.useLegacyCodeLens": false,
+        "powershell.codeFormatting.preset": "OTBS",
+        "powershell.codeFormatting.alignPropertyValuePairs": true,
+        "powershell.codeFormatting.autoCorrectAliases": true,
+        "powershell.codeFormatting.useConstantStrings": true,
+        "powershell.startAutomatically": true,
+        "[powershell]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "ms-vscode.powershell"
+        },
+        "cSpell.words": [
+          "OSDCloud",
+          "AutoPilot",
+          "WinPE",
+          "PowerShell"
+        ],
+        "explorer.fileNesting.enabled": true,
+        "explorer.fileNesting.patterns": {
+          "*.ps1": "$(basename).tests.ps1",
+          "*.psd1": "$(basename).psm1",
+          "*.module.ts": "$(basename).module.*.ts"
+        }
       }
     }
   },
-  "postCreateCommand": "pwsh -NoProfile -Command 'Get-Module -ListAvailable'"
+  "postCreateCommand": "pwsh -File ./.devcontainer/devsetup.ps1",
+  "postStartCommand": "pwsh -Command \"Write-Host 'Container started - PowerShell environment ready'\"",
+  "waitFor": "postCreateCommand",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest",
+      "ppa": true
+    }
+  }
 }

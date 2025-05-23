@@ -1,0 +1,93 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PowerShell module caching
+        uses: actions/cache@v3
+        id: cacher
+        with:
+          path: "~/.local/share/powershell/Modules"
+          key: ${{ runner.os }}-PSModules-${{ hashFiles('**/requirements.psd1') }}
+          restore-keys: |
+            ${{ runner.os }}-PSModules-
+
+      - name: Install required PowerShell modules
+        if: steps.cacher.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSDepend -Force
+          Invoke-PSDepend -Path './requirements.psd1' -Install -Force
+
+      - name: Run tests
+        shell: pwsh
+        run: |
+          ./build.ps1
+          Import-Module Pester -MinimumVersion 5.0.0
+          Invoke-Pester ./tests -Output Detailed -PassThru -CodeCoverage ./out/OSDCloudCustomBuilder/**/*.ps1 -CodeCoverageOutputFile coverage.xml
+
+      - name: Upload test coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false
+
+  release:
+    name: Release
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install requirements
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSDepend, ModuleBuilder -Force
+          Invoke-PSDepend -Path './requirements.psd1' -Install -Force
+
+      - name: Build module
+        shell: pwsh
+        run: |
+          ./build.ps1
+
+      - name: Determine version
+        id: get_version
+        shell: pwsh
+        run: |
+          $manifest = Import-PowerShellDataFile -Path "./out/OSDCloudCustomBuilder/OSDCloudCustomBuilder.psd1"
+          $version = $manifest.ModuleVersion
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          name: Release v${{ steps.get_version.outputs.version }}
+          draft: false
+          prerelease: false
+          files: |
+            ./out/OSDCloudCustomBuilder/**
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
