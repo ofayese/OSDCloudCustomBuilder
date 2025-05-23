@@ -128,12 +128,18 @@ function Get-PowerShellEdition {
 
 <#
 .SYNOPSIS
-    Tests if the current PowerShell session is running as administrator.
+    Tests if the current PowerShell session is running with elevated privileges.
 .DESCRIPTION
-    Checks if the current PowerShell session is running with administrator privileges.
-    Returns $true if running as administrator, $false otherwise.
+    Checks if the current PowerShell session has administrator/root privileges:
+    - On Windows: Verifies membership in the Administrator role
+    - On Linux: Checks for root (UID 0) or effective sudo privileges
+    - On macOS: Checks for root (UID 0) or effective sudo privileges
+    Returns $true if running with elevated privileges, $false otherwise.
 .EXAMPLE
     $isAdmin = Test-IsAdmin
+    if ($isAdmin) {
+        Write-Host "Running with elevated privileges"
+    }
 .OUTPUTS
     [System.Boolean]
 #>
@@ -142,9 +148,66 @@ function Test-IsAdmin {
     [OutputType([bool])]
     param ()
     
-    $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
-    $principal = New-Object Security.Principal.WindowsPrincipal $currentUser
-    return $principal.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+    # Determine the platform
+    $isWindows = $true  # Default for PowerShell 5.1
+    $isLinux = $false
+    $isMacOS = $false
+    
+    if ($PSVersionTable.PSVersion.Major -ge 6) {
+        # PowerShell Core - use built-in variables
+        $isWindows = $IsWindows
+        $isLinux = $IsLinux
+        $isMacOS = $IsMacOS
+    }
+    
+    # Check for admin privileges based on platform
+    if ($isWindows) {
+        # Windows: Check for Administrator role
+        try {
+            $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
+            $principal = New-Object Security.Principal.WindowsPrincipal $currentUser
+            return $principal.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+        } catch {
+            Write-Verbose "Failed to determine administrator status: $_"
+            return $false
+        }
+    } elseif ($isLinux -or $isMacOS) {
+        # Linux/macOS: Check for root (UID 0) or sudo capability
+        
+        # First check effective UID
+        try {
+            # Use id command to get effective UID
+            $idOutput = Invoke-Expression 'id -u'
+            if ($idOutput -eq '0') {
+                return $true
+            }
+        } catch {
+            Write-Verbose "Failed to check user ID: $_"
+        }
+        
+        # Then check sudo capability
+        try {
+            # Create a temporary file to capture stderr
+            $tempFile = New-TemporaryFile
+            
+            # Try sudo with -n flag (non-interactive) to avoid password prompt
+            $sudoResult = Start-Process -FilePath "sudo" -ArgumentList "-n", "true" `
+                -NoNewWindow -Wait -RedirectStandardError $tempFile.FullName -PassThru
+            
+            # Check if sudo command was successful
+            $exitCode = $sudoResult.ExitCode
+            Remove-Item -Path $tempFile.FullName -Force
+            
+            return ($exitCode -eq 0)
+        } catch {
+            Write-Verbose "Failed to check sudo capability: $_"
+            return $false
+        }
+    } else {
+        # Unknown platform
+        Write-Warning "Unknown operating system platform. Cannot determine admin status."
+        return $false
+    }
 }
 
 #endregion Environment Functions
