@@ -44,10 +44,11 @@ function New-OSDCloudCustomMedia {
 
     begin {
         if (-not (Test-IsAdmin)) {
-            Write-LogMessage -Message "This function requires administrator privileges." -Level Fatal
+            Write-Error "This function requires administrator privileges."
+            throw "Administrator privileges required"
         }
 
-        Write-LogMessage -Message "Starting creation of custom OSDCloud media '$Name'" -Level Info
+        Write-Host "[$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))] [Info] Starting creation of custom OSDCloud media '$Name'" -ForegroundColor Cyan
     }
 
     process {
@@ -56,37 +57,42 @@ function New-OSDCloudCustomMedia {
             $mediaPath = Join-Path -Path $Path -ChildPath $Name
             if (-not (Test-Path -Path $mediaPath)) {
                 New-Item -Path $mediaPath -ItemType Directory -Force | Out-Null
-                Write-LogMessage -Message "Created directory: $mediaPath" -Level Debug
+                Write-Verbose "Created directory: $mediaPath"
             }
 
             # Create OSDCloud workspace using the standard module
-            Write-LogMessage -Message "Creating OSDCloud workspace..." -Level Info
+            Write-Host "[$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))] [Info] Creating OSDCloud workspace..." -ForegroundColor Cyan
             New-OSDCloudWorkspace -WorkspacePath $mediaPath
 
             # Apply branding if specified
             if ($BrandingLogo) {
-                Write-LogMessage -Message "Applying branding logo" -Level Info
-                # Placeholder for branding logic
-                Copy-Item -Path $BrandingLogo -Destination (Join-Path -Path $mediaPath -ChildPath "Media\Logo.png") -Force
+                Write-Host "[$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))] [Info] Applying branding logo" -ForegroundColor Cyan
+                # TODO: Implement branding logic
+                # Create Media directory if it doesn't exist
+                $mediaDir = Join-Path -Path $mediaPath -ChildPath "Media"
+                if (-not (Test-Path -Path $mediaDir)) {
+                    New-Item -Path $mediaDir -ItemType Directory -Force | Out-Null
+                }
+                Copy-Item -Path $BrandingLogo -Destination (Join-Path -Path $mediaDir -ChildPath "Logo.png") -Force
             }
 
             # Apply background color
-            Write-LogMessage -Message "Applying background color: $BackgroundColor" -Level Info
-            # Placeholder for background color logic
+            Write-Host "[$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))] [Info] Applying background color: $BackgroundColor" -ForegroundColor Cyan
+            # TODO: Implement background color logic
 
             # Add Windows version-specific customizations
-            Write-LogMessage -Message "Configuring for $WindowsVersion" -Level Info
-            # Placeholder for Windows version customization logic
+            Write-Host "[$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))] [Info] Configuring for $WindowsVersion" -ForegroundColor Cyan
+            # TODO: Implement Windows version customization logic
 
-            Write-LogMessage -Message "OSDCloud media creation completed successfully" -Level Info
+            Write-Host "[$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))] [Info] OSDCloud media creation completed successfully" -ForegroundColor Green
         }
         catch {
-            Write-LogMessage -Message "Failed to create OSDCloud media: $_" -Level Error
+            Write-Error "Failed to create OSDCloud media: $_"
             throw $_
         }
     }
 
     end {
-        Write-LogMessage -Message "Custom OSDCloud media creation completed" -Level Info
+        Write-Host "[$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))] [Info] Custom OSDCloud media creation completed" -ForegroundColor Green
     }
 }

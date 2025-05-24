@@ -5,7 +5,7 @@
     GUID              = '69bae5f0-45c0-4003-b0a3-fcf89f8dd6df'
     Author            = 'Modern Endpoint Management'
     CompanyName       = 'Modern Endpoint Management'
-    Copyright         = '(c) 2023 Modern Endpoint Management. All rights reserved.'
+    Copyright         = '(c) 2025 Modern Endpoint Management. All rights reserved.'
     Description       = 'Custom PowerShell module for building and customizing OSDCloud WinPE media.'
     PowerShellVersion = '5.1'
 
@@ -40,14 +40,14 @@
             # Tags applied to this module for discoverability
             Tags = @('OSDCloud', 'WinPE', 'Deployment', 'Windows', 'ImageCustomization')
 
-            # Project's URL
-            ProjectUri = 'https://github.com/your-org/OSDCloudCustomBuilder'
+            # Project's URL - Update with actual repository URL when available
+            # ProjectUri = 'https://github.com/your-org/OSDCloudCustomBuilder'
 
-            # License URI
-            LicenseUri = 'https://github.com/your-org/OSDCloudCustomBuilder/blob/main/LICENSE'
+            # License URI - Update with actual repository URL when available
+            # LicenseUri = 'https://github.com/your-org/OSDCloudCustomBuilder/blob/main/LICENSE'
 
-            # Release notes
-            ReleaseNotes = 'https://github.com/your-org/OSDCloudCustomBuilder/blob/main/CHANGELOG.md'
+            # Release notes - Update with actual repository URL when available
+            # ReleaseNotes = 'https://github.com/your-org/OSDCloudCustomBuilder/blob/main/CHANGELOG.md'
 
             # Flag to indicate whether the module requires explicit user acceptance for install
             RequireLicenseAcceptance = $false

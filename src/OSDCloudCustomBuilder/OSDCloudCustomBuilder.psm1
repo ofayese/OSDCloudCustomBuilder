@@ -108,9 +108,12 @@ catch {
 $script:PowerShell7ZipPath = Join-Path -Path (Split-Path -Parent $script:ModuleRoot) -ChildPath "OSDCloud\PowerShell-7.5.1-win-x64.zip"
 if ([System.IO.File]::Exists($script:PowerShell7ZipPath)) {
     Write-Verbose "PowerShell 7 package found at: $script:PowerShell7ZipPath"
+    $script:PowerShell7Available = $true
 }
 else {
-    Write-Warning "PowerShell 7 package not found at: $script:PowerShell7ZipPath"
+    Write-Verbose "PowerShell 7 package not found at: $script:PowerShell7ZipPath"
+    Write-Verbose "PowerShell 7 integration features will be limited. To enable full functionality, download PowerShell 7.5.1 and place the zip file at the expected location."
+    $script:PowerShell7Available = $false
 }
 
 # Check if running in PS7+ for faster methods
@@ -141,7 +144,7 @@ function Initialize-ModuleLogging {
     # Create a fallback logging function if needed
     if (-not $script:LoggerExists) {
         if (-not (Get-Command -Name Write-OSDCloudLog -ErrorAction SilentlyContinue)) {
-            function global:Write-OSDCloudLog {
+            function script:Write-OSDCloudLog {
                 [CmdletBinding()]
                 param(
                     [Parameter(Mandatory = $true, Position = 0)]
@@ -217,17 +220,9 @@ foreach ($moduleName in $requiredModules.Keys) {
     }
 }
 
-# Import Shared Functions first
-$SharedFunctions = @(Get-ChildItem -Path "$PSModuleRoot\Shared" -Filter "*.ps1" -Recurse -ErrorAction SilentlyContinue)
-foreach ($Shared in $SharedFunctions) {
-    try {
-        . $Shared.FullName
-        Write-Verbose "Imported shared function: $($Shared.BaseName)"
-    }
-    catch {
-        Write-Warning "Failed to import shared function $($Shared.FullName): $_"
-    }
-}
+# Import Shared Utilities Module (remove redundant .ps1 import)
+# The SharedUtilities.psm1 is already imported above for environment compatibility
+Write-Verbose "SharedUtilities module already imported for environment compatibility"
 
 # Import Private Functions
 $PrivateFunctions = @(Get-ChildItem -Path "$PSModuleRoot\Private" -Filter "*.ps1" -Recurse -ErrorAction SilentlyContinue)

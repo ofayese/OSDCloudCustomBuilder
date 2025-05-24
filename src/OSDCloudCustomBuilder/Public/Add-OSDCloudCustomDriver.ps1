@@ -46,6 +46,7 @@ function Add-OSDCloudCustomDriver {
         https://github.com/your-org/OSDCloudCustomBuilder
 
     #>
+    [OutputType([void])]
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory=$true,
