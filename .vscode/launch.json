@@ -2,32 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run Pester Tests",
-      "type": "PowerShell",
-      "request": "launch",
-      "script": "${workspaceFolder}/tests/Run-Tests.ps1",
-      "cwd": "${workspaceFolder}"
-    },
-    {
-      "name": "Debug Current File",
+      "name": "PowerShell Launch Script",
       "type": "PowerShell",
       "request": "launch",
       "script": "${file}",
-      "cwd": "${workspaceFolder}"
-    },
-    {
-      "name": "Build Module",
-      "type": "PowerShell",
-      "request": "launch",
-      "script": "${workspaceFolder}/build.ps1",
-      "cwd": "${workspaceFolder}"
-    },
-    {
-      "name": "Import Module (Debug)",
-      "type": "PowerShell",
-      "request": "launch",
-      "script": "Import-Module \"${workspaceFolder}/src/OSDCloudCustomBuilder/OSDCloudCustomBuilder.psd1\" -Force -Verbose",
-      "cwd": "${workspaceFolder}"
+      "args": [],
+      "cwd": "${file}"
     }
   ]
 }

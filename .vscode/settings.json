@@ -1,36 +1,10 @@
 {
-    "cSpell.words": [
-        "amazonwebservices",
-        "AWSCLI",
-        "azurecli",
-        "BSTR",
-        "Contoso",
-        "dism",
-        "dnsutils",
-        "dpkg",
-        "Fayese",
-        "iputils",
-        "MSWIM",
-        "ntdll",
-        "Olaolu",
-        "OSDCloud",
-        "PowerShell",
-        "Preinstallation",
-        "PSGALLERY",
-        "Pwsh",
-        "softprops",
-        "usermod",
-        "VARIABLENAME",
-        "venv"
-    ],
-    "editor.wordWrap": "on",
-    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
-    "editor.codeActions.triggerOnFocusChange": true,
-    "editor.experimentalEditContextEnabled": true,
-    "editor.smoothScrolling": true,
-    "powershell.codeFormatting.autoCorrectAliases": true,
-    "powershell.codeFormatting.useCorrectCasing": true,
-    "powershell.scriptAnalysis.enable": true,
-    "CodeGPT.apiKey": "CodeGPT Plus Beta",
-    "codium.codeCompletion.enable": true
+  "powershell.powerShellDefaultVersion": "Windows PowerShell (x64)",
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true
+  },
+  "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
