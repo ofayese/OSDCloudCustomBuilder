@@ -1,7 +1,7 @@
 # Module manifest for OSDCloudCustomBuilder
 @{
     RootModule        = 'OSDCloudCustomBuilder.psm1'
-    ModuleVersion     = '0.3.0'
+    ModuleVersion     = '0.3.1'
     GUID              = '69bae5f0-45c0-4003-b0a3-fcf89f8dd6df'
     Author            = 'Modern Endpoint Management'
     CompanyName       = 'Modern Endpoint Management'

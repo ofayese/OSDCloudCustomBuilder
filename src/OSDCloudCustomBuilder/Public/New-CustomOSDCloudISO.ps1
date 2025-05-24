@@ -1,6 +1,6 @@
-# Patched
 Set-StrictMode -Version Latest
-function New-CustomOSDCloudISO {
+
+function Export-OSDCloudCustomISO {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     param (
         [Parameter(HelpMessage = "PowerShell version to include (format: X.Y.Z or X.Y.Z-tag)")]
@@ -16,7 +16,7 @@ function New-CustomOSDCloudISO {
 
     begin {
         # Define local logger
-        function Write-Log($Message, $Level = "Info", $Component = "New-CustomOSDCloudISO") {
+        function Write-Log($Message, $Level = "Info", $Component = "Export-OSDCloudCustomISO") {
             if (Get-Command -Name Invoke-OSDCloudLogger -ErrorAction SilentlyContinue) {
                 Invoke-OSDCloudLogger -Message $Message -Level $Level -Component $Component
             } else {

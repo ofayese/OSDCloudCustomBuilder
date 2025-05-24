@@ -15,6 +15,10 @@
     Author: Laolu Fayese
     Copyright: (c) 2025 Modern Endpoint Management. All rights reserved.
 #>
+
+#requires -Version 5.1
+#requires -Modules @{ ModuleName="OSD"; ModuleVersion="23.5.2" }
+
 #region Module Setup
 # Get module version from manifest to ensure consistency
 $ManifestPath = Join-Path -Path $PSScriptRoot -ChildPath 'OSDCloudCustomBuilder.psd1'
@@ -213,6 +217,18 @@ foreach ($moduleName in $requiredModules.Keys) {
     }
 }
 
+# Import Shared Functions first
+$SharedFunctions = @(Get-ChildItem -Path "$PSModuleRoot\Shared" -Filter "*.ps1" -Recurse -ErrorAction SilentlyContinue)
+foreach ($Shared in $SharedFunctions) {
+    try {
+        . $Shared.FullName
+        Write-Verbose "Imported shared function: $($Shared.BaseName)"
+    }
+    catch {
+        Write-Warning "Failed to import shared function $($Shared.FullName): $_"
+    }
+}
+
 # Import Private Functions
 $PrivateFunctions = @(Get-ChildItem -Path "$PSModuleRoot\Private" -Filter "*.ps1" -Recurse -ErrorAction SilentlyContinue)
 foreach ($Private in $PrivateFunctions) {
@@ -254,47 +270,7 @@ else {
 }
 #endregion Function Import
 
-# Display module information
-Write-Verbose "OSDCloudCustomBuilder v$script:ModuleVersion loaded successfully."
-Write-Verbose "Use 'Get-Command -Module OSDCloudCustomBuilder' to see available commands."
-Write-Verbose "Use 'Get-Help <command-name> -Full' for detailed help on each command."
-
-#requires -Version 5.1
-#requires -Modules @{ ModuleName="OSD"; ModuleVersion="23.5.2" }
-
-# Module version - must match the .psd1 file
-$script:ModuleVersion = '0.3.0'
-
-# Force TLS 1.2 for all web requests in PowerShell 5.1 (not needed in PowerShell Core)
-if ($PSVersionTable.PSEdition -eq 'Desktop') {
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-}
-
-# Enable verbose logging by default
-$script:EnableVerboseLogging = $true
-
-#region Module Import Logic
-# Get all script files
-$Public = @(Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue)
-$Private = @(Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue)
-$Shared = @(Get-ChildItem -Path $PSScriptRoot\Shared\*.ps1 -ErrorAction SilentlyContinue)
-
-# Dot source files
-foreach ($ImportItem in @($Shared; $Private; $Public)) {
-    try {
-        . $ImportItem.FullName
-    }
-    catch {
-        Write-Error -Message "Failed to import function $($ImportItem.FullName): $_"
-    }
-}
-
-# Export public functions
-Export-ModuleMember -Function $Public.BaseName
-#endregion Module Import Logic
-
 # Module initialization code - runs when module is imported
-$script:ModuleRoot = $PSScriptRoot
 $script:ConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "config.json"
 
 # Initialize default configuration if needed
@@ -308,4 +284,8 @@ if (-not (Test-Path -Path $script:ConfigPath)) {
     $defaultConfig | ConvertTo-Json | Out-File -FilePath $script:ConfigPath -Encoding utf8 -Force
 }
 
-Write-Verbose "OSDCloudCustomBuilder module version $script:ModuleVersion loaded"
+# Display module information
+Write-Verbose "OSDCloudCustomBuilder v$script:ModuleVersion loaded successfully."
+Write-Verbose "Use 'Get-Command -Module OSDCloudCustomBuilder' to see available commands."
+Write-Verbose "Use 'Get-Help <command-name> -Full' for detailed help on each command."
+#endregion Module Setup
