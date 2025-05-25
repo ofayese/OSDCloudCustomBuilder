@@ -1,8 +1,27 @@
-<Project Sdk="Microsoft.PowerShell.Sdk/7.4.1">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>OSDCloudCustomBuilder</RootNamespace>
     <Description>Fully migrated PowerShell module: OSDCloudCustomBuilder</Description>
     <ModuleVersion>1.0.0</ModuleVersion>
     <PowerShellVersion>7.0</PowerShellVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.4.1" />
+    <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="*.psd1" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="*.psm1" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Public\*.ps1" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Private\*.ps1" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Shared\*.ps1" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Shared\*.psm1" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

@@ -12,9 +12,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Run PSScriptAnalyzer
+    - name: Install Required PowerShell Modules
       run: |
         pwsh -c "Install-Module PSScriptAnalyzer -Force -Scope CurrentUser"
+        pwsh -c "Install-Module Pester -Force -Scope CurrentUser"
+
+    - name: Run PSScriptAnalyzer
+      run: |
         pwsh -c "Invoke-ScriptAnalyzer -Path ./ -Recurse -Settings ./PSScriptAnalyzer.settings.psd1"
 
     - name: Run Tests
