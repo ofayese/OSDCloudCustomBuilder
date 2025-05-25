@@ -1,0 +1,63 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-File",
+                "./build.ps1",
+                "Build"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Test",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-File",
+                "./build.ps1",
+                "Test"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Analyze",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-File",
+                "./build.ps1",
+                "Analyze"
+            ]
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-File",
+                "./build.ps1",
+                "Clean"
+            ]
+        },
+        {
+            "label": "Build Documentation",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-File",
+                "./build.ps1",
+                "Docs"
+            ]
+        }
+    ]
+}

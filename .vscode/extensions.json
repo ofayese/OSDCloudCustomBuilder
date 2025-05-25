@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+        "ms-vscode.powershell",
+        "ironmansoftware.powershell-pro-tools",
+        "vscode-icons-team.vscode-icons",
+        "eamodio.gitlens",
+        "streetsidesoftware.code-spell-checker",
+        "github.copilot",
+        "github.vscode-pull-request-github",
+        "redhat.vscode-yaml",
+        "davidanson.vscode-markdownlint",
+        "bierner.markdown-preview-github-styles"
+    ]
+}

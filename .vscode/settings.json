@@ -1,0 +1,18 @@
+{
+    "powershell.codeFormatting.preset": "OTBS",
+    "powershell.scriptAnalysis.enable": true,
+    "powershell.pester.useLegacyCodeLens": false,
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+        100
+    ],
+    "files.trimTrailingWhitespace": true,
+    "files.associations": {
+        "*.ps1xml": "xml",
+        "*.psd1": "powershell",
+        "*.psm1": "powershell"
+    },
+    "[powershell]": {
+        "editor.defaultFormatter": "ms-vscode.powershell"
+    }
+}

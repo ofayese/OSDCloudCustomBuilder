@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "PowerShell: Interactive Session",
+            "type": "PowerShell",
+            "request": "launch",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "PowerShell: Module Import",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "Import-Module ${workspaceFolder}/OSDCloudCustomBuilder.psd1 -Force; Write-Host 'Module imported' -ForegroundColor Green",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "PowerShell: Run Current File",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${file}",
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
