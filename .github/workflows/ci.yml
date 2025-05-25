@@ -12,9 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install PowerShell
-      uses: PowerShell/PowerShell@v1
-
     - name: Run PSScriptAnalyzer
       run: |
         pwsh -c "Install-Module PSScriptAnalyzer -Force -Scope CurrentUser"
