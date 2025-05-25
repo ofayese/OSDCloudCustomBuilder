@@ -94,5 +94,5 @@
     "remoteUser": "vscode",
     "workspaceFolder": "/workspaces/OSDCloudCustomBuilder",
     "shutdownAction": "stopContainer",
-    "initializeCommand": "mkdir -p ${localWorkspaceFolder}/.devcontainer/cache"
+    "initializeCommand": "powershell -Command \"New-Item -ItemType Directory -Force -Path '${localWorkspaceFolder}/.devcontainer/cache'\""
 }
