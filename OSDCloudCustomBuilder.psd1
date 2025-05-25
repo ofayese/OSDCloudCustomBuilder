@@ -1,5 +1,6 @@
 # Module manifest for OSDCloudCustomBuilder
 @{
+    FunctionsToExport = @('Add-OSDCloudCustomDriver', 'Add-OSDCloudCustomScript', 'Enable-OSDCloudTelemetry', 'Export-OSDCloudCustomISO', 'New-OSDCloudCustomMedia', 'Set-OSDCloudCustomSettings', 'Set-OSDCloudTelemetry', 'Test-OSDCloudCustomRequirements')
     RootModule        = 'OSDCloudCustomBuilder.psm1'
     ModuleVersion     = '1.0.0'
     GUID              = '69bae5f0-45c0-4003-b0a3-fcf89f8dd6df'
@@ -13,7 +14,6 @@
     CompatiblePSEditions = @('Desktop', 'Core')
 
     # Functions to export (wildcard pattern, supports *)
-    FunctionsToExport = @(
         'New-OSDCloudCustomMedia',
         'Add-OSDCloudCustomDriver',
         'Add-OSDCloudCustomScript',

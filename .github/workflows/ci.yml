@@ -1,18 +1,25 @@
 name: PowerShell Module CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Install PowerShell Modules
-      shell: pwsh
+    - uses: actions/checkout@v4
+
+    - name: Install PowerShell
+      uses: PowerShell/PowerShell@v1
+
+    - name: Run PSScriptAnalyzer
       run: |
-        Install-Module -Name Pester -Force -Scope CurrentUser
-        Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
-    - name: Run Pester Tests
-      shell: pwsh
+        pwsh -c "Install-Module PSScriptAnalyzer -Force -Scope CurrentUser"
+        pwsh -c "Invoke-ScriptAnalyzer -Path ./ -Recurse -Settings ./PSScriptAnalyzer.settings.psd1"
+
+    - name: Run Tests
       run: |
-        Invoke-Pester -Path ./tests -CodeCoverage ./src/OSDCloudCustomBuilder -CI
+        pwsh -c "Invoke-Pester -Path ./tests -Output Detailed"

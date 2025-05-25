@@ -258,10 +258,10 @@ else {
 
 # Export aliases if defined in manifest
 if ($Manifest -and $Manifest.AliasesToExport) {
-    Export-ModuleMember -Function $FunctionsToExport -Alias $Manifest.AliasesToExport
+    
 }
 else {
-    Export-ModuleMember -Function $FunctionsToExport
+    
 }
 #endregion Function Import
 
@@ -285,13 +285,13 @@ Write-Verbose "Use 'Get-Command -Module OSDCloudCustomBuilder' to see available 
 Write-Verbose "Use 'Get-Help <command-name> -Full' for detailed help on each command."
 #endregion Module Setup
 
-Export-ModuleMember -Function @(
+
     'Add-OSDCloudCustomDriver',
     'New-OSDCloudCustomMedia',
     'Set-OSDCloudTelemetry'
 )
 
-Export-ModuleMember -Function @(
+
     'Add-OSDCloudCustomDriver',
     'Add-OSDCloudCustomScript',
     'Enable-OSDCloudTelemetry',
@@ -304,3 +304,5 @@ Export-ModuleMember -Function @(
     'Update-CustomWimWithPwsh7',
     'Update-CustomWimWithPwsh7Advanced'
 )
+
+Export-ModuleMember -Function Add-OSDCloudCustomDriver, Add-OSDCloudCustomScript, Enable-OSDCloudTelemetry, Export-OSDCloudCustomISO, New-OSDCloudCustomMedia, Set-OSDCloudCustomSettings, Set-OSDCloudTelemetry, Test-OSDCloudCustomRequirements

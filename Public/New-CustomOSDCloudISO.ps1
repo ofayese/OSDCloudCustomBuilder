@@ -1,3 +1,18 @@
+<#
+.SYNOPSIS
+    Export-OSDCloudCustomISO - Brief summary of what the function does.
+
+.DESCRIPTION
+    Detailed description for Export-OSDCloudCustomISO. This should explain the purpose, usage, and examples.
+
+.EXAMPLE
+    PS> Export-OSDCloudCustomISO
+
+.NOTES
+    Author: YourName
+    Date: 1748138720.8589237
+#>
+
 Set-StrictMode -Version Latest
 
 function Export-OSDCloudCustomISO {

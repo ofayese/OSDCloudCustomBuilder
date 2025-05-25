@@ -1,3 +1,18 @@
+<#
+.SYNOPSIS
+    creates - Brief summary of what the function does.
+
+.DESCRIPTION
+    Detailed description for creates. This should explain the purpose, usage, and examples.
+
+.EXAMPLE
+    PS> creates
+
+.NOTES
+    Author: YourName
+    Date: 1748138720.8589237
+#>
+
 # Patched
 Set-StrictMode -Version Latest
 <# 

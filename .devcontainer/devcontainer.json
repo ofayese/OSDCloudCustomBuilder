@@ -1,13 +1,16 @@
 {
-  "name": "PowerShell DevContainer",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
-  "settings": {
-    "terminal.integrated.shell.linux": "/usr/bin/pwsh"
-  },
-  "extensions": [
-    "ms-vscode.powershell"
-  ],
-  "postCreateCommand": "pwsh -NoProfile -Command Install-Module Pester -Force -Scope CurrentUser"
+    "name": "PowerShell DevContainer",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/usr/bin/pwsh"
+            },
+            "extensions": [
+                "ms-vscode.powershell"
+            ]
+        }
+    }
 }

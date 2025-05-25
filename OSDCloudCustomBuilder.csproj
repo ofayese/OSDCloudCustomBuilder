@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.PowerShell.Sdk">
+  <PropertyGroup>
+    <RootNamespace>OSDCloudCustomBuilder</RootNamespace>
+    <Description>Fully migrated PowerShell module: OSDCloudCustomBuilder</Description>
+    <ModuleVersion>1.0.0</ModuleVersion>
+    <PowerShellVersion>7.0</PowerShellVersion>
+  </PropertyGroup>
+</Project>

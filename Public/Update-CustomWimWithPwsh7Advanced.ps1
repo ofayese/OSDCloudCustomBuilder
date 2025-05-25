@@ -1,5 +1,20 @@
 <#
 .SYNOPSIS
+    demonstrates - Brief summary of what the function does.
+
+.DESCRIPTION
+    Detailed description for demonstrates. This should explain the purpose, usage, and examples.
+
+.EXAMPLE
+    PS> demonstrates
+
+.NOTES
+    Author: YourName
+    Date: 1748138720.8589237
+#>
+
+<#
+.SYNOPSIS
     Updates a WIM file with PowerShell 7 integration using the new error handling and logging systems.
 .DESCRIPTION
     This function demonstrates how to properly implement standardized error handling and logging
