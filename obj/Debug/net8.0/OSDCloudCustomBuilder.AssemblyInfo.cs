@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Fully migrated PowerShell module: OSDCloudCustomBuilder")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+36482fbbc5a08059ed8419f077b6c706d5d0196e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0cf8683eeb8a2999fd00a6686f43b58605d7cbc3")]
 [assembly: System.Reflection.AssemblyProductAttribute("OSDCloudCustomBuilder")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OSDCloudCustomBuilder")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0")]
