@@ -1,0 +1,41 @@
+# DevContainer specific ignores
+
+# Cache directory (mounted volume)
+cache/
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/settings.json.bak
+.vscode/launch.json.bak
+.vscode/tasks.json.bak
+
+# Build artifacts that might be generated during setup
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# PowerShell temporary files
+*.ps1xml
+profile.ps1.tmp
+
+# Package manager files
+packages-microsoft-prod.deb
