@@ -1,5 +1,22 @@
 <#
 .SYNOPSIS
+    Add-OSDCloudCustomDriver - Performs a key function for OSDCloud customization.
+
+.DESCRIPTION
+    Detailed explanation for Add-OSDCloudCustomDriver. This function plays a role in OSDCloud automation and system prep workflows.
+
+.EXAMPLE
+    PS> Add-OSDCloudCustomDriver -Param1 Value1
+
+
+
+.NOTES
+    Author: OSDCloud Team
+    Date: 2025-05-26
+#>
+
+<#
+.SYNOPSIS
     Add-OSDCloudCustomDriver - Brief summary of what the function does.
 
 .DESCRIPTION

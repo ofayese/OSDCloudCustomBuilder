@@ -1,0 +1,26 @@
+
+# PowerShell
+*.ps1xml
+*.psd1
+*.psm1
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+
+# DevContainers
+.vscode/
+.devcontainer/
+.vs/
+.vscode-server/
+*.code-workspace
+
+# Tests
+TestResults/
+coverage/
+
+# Node
+node_modules/
+dist/

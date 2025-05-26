@@ -1,5 +1,22 @@
 <#
 .SYNOPSIS
+    Export-OSDCloudCustomISO - Performs a key function for OSDCloud customization.
+
+.DESCRIPTION
+    Detailed explanation for Export-OSDCloudCustomISO. This function plays a role in OSDCloud automation and system prep workflows.
+
+.EXAMPLE
+    PS> Export-OSDCloudCustomISO -Param1 Value1
+
+
+
+.NOTES
+    Author: OSDCloud Team
+    Date: 2025-05-26
+#>
+
+<#
+.SYNOPSIS
     Export-OSDCloudCustomISO - Brief summary of what the function does.
 
 .DESCRIPTION

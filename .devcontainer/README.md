@@ -43,7 +43,7 @@ This directory contains a comprehensive development container configuration for 
 ├── cache/                # Persistent cache directory
 └── README.md             # This file
 
-```
+```text
 
 ## 🔧 Configuration Details
 

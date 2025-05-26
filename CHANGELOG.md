@@ -1,10 +1,12 @@
 # Changelog
 
-## [1.0.0] - Initial Release
+All notable changes to this project will be documented here.
+
+## [1.0.0] - 2025-05-24
+
 ### Added
-- Migrated all module scripts, documentation, and structure.
-- Help comments for public functions.
-- Export-ModuleMember and FunctionsToExport configuration.
-- GitHub Actions CI workflow with PSScriptAnalyzer and Pester.
-- Markdown documentation for public functions.
-- Installation script for easy deployment.
+
+- Full function help documentation
+- CI workflow with Pester & ScriptAnalyzer
+- DevContainer with platform detection
+- `Invoke-Build.ps1` and versioning system

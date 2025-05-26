@@ -1,5 +1,22 @@
 <#
 .SYNOPSIS
+    Add-OSDCloudCustomScript - Performs a key function for OSDCloud customization.
+
+.DESCRIPTION
+    Detailed explanation for Add-OSDCloudCustomScript. This function plays a role in OSDCloud automation and system prep workflows.
+
+.EXAMPLE
+    PS> Add-OSDCloudCustomScript -Param1 Value1
+
+
+
+.NOTES
+    Author: OSDCloud Team
+    Date: 2025-05-26
+#>
+
+<#
+.SYNOPSIS
     Add-OSDCloudCustomScript - Brief summary of what the function does.
 
 .DESCRIPTION

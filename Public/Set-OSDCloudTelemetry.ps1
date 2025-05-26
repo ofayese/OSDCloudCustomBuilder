@@ -1,5 +1,22 @@
 <#
 .SYNOPSIS
+    Set-OSDCloudTelemetry - Performs a key function for OSDCloud customization.
+
+.DESCRIPTION
+    Detailed explanation for Set-OSDCloudTelemetry. This function plays a role in OSDCloud automation and system prep workflows.
+
+.EXAMPLE
+    PS> Set-OSDCloudTelemetry -Param1 Value1
+
+
+
+.NOTES
+    Author: OSDCloud Team
+    Date: 2025-05-26
+#>
+
+<#
+.SYNOPSIS
     Set-OSDCloudTelemetry - Brief summary of what the function does.
 
 .DESCRIPTION

@@ -7,11 +7,48 @@ set -e
 
 echo "🔧 Setting up OSDCloudCustomBuilder development environment..."
 
-# Set proper permissions for the workspace
-sudo chown -R vscode:vscode /workspaces/OSDCloudCustomBuilder
+# Source environment detection
+if [ -f ".devcontainer/environment-detection.sh" ]; then
+    echo "🔍 Loading environment detection..."
+    source .devcontainer/environment-detection.sh
+    detect_environment
+else
+    echo "⚠️  Environment detection script not found, using defaults..."
+    export CONTAINER_ENV="docker"
+    export HOST_OS="linux"
+    export WORKSPACE_TYPE="devcontainer"
+fi
+
+# Set proper permissions for the workspace (dynamic path)
+if [ "${WORKSPACE_TYPE}" = "devcontainer" ]; then
+    sudo chown -R vscode:vscode "/workspaces/${PWD##*/}" 2>/dev/null || sudo chown -R vscode:vscode /workspaces/OSDCloudCustomBuilder 2>/dev/null || true
+else
+    sudo chown -R vscode:vscode "${PWD}" 2>/dev/null || true
+fi
 
 # Navigate to workspace
 cd /workspaces/OSDCloudCustomBuilder
+
+# Configure Git based on environment
+echo "🔧 Configuring Git for environment..."
+case "${HOST_OS}" in
+    "windows")
+        git config --global core.autocrlf true
+        git config --global core.eol crlf
+        echo "  Git configured for Windows host"
+        ;;
+    "macos"|"linux")
+        git config --global core.autocrlf input
+        git config --global core.eol lf
+        echo "  Git configured for Unix host"
+        ;;
+    *)
+        git config --global core.autocrlf input
+        git config --global core.eol lf
+        echo "  Git configured with default Unix settings"
+        ;;
+esac
+git config --global init.defaultBranch main
 
 # Restore .NET dependencies
 if [ -f "OSDCloudCustomBuilder.csproj" ]; then

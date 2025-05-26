@@ -1,5 +1,23 @@
 <#
 .SYNOPSIS
+    Enable-OSDCloudTelemetry - Performs a key function for OSDCloud customization.
+
+.DESCRIPTION
+    Detailed explanation for Enable-OSDCloudTelemetry. This function plays a role in OSDCloud automation and system prep workflows.
+
+.EXAMPLE
+    PS> Enable-OSDCloudTelemetry -Param1 Value1
+
+.PARAMETER true
+    Description of `true` parameter.
+
+.NOTES
+    Author: OSDCloud Team
+    Date: 2025-05-26
+#>
+
+<#
+.SYNOPSIS
     Enable-OSDCloudTelemetry - Brief summary of what the function does.
 
 .DESCRIPTION

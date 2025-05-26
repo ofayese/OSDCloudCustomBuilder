@@ -1,41 +1,38 @@
-
 # OSDCloudCustomBuilder
 
-A PowerShell module for customizing OSDCloud deployments.
+![Build](https://github.com/your-org/OSDCloudCustomBuilder/actions/workflows/ci.yml/badge.svg)
+![PowerShell Gallery](https://img.shields.io/powershellgallery/v/OSDCloudCustomBuilder)
 
-## Development Setup
+A robust PowerShell module for automating and customizing OSDCloud media, drivers, telemetry, and deployment workflows.
 
-This project uses DevContainers to provide a consistent development environment. To get started:
-
-1. Install [Visual Studio Code](https://code.visualstudio.com/)
-2. Install the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
-3. Clone this repository
-4. Open the repository in VS Code
-5. When prompted, click "Reopen in Container"
-
-## Development Workflow
-
-- **Build the module**: `./build.ps1 Build`
-- **Run tests**: `./build.ps1 Test`
-- **Analyze code**: `./build.ps1 Analyze`
-- **Generate documentation**: `./build.ps1 Docs`
-
-## Project Structure
-
-- `Public/` - Public functions (exported)
-- `Private/` - Private functions (internal)
-- `Shared/` - Shared utilities
-- `tests/` - Pester tests
-- `docs/` - Documentation (generated)
-
-## Testing
-
-Tests are written using Pester 5. To run tests:
+## 🚀 Getting Started
 
 ```powershell
-./build.ps1 Test
+Install-Module -Name OSDCloudCustomBuilder -Scope CurrentUser -Force
+Import-Module OSDCloudCustomBuilder
 ```
 
-## Code Style
+## 📦 Features
 
-This project follows the OTBS (One True Brace Style) PowerShell coding style. Code formatting is enforced using PSScriptAnalyzer.
+- Driver & Script Injection
+- Media Customization
+- Configuration & Telemetry Management
+- Fully Pester-tested & CI/CD ready
+
+## 📖 Function Reference
+
+See [docs/functions](docs/functions) for detailed function documentation.
+
+## 🧪 Testing
+
+```powershell
+Invoke-Pester -Path ./tests
+```
+
+## 🛠️ Contributing
+
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
+
+## 📄 License
+
+MIT - See [LICENSE](LICENSE)

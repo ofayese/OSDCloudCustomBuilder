@@ -92,7 +92,7 @@
         "source=${localWorkspaceFolder}/.devcontainer/cache,target=/home/vscode/.cache,type=bind,consistency=cached"
     ],
     "remoteUser": "vscode",
-    "workspaceFolder": "/workspaces/OSDCloudCustomBuilder",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
     "shutdownAction": "stopContainer",
-    "initializeCommand": "powershell -Command \"New-Item -ItemType Directory -Force -Path '${localWorkspaceFolder}/.devcontainer/cache'\""
+    "initializeCommand": "bash -c 'mkdir -p \"${localWorkspaceFolder}/.devcontainer/cache\" 2>/dev/null || powershell -Command \"New-Item -ItemType Directory -Force -Path \\\"${localWorkspaceFolder}\\.devcontainer\\cache\\\"\" 2>/dev/null || true'"
 }
