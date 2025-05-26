@@ -33,15 +33,15 @@
 
 # Patched
 Set-StrictMode -Version Latest
-[OutputType([object])]
 function Enable-OSDCloudTelemetry {
-    [CmdletBinding(SupportsShouldProcess = "$true")]
+    [OutputType([object])]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [bool]"$Enable" = $true,
+        [bool]$Enable = $true,
         [ValidateSet('Basic', 'Standard', 'Detailed')]
         [string]$DetailLevel = 'Standard',
-        [string]"$StoragePath",
-        [bool]"$AllowRemoteUpload" = $false,
+        [string]$StoragePath,
+        [bool]$AllowRemoteUpload = $false,
         [string]$RemoteEndpoint
     )
 
@@ -54,19 +54,19 @@ function Enable-OSDCloudTelemetry {
     }
 
     function Get-TelemetryDefaults {
-        "$root" = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+        $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
         return @{
             DefaultPath = Join-Path -Path $root -ChildPath "Logs\Telemetry"
         }
     }
 
-    "$defaults" = Get-TelemetryDefaults
-    "$defaultPath" = $defaults.DefaultPath
-    "$config" = @{}
+    $defaults = Get-TelemetryDefaults
+    $defaultPath = $defaults.DefaultPath
+    $config = @{}
 
     try {
-        "$config" = if (Get-Command -Name Get-ModuleConfiguration -ErrorAction SilentlyContinue) {
-            "$cfg" = Get-ModuleConfiguration
+        $config = if (Get-Command -Name Get-ModuleConfiguration -ErrorAction SilentlyContinue) {
+            $cfg = Get-ModuleConfiguration
             if (-not $cfg.ContainsKey('Telemetry')) { $cfg['Telemetry'] = @{} }
             $cfg
         } else {
@@ -74,18 +74,18 @@ function Enable-OSDCloudTelemetry {
         }
     } catch {
         Write-Log "Failed to load existing config: $_" "Warning"
-        "$config" = @{ Telemetry = @{} }
+        $config = @{ Telemetry = @{} }
     }
 
-    "$telemetryConfig" = @{
+    $telemetryConfig = @{
         Enabled           = $Enable
         DetailLevel       = $DetailLevel
         AllowRemoteUpload = $AllowRemoteUpload
         StoragePath       = $StoragePath
     }
 
-    if (-not "$StoragePath") {
-        "$StoragePath" = $defaultPath
+    if (-not $StoragePath) {
+        $StoragePath = $defaultPath
         $telemetryConfig['StoragePath'] = $StoragePath
     }
 
@@ -117,8 +117,8 @@ function Enable-OSDCloudTelemetry {
         }
     }
 
-    foreach ("$k" in $telemetryConfig.Keys) {
-        "$config".Telemetry[$k] = $telemetryConfig[$k]
+    foreach ($k in $telemetryConfig.Keys) {
+        $config.Telemetry[$k] = $telemetryConfig[$k]
     }
 
     $config.Telemetry['LastConfigured'] = (Get-Date).ToString('o')

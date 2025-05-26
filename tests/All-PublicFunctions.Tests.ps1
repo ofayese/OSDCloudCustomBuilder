@@ -1,3 +1,6 @@
+# Import the module before testing
+Import-Module (Join-Path $PSScriptRoot '..\OSDCloudCustomBuilder.psd1') -Force
+
 Describe "Add-OSDCloudCustomDriver Tests" {
     It "Should run Add-OSDCloudCustomDriver without error" {
         { Add-OSDCloudCustomDriver } | Should -Not -Throw

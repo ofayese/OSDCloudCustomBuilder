@@ -1,3 +1,6 @@
+# Import the module before testing
+Import-Module (Join-Path $PSScriptRoot '..\OSDCloudCustomBuilder.psd1') -Force
+
 Describe "New-OSDCloudCustomMedia Tests" {
     BeforeEach {
         $TestPath = "$TestDrive\Media"

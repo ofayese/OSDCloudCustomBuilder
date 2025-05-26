@@ -10,7 +10,7 @@ $ErrorActionPreference = 'Stop'
 
 # Paths
 $ModuleName = 'OSDCloudCustomBuilder'
-$ModulePath = Join-Path $PSScriptRoot $ModuleName
+$ModulePath = $PSScriptRoot
 $ManifestPath = Join-Path $ModulePath "$ModuleName.psd1"
 $BuildSettings = Join-Path $ModulePath 'build.settings.ps1'
 

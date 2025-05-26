@@ -130,7 +130,8 @@ function Export-OSDCloudCustomISO {
                 if ($PSCmdlet.ShouldProcess($step.Desc)) {
                     Write-Log $step.Desc
                     if ($step.Params) {
-                        & $fn @step.Params
+                        $params = $step.Params
+                        & $fn @params
                     } else {
                         & $fn
                     }

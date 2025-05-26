@@ -25,8 +25,7 @@ $ManifestPath = Join-Path -Path $PSScriptRoot -ChildPath 'OSDCloudCustomBuilder.
 try {
     $Manifest = Import-PowerShellDataFile -Path $ManifestPath -ErrorAction Stop
     $script:ModuleVersion = $Manifest.ModuleVersion
-}
-catch {
+} catch {
     # Fallback version if manifest can't be read
     $script:ModuleVersion = "0.3.1"
     Write-Warning "Could not read module version from manifest: $_"
@@ -37,8 +36,7 @@ $PSModuleRoot = $PSScriptRoot
 if (-not $PSModuleRoot) {
     if ($ExecutionContext.SessionState.Module.PrivateData.PSPath) {
         $PSModuleRoot = Split-Path -Path $ExecutionContext.SessionState.Module.PrivateData.PSPath
-    }
-    else {
+    } else {
         $PSModuleRoot = $PWD.Path
         Write-Warning "Could not determine module root path, using current directory: $PSModuleRoot"
     }
@@ -51,8 +49,7 @@ if ($PSEdition -ne 'Core') {
     # Only needed for Windows PowerShell; PowerShell Core handles this automatically
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Write-Verbose "TLS 1.2 protocol enforced: $([Net.ServicePointManager]::SecurityProtocol)"
-}
-else {
+} else {
     Write-Verbose "Running on PowerShell Core - TLS configuration handled automatically"
 }
 
@@ -87,8 +84,7 @@ try {
         Write-Error $errorMsg
         throw $errorMsg
     }
-}
-catch {
+} catch {
     if ($_.Exception.Message -like "The term 'Test-EnvironmentCompatibility' is not recognized*") {
         # Fallback to basic PowerShell version check if Test-EnvironmentCompatibility is not available
         $requiredPSVersion = [Version]'5.1'
@@ -97,8 +93,7 @@ catch {
             Write-Error $errorMsg
             throw $errorMsg
         }
-    }
-    else {
+    } else {
         # Re-throw other errors
         throw
     }
@@ -109,8 +104,7 @@ $script:PowerShell7ZipPath = Join-Path -Path (Split-Path -Parent $script:ModuleR
 if ([System.IO.File]::Exists($script:PowerShell7ZipPath)) {
     Write-Verbose "PowerShell 7 package found at: $script:PowerShell7ZipPath"
     $script:PowerShell7Available = $true
-}
-else {
+} else {
     Write-Verbose "PowerShell 7 package not found at: $script:PowerShell7ZipPath"
     Write-Verbose "PowerShell 7 integration features will be limited. To enable full functionality, download PowerShell 7.5.1 and place the zip file at the expected location."
     $script:PowerShell7Available = $false
@@ -136,8 +130,7 @@ function Initialize-ModuleLogging {
         $loggerCommand = Get-Command -Name Invoke-OSDCloudLogger -ErrorAction Stop
         $script:LoggerExists = $true
         Write-Verbose "OSDCloud logger found: $($loggerCommand.Source)"
-    }
-    catch {
+    } catch {
         Write-Verbose "OSDCloud logger not available, using standard logging"
     }
 
@@ -162,11 +155,11 @@ function Initialize-ModuleLogging {
                 $logMessage = "[$timestamp] [$Level] [$Component] $Message"
 
                 switch ($Level) {
-                    'Info'    { Write-Host $logMessage }
+                    'Info' { Write-Host $logMessage }
                     'Warning' { Write-Warning $Message }
-                    'Error'   { Write-Error $Message }
-                    'Debug'   { Write-Debug $logMessage }
-                    default   { Write-Host $logMessage }
+                    'Error' { Write-Error $Message }
+                    'Debug' { Write-Debug $logMessage }
+                    default { Write-Host $logMessage }
                 }
 
                 # If an exception was provided, output additional details
@@ -175,11 +168,11 @@ function Initialize-ModuleLogging {
                     $stackTraceMessage = "[$timestamp] [$Level] [$Component] Stack Trace: $($Exception.StackTrace)"
 
                     switch ($Level) {
-                        'Info'    { Write-Host $exceptionMessage; Write-Host $stackTraceMessage }
+                        'Info' { Write-Host $exceptionMessage; Write-Host $stackTraceMessage }
                         'Warning' { Write-Warning $exceptionMessage; Write-Warning $stackTraceMessage }
-                        'Error'   { Write-Error $exceptionMessage; Write-Error $stackTraceMessage }
-                        'Debug'   { Write-Debug $exceptionMessage; Write-Debug $stackTraceMessage }
-                        default   { Write-Host $exceptionMessage; Write-Host $stackTraceMessage }
+                        'Error' { Write-Error $exceptionMessage; Write-Error $stackTraceMessage }
+                        'Debug' { Write-Debug $exceptionMessage; Write-Debug $stackTraceMessage }
+                        default { Write-Host $exceptionMessage; Write-Host $stackTraceMessage }
                     }
                 }
             }
@@ -194,18 +187,18 @@ Initialize-ModuleLogging
 # Check for required dependencies
 $requiredModules = @{
     "ThreadJob" = @{
-        Required = $false
+        Required       = $false
         MinimumVersion = "2.0.0"
-        Message = "ThreadJob module is recommended for improved parallel processing performance."
+        Message        = "ThreadJob module is recommended for improved parallel processing performance."
     }
 }
 
 foreach ($moduleName in $requiredModules.Keys) {
     $moduleInfo = $requiredModules[$moduleName]
     $module = Get-Module -Name $moduleName -ListAvailable |
-              Where-Object { $_.Version -ge $moduleInfo.MinimumVersion } |
-              Sort-Object -Property Version -Descending |
-              Select-Object -First 1
+    Where-Object { $_.Version -ge $moduleInfo.MinimumVersion } |
+    Sort-Object -Property Version -Descending |
+    Select-Object -First 1
 
     if (-not $module) {
         if ($moduleInfo.Required) {
@@ -230,8 +223,7 @@ foreach ($Private in $PrivateFunctions) {
     try {
         . $Private.FullName
         Write-Verbose "Imported private function: $($Private.BaseName)"
-    }
-    catch {
+    } catch {
         Write-Warning "Failed to import private function $($Private.FullName): $_"
     }
 }
@@ -242,8 +234,7 @@ foreach ($Public in $PublicFunctions) {
     try {
         . $Public.FullName
         Write-Verbose "Imported public function: $($Public.BaseName)"
-    }
-    catch {
+    } catch {
         Write-Warning "Failed to import public function $($Public.FullName): $_"
     }
 }
@@ -251,17 +242,15 @@ foreach ($Public in $PublicFunctions) {
 # Export public functions from manifest if available, otherwise export all public functions
 if ($Manifest -and $Manifest.FunctionsToExport) {
     $FunctionsToExport = $Manifest.FunctionsToExport
-}
-else {
+} else {
     $FunctionsToExport = $PublicFunctions.BaseName
 }
 
 # Export aliases if defined in manifest
 if ($Manifest -and $Manifest.AliasesToExport) {
-    
-}
-else {
-    
+
+} else {
+
 }
 #endregion Function Import
 
@@ -272,9 +261,9 @@ $script:ConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "config.json"
 if (-not (Test-Path -Path $script:ConfigPath)) {
     $defaultConfig = @{
         OrganizationName = "Default Organization"
-        LoggingEnabled = $true
-        LogLevel = "Info"
-        SchemaVersion = "1.0"
+        LoggingEnabled   = $true
+        LogLevel         = "Info"
+        SchemaVersion    = "1.0"
     }
     $defaultConfig | ConvertTo-Json | Out-File -FilePath $script:ConfigPath -Encoding utf8 -Force
 }
@@ -285,13 +274,8 @@ Write-Verbose "Use 'Get-Command -Module OSDCloudCustomBuilder' to see available 
 Write-Verbose "Use 'Get-Help <command-name> -Full' for detailed help on each command."
 #endregion Module Setup
 
-
-    'Add-OSDCloudCustomDriver',
-    'New-OSDCloudCustomMedia',
-    'Set-OSDCloudTelemetry'
-)
-
-
+# Export all functions defined in the manifest
+$FunctionsToExport = @(
     'Add-OSDCloudCustomDriver',
     'Add-OSDCloudCustomScript',
     'Enable-OSDCloudTelemetry',
@@ -305,4 +289,4 @@ Write-Verbose "Use 'Get-Help <command-name> -Full' for detailed help on each com
     'Update-CustomWimWithPwsh7Advanced'
 )
 
-Export-ModuleMember -Function Add-OSDCloudCustomDriver, Add-OSDCloudCustomScript, Enable-OSDCloudTelemetry, Export-OSDCloudCustomISO, New-OSDCloudCustomMedia, Set-OSDCloudCustomSettings, Set-OSDCloudTelemetry, Test-OSDCloudCustomRequirements
+Export-ModuleMember -Function $FunctionsToExport

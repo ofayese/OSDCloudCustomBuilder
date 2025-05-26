@@ -1,36 +1,3 @@
-<#
-.SYNOPSIS
-    Add-OSDCloudCustomDriver - Performs a key function for OSDCloud customization.
-
-.DESCRIPTION
-    Detailed explanation for Add-OSDCloudCustomDriver. This function plays a role in OSDCloud automation and system prep workflows.
-
-.EXAMPLE
-    PS> Add-OSDCloudCustomDriver -Param1 Value1
-
-
-
-.NOTES
-    Author: OSDCloud Team
-    Date: 2025-05-26
-#>
-
-<#
-.SYNOPSIS
-    Add-OSDCloudCustomDriver - Brief summary of what the function does.
-
-.DESCRIPTION
-    Detailed description for Add-OSDCloudCustomDriver. This should explain the purpose, usage, and examples.
-
-.EXAMPLE
-    PS> Add-OSDCloudCustomDriver
-
-.NOTES
-    Author: YourName
-    Date: 1748138720.8589237
-#>
-
-
 function Add-OSDCloudCustomDriver {
     <#
     .SYNOPSIS
@@ -81,19 +48,19 @@ function Add-OSDCloudCustomDriver {
     [OutputType([void])]
     [CmdletBinding(SupportsShouldProcess)]
     param(
-        [Parameter(Mandatory=$true,
-                  Position=0,
-                  ValueFromPipeline=$true,
-                  ValueFromPipelineByPropertyName=$true,
-                  HelpMessage="Path to the driver or driver directory")]
+        [Parameter(Mandatory = $true,
+            Position = 0,
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true,
+            HelpMessage = "Path to the driver or driver directory")]
         [ValidateNotNullOrEmpty()]
         [string]$DriverPath,
 
-        [Parameter(HelpMessage="Level of detail for driver cataloging")]
+        [Parameter(HelpMessage = "Level of detail for driver cataloging")]
         [ValidateSet('Basic', 'Standard', 'Advanced')]
         [string]$CatalogLevel = 'Standard',
 
-        [Parameter(HelpMessage="Force overwrite of existing drivers")]
+        [Parameter(HelpMessage = "Force overwrite of existing drivers")]
         [switch]$Force
     )    begin {
         $callerName = $MyInvocation.MyCommand.Name
@@ -123,8 +90,7 @@ function Add-OSDCloudCustomDriver {
                     throw "No driver (.inf) files found in specified path: $DriverPath"
                 }
             }
-        }
-        catch {
+        } catch {
             $errorMsg = $_
             if (Get-Command -Name Invoke-OSDCloudLogger -ErrorAction SilentlyContinue) {
                 Invoke-OSDCloudLogger -Message $errorMsg -Level Error -Component $callerName -Exception $_.Exception
@@ -181,13 +147,11 @@ function Add-OSDCloudCustomDriver {
                 $successMsg = "Successfully added driver from $DriverPath"
                 if (Get-Command -Name Invoke-OSDCloudLogger -ErrorAction SilentlyContinue) {
                     Invoke-OSDCloudLogger -Message $successMsg -Level Info -Component "Add-OSDCloudCustomDriver"
-                }
-                else {
+                } else {
                     Write-Verbose $successMsg
                 }
             }
-        }
-        catch {
+        } catch {
             $errorMsg = "Failed to add driver: $_"
             if (Get-Command -Name Invoke-OSDCloudLogger -ErrorAction SilentlyContinue) {
                 Invoke-OSDCloudLogger -Message $errorMsg -Level Error -Component "Add-OSDCloudCustomDriver" -Exception $_.Exception

@@ -1,39 +1,47 @@
 <#
 .SYNOPSIS
-    Add-OSDCloudCustomScript - Performs a key function for OSDCloud customization.
+    Adds custom PowerShell scripts to OSDCloud deployment media.
 
 .DESCRIPTION
-    Detailed explanation for Add-OSDCloudCustomScript. This function plays a role in OSDCloud automation and system prep workflows.
+    The Add-OSDCloudCustomScript function integrates custom PowerShell scripts into the OSDCloud
+    deployment process. Scripts can be executed at different phases of the deployment to customize
+    the installation experience, configure settings, or install additional software.
+
+.PARAMETER ScriptPath
+    The path to the PowerShell script file (.ps1) to be added to the deployment media.
+
+.PARAMETER ScriptType
+    Specifies when the script should be executed during deployment:
+    - Startup: During WinPE boot phase
+    - Setup: During Windows installation
+    - Customize: After Windows installation completes (Default)
+
+.PARAMETER Force
+    Forces overwrite of existing scripts without confirmation.
+
+.PARAMETER RunOrder
+    Numeric value (default: 50) that determines execution order when multiple scripts exist.
 
 .EXAMPLE
-    PS> Add-OSDCloudCustomScript -Param1 Value1
+    PS> Add-OSDCloudCustomScript -ScriptPath "C:\Scripts\CustomConfig.ps1"
 
+    Adds a custom configuration script to run after Windows installation.
 
+.EXAMPLE
+    PS> Add-OSDCloudCustomScript -ScriptPath "C:\Scripts\Setup.ps1" -ScriptType Setup -RunOrder 10
+
+    Adds a setup script to run during Windows installation with high priority.
 
 .NOTES
     Author: OSDCloud Team
     Date: 2025-05-26
-#>
-
-<#
-.SYNOPSIS
-    Add-OSDCloudCustomScript - Brief summary of what the function does.
-
-.DESCRIPTION
-    Detailed description for Add-OSDCloudCustomScript. This should explain the purpose, usage, and examples.
-
-.EXAMPLE
-    PS> Add-OSDCloudCustomScript
-
-.NOTES
-    Author: YourName
-    Date: 1748138720.8589237
+    Requires: PowerShell 5.1 or later
 #>
 
 function Add-OSDCloudCustomScript {
     [CmdletBinding(SupportsShouldProcess)]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$ScriptPath,
 
         [Parameter()]
@@ -113,10 +121,10 @@ catch {
 
                 # Create metadata file
                 $metadata = @{
-                    ScriptName = $scriptName
-                    ScriptType = $ScriptType
-                    RunOrder = $RunOrder
-                    DateAdded = (Get-Date).ToString('o')
+                    ScriptName   = $scriptName
+                    ScriptType   = $ScriptType
+                    RunOrder     = $RunOrder
+                    DateAdded    = (Get-Date).ToString('o')
                     OriginalPath = $ScriptPath
                 }
                 $metadataPath = $destinationPath + '.json'
@@ -126,13 +134,11 @@ catch {
                 $successMsg = "Successfully added script from $ScriptPath as $orderedScriptName"
                 if (Get-Command -Name Invoke-OSDCloudLogger -ErrorAction SilentlyContinue) {
                     Invoke-OSDCloudLogger -Message $successMsg -Level Info -Component "Add-OSDCloudCustomScript"
-                }
-                else {
+                } else {
                     Write-Verbose $successMsg
                 }
             }
-        }
-        catch {
+        } catch {
             $errorMsg = "Failed to add script: $_"
             if (Get-Command -Name Invoke-OSDCloudLogger -ErrorAction SilentlyContinue) {
                 Invoke-OSDCloudLogger -Message $errorMsg -Level Error -Component "Add-OSDCloudCustomScript" -Exception $_.Exception
