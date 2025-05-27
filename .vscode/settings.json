@@ -15,5 +15,5 @@
     "[powershell]": {
         "editor.defaultFormatter": "ms-vscode.powershell"
     },
-    "CodeGPT.apiKey": "CodeGPT Plus"
+    "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
