@@ -1,9 +1,31 @@
 # Import the module before testing
 Import-Module (Join-Path $PSScriptRoot '..\OSDCloudCustomBuilder.psd1') -Force
 
+# Import test helper modules
+Import-Module (Join-Path $PSScriptRoot 'TestHelpers\Admin-MockHelper.psm1') -Force
+Import-Module (Join-Path $PSScriptRoot 'TestHelpers\Interactive-MockHelper.psm1') -Force
+
+BeforeAll {
+    # Set up admin context mock
+    Set-TestAdminContext -IsAdmin $true
+
+    # Initialize the logger
+    Initialize-TestLogger
+}
+
 Describe "Add-OSDCloudCustomDriver Tests" {
+    BeforeEach {
+        # Set up mocked parameters
+        Set-MockedParameter -CommandName 'Add-OSDCloudCustomDriver' -Parameters @{
+            DriverPath = 'C:\TestDrivers'
+        }
+
+        # Mock file system
+        Mock-FileSystem -MockedDirectories @('C:\TestDrivers')
+    }
+
     It "Should run Add-OSDCloudCustomDriver without error" {
-        { Add-OSDCloudCustomDriver } | Should -Not -Throw
+        { Add-OSDCloudCustomDriver -DriverPath 'C:\TestDrivers' } | Should -Not -Throw
     }
 
     It "Should throw on invalid input (if applicable)" {

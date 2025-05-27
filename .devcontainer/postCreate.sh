@@ -142,10 +142,12 @@ function Invoke-FullTest {
 function Invoke-FullBuild {
     Write-Host \"🔨 Building OSDCloudCustomBuilder...\" -ForegroundColor Yellow
 
-    # .NET build
-    if (Test-Path './OSDCloudCustomBuilder.csproj') {
+    # .NET build - only if .cs source files exist
+    if ((Test-Path './OSDCloudCustomBuilder.csproj') -and (Get-ChildItem -Path . -Filter "*.cs" -Recurse)) {
         Write-Host \"\\n📦 Building .NET project...\"
         dotnet build --configuration Release
+    } else {
+        Write-Host \"\\n📦 Skipping .NET build (no .cs files found)...\"
     }
 
     # PowerShell module build

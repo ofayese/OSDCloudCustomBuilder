@@ -1,6 +1,6 @@
 # build.settings.ps1
 $ModuleName = "OSDCloudCustomBuilder"
-$SourcePath = "$PSScriptRoot\src"
+$SourcePath = $PSScriptRoot  # Now pointing to the root where the module files are
 $OutputPath = "$PSScriptRoot\output"
 
 # Auto-Versioning Configuration

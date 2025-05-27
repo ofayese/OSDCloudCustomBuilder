@@ -1,5 +1,5 @@
 # Multi-stage Dockerfile for OSDCloudCustomBuilder Development
-FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04 AS base
+FROM mcr.microsoft.com/devcontainers/base:dev-ubuntu-24.04 AS base
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive

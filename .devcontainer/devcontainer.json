@@ -1,9 +1,11 @@
 {
-    "name": "OSDCloudCustomBuilder DevContainer",
+    // See https://aka.ms/vscode-remote/devcontainer.json for format details.
+    "name": "OSDCloudCustomBuilder (.NET Core 8.0, including pwsh)",
     "build": {
         "dockerfile": "Dockerfile",
         "context": "."
     },
+    // Configure tool-specific properties.
     "features": {
         "ghcr.io/devcontainers/features/dotnet:2": {
             "version": "8.0",
@@ -60,33 +62,22 @@
                     }
                 ]
             },
+            // Streamlined extensions based on PowerShell repository best practices
             "extensions": [
                 "ms-vscode.powershell",
                 "ms-dotnettools.csharp",
-                "ms-dotnettools.vscode-dotnet-runtime",
-                "formulahendry.dotnet-test-explorer",
-                "jmrog.vscode-nuget-package-manager",
-                "ironmansoftware.powershell-pro-tools",
-                "vscode-icons-team.vscode-icons",
-                "eamodio.gitlens",
-                "streetsidesoftware.code-spell-checker",
-                "github.copilot",
-                "github.vscode-pull-request-github",
-                "redhat.vscode-yaml",
-                "ms-vscode.test-adapter-converter",
-                "hbenl.vscode-test-explorer",
-                "ryanluker.vscode-coverage-gutters",
-                "humao.rest-client",
                 "davidanson.vscode-markdownlint",
-                "yzhang.markdown-all-in-one",
-                "ms-vscode.vscode-json",
-                "tamasfe.even-better-toml",
-                "bradlc.vscode-tailwindcss"
+                "eamodio.gitlens",
+                "github.vscode-pull-request-github",
+                "streetsidesoftware.code-spell-checker"
             ]
         }
     },
+    // Use the existing postCreate script
     "postCreateCommand": "bash .devcontainer/postCreate.sh",
-    "postStartCommand": "pwsh -NoProfile -Command 'Write-Host \"🚀 OSDCloudCustomBuilder DevContainer Ready!\"; Get-Module -ListAvailable | Where-Object {$_.Name -match \"Pester|PSScriptAnalyzer|InvokeBuild\"} | Format-Table Name, Version'",
+    // Simplified startup message
+    "postStartCommand": "pwsh -NoProfile -Command 'Write-Host \"🚀 OSDCloudCustomBuilder DevContainer Ready!\"'",
+    // Essential mounts only
     "mounts": [
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
         "source=${localWorkspaceFolder}/.devcontainer/cache,target=/home/vscode/.cache,type=bind,consistency=cached"
