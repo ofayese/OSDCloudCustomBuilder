@@ -1,6 +1,6 @@
 param(
-    [string]$ModuleName = "MyNewModule",
-    [string]$Destination = "$PWD\MyNewModule"
+    [string]$ModuleName = "OSDCloudCustomBuilder",
+    [string]$Destination = "$PWD\OSDCloudCustomBuilder"
 )
 
 Write-Host "📁 Creating new module scaffold: $Destination"
