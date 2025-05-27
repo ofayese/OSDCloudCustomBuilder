@@ -1,16 +1,43 @@
 # Import the module before testing
-Import-Module (Join-Path $PSScriptRoot '..\OSDCloudCustomBuilder.psd1') -Force
+Import-Module (Join-Path $PSScriptRoot '..\OSDCloudCustomBuilder.psd1') -Force -ErrorAction Stop
 
 # Import test helper modules
-Import-Module (Join-Path $PSScriptRoot 'TestHelpers\Admin-MockHelper.psm1') -Force
-Import-Module (Join-Path $PSScriptRoot 'TestHelpers\Interactive-MockHelper.psm1') -Force
+Import-Module (Join-Path $PSScriptRoot 'TestHelpers\Admin-MockHelper.psm1') -Force -ErrorAction Stop
+Import-Module (Join-Path $PSScriptRoot 'TestHelpers\Interactive-MockHelper.psm1') -Force -ErrorAction Stop
 
 BeforeAll {
-    # Set up admin context mock
+    # Set up admin context mock - ensure this happens first
     Set-TestAdminContext -IsAdmin $true
 
-    # Initialize the logger
+    # Initialize the logger with proper setup
     Initialize-TestLogger
+
+    # Setup shared mock file system paths for tests
+    Initialize-MockFileSystem -MockedDirectories @(
+        'C:\TestDrivers',
+        'C:\TestScripts',
+        'C:\TestMedia',
+        'C:\TestWim'
+    ) -MockedFiles @(
+        'C:\TestWim\boot.wim',
+        'C:\TestScripts\script.ps1'
+    )
+
+    # Common mocks needed across tests
+    Mock -CommandName Invoke-OSDCloudLogger -ModuleName OSDCloudCustomBuilder
+
+    # Mock path validation function
+    Mock -CommandName Test-ValidPath -ModuleName OSDCloudCustomBuilder -MockWith {
+        param($Path)
+        # Return true for any non-empty path
+        return -not [string]::IsNullOrWhiteSpace($Path)
+    }
+
+    # Mock other common functions that may be called across tests
+    Mock -CommandName Initialize-OSDEnvironment -ModuleName OSDCloudCustomBuilder -MockWith {
+        # Return success
+        return $true
+    }
 }
 
 Describe "Add-OSDCloudCustomDriver Tests" {
@@ -20,16 +47,26 @@ Describe "Add-OSDCloudCustomDriver Tests" {
             DriverPath = 'C:\TestDrivers'
         }
 
-        # Mock file system
-        Mock-FileSystem -MockedDirectories @('C:\TestDrivers')
+        # Mock any specific functions called by Add-OSDCloudCustomDriver
+        Mock -CommandName Test-Path -ModuleName OSDCloudCustomBuilder -MockWith {
+            param($Path)
+            return $Path -eq 'C:\TestDrivers'
+        }
+
+        # Mock Copy-Item for driver files
+        Mock -CommandName Copy-Item -ModuleName OSDCloudCustomBuilder -MockWith {
+            # Return success
+            return $true
+        }
     }
 
     It "Should run Add-OSDCloudCustomDriver without error" {
         { Add-OSDCloudCustomDriver -DriverPath 'C:\TestDrivers' } | Should -Not -Throw
+        Should -Invoke -CommandName Test-Path -ModuleName OSDCloudCustomBuilder -Times 1
     }
 
-    It "Should throw on invalid input (if applicable)" {
-        { Add-OSDCloudCustomDriver -Path $null } | Should -Throw
+    It "Should throw on invalid input" {
+        { Add-OSDCloudCustomDriver -DriverPath '' } | Should -Throw
     }
 }
 

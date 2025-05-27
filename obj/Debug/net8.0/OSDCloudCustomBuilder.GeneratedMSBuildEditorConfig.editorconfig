@@ -1,42 +1,21 @@
-# MSBuild EditorConfig for OSDCloudCustomBuilder
-# This file is generated automatically by MSBuild and contains build properties
-# used by the editor and analysis tools
-
 is_global = true
-
-# Target Framework Configuration
 build_property.TargetFramework = net8.0
-build_property.TargetFrameworkIdentifier = .NETCoreApp
-build_property.TargetFrameworkVersion = 8.0
-
-# Platform Configuration
-build_property.TargetPlatformMinVersion = 7.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
-
-# SDK Configuration
-build_property.UsingMicrosoftNETSdkWeb = false
-build_property.EnableDefaultCompileItems = true
-build_property.EnableDefaultItems = true
-
-# Project Configuration
-build_property.ProjectTypeGuids =
+build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = OSDCloudCustomBuilder
-build_property.ProjectDir = $(MSBuildProjectDirectory)\
-build_property.EnableComHosting = false
-
-# Globalization Settings
-build_property.InvariantGlobalization = false
-build_property.NeutralLanguage = en-US
-
-# Assembly Configuration
-build_property.PlatformNeutralAssembly = false
-build_property.PublishSingleFile = false
-
-# Analysis Configuration
-build_property.EnforceExtendedAnalyzerRules = true
-build_property.AnalysisLevel = latest
-build_property.EnableNETAnalyzers = true
-
-# COM Interop Configuration
-build_property.EnableComHosting = false
-build_property.EnableGeneratedComInterfaceComImportInterop = false
+build_property.ProjectDir = H:\OSDCloudCustomBuilder\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 

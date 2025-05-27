@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="4" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-05-26" time="20:19:12">
+  <environment os-version="10.0.22631" cwd="H:\OSDCloudCustomBuilder" platform="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" user-domain="SYSTEKLENO" nunit-version="2.5.8.0" user="ofayese" machine-name="SYSTEKLENO" clr-version="9.0.4" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="13.776" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="H:\OSDCloudCustomBuilder\tests\New-OSDCloudCustomMedia.Integration.Tests.ps1" executed="True" result="Failure" success="False" time="12.6819" asserts="0" description="H:\OSDCloudCustomBuilder\tests\New-OSDCloudCustomMedia.Integration.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="New-OSDCloudCustomMedia Integration Tests" executed="True" result="Failure" success="False" time="11.8777" asserts="0" description="New-OSDCloudCustomMedia Integration Tests">
+            <results>
+              <test-case description="Should create WinPE media without error" name="New-OSDCloudCustomMedia Integration Tests.Should create WinPE media without error" time="3.6959" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>Expected no exception to be thrown, but an exception "This function requires administrator privileges." was thrown from H:\OSDCloudCustomBuilder\tests\New-OSDCloudCustomMedia.Integration.Tests.ps1:11 char:11
+    +         { New-OSDCloudCustomMedia -Path "$TestDrive\Media" } | Should …
+    +           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.</message>
+                  <stack-trace>at { New-OSDCloudCustomMedia -Path "$TestDrive\Media" } | Should -Not -Throw, H:\OSDCloudCustomBuilder\tests\New-OSDCloudCustomMedia.Integration.Tests.ps1:11
+at &lt;ScriptBlock&gt;, H:\OSDCloudCustomBuilder\tests\New-OSDCloudCustomMedia.Integration.Tests.ps1:11</stack-trace>
+                </failure>
+              </test-case>
+              <test-case description="Should throw when path is invalid" name="New-OSDCloudCustomMedia Integration Tests.Should throw when path is invalid" time="8.129" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="H:\OSDCloudCustomBuilder\tests\Test-StartOSDCloudBuild.Tests.ps1" executed="True" result="Success" success="True" time="0.3505" asserts="0" description="H:\OSDCloudCustomBuilder\tests\Test-StartOSDCloudBuild.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="OSDCloudCustomBuilder Functions" executed="True" result="Success" success="True" time="0.0297" asserts="0" description="OSDCloudCustomBuilder Functions">
+            <results>
+              <test-case description="Test-OSDCloudCustomRequirements should exist" name="OSDCloudCustomBuilder Functions.Test-OSDCloudCustomRequirements should exist" time="0.0149" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="New-OSDCloudCustomMedia should exist" name="OSDCloudCustomBuilder Functions.New-OSDCloudCustomMedia should exist" time="0.0085" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

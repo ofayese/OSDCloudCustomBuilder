@@ -1,8 +1,4 @@
 # build.ps1 - Entry point to build module
-$ErrorActionPreference = 'Stop'
-
-Import-Module "$PSScriptRoot\OSDCloudCustomBuilder.psd1" -Force
-Write-Host "Building OSDCloudCustomBuilder module..."
 
 # Process command-line arguments
 param(
@@ -10,6 +6,11 @@ param(
     [ValidateSet('Build', 'Test', 'Analyze', 'Clean', 'Docs')]
     [string]$Task = 'Build'
 )
+
+$ErrorActionPreference = 'Stop'
+
+Import-Module "$PSScriptRoot\OSDCloudCustomBuilder.psd1" -Force
+Write-Host "Building OSDCloudCustomBuilder module..."
 
 # Determine what to do based on the task
 switch ($Task) {
