@@ -1,5 +1,5 @@
 # Import the module before testing
-Import-Module (Join-Path $PSScriptRoot '..\OSDCloudCustomBuilder.psd1') -Force
+Import-Module (Join-Path $PSScriptRoot '..\OSDCloudCustomBuilder.psd1') -Force -ErrorAction Stop
 
 # Import test helper modules
 Import-Module (Join-Path $PSScriptRoot 'TestHelpers\Admin-MockHelper.psm1') -Force
@@ -12,8 +12,8 @@ BeforeAll {
     # Initialize the logger properly with module context
     Initialize-TestLogger
 
-    # Define test paths that will be used in multiple tests
-    $script:TestMediaPath = "TestDrive:\Media"
+    # Define test paths that will be used in multiple tests - use an actual path
+    $script:TestMediaPath = "C:\TestMedia"
     $script:TestName = "TestMedia"
 
     # Initialize mock file system with our test paths
@@ -60,16 +60,16 @@ Describe "New-OSDCloudCustomMedia Tests" {
             # Return a mock directory or file object as appropriate
             if ($ItemType -eq 'Directory') {
                 return [PSCustomObject]@{
-                    PSPath = "Microsoft.PowerShell.Core\FileSystem::$Path"
-                    FullName = $Path
-                    Exists = $true
+                    PSPath        = "Microsoft.PowerShell.Core\FileSystem::$Path"
+                    FullName      = $Path
+                    Exists        = $true
                     PSIsContainer = $true
                 }
             } else {
                 return [PSCustomObject]@{
-                    PSPath = "Microsoft.PowerShell.Core\FileSystem::$Path"
-                    FullName = $Path
-                    Exists = $true
+                    PSPath        = "Microsoft.PowerShell.Core\FileSystem::$Path"
+                    FullName      = $Path
+                    Exists        = $true
                     PSIsContainer = $false
                 }
             }
@@ -83,10 +83,22 @@ Describe "New-OSDCloudCustomMedia Tests" {
     }
 
     It "Should create media in valid path" {
-        { New-OSDCloudCustomMedia -Name 'TestMedia' -Path $TestPath } | Should -Not -Throw
+        # Define valid parameters
+        $validParams = @{
+            Name = $script:TestName
+            Path = $script:TestMediaPath
+        }
+
+        # Debug parameter values
+        Write-Host "DEBUG: TestName = $($script:TestName)" -ForegroundColor Cyan
+        Write-Host "DEBUG: TestMediaPath = $($script:TestMediaPath)" -ForegroundColor Cyan
+
+        # Test with direct parameters instead of splatting
+        { New-OSDCloudCustomMedia -Name $script:TestName -Path $script:TestMediaPath } | Should -Not -Throw
     }
 
     It "Should fail on invalid path" {
-        { New-OSDCloudCustomMedia -Path '' } | Should -Throw
+        # Test with invalid empty path parameter
+        { New-OSDCloudCustomMedia -Name 'TestMedia' -Path '' } | Should -Throw
     }
 }
