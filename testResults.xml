@@ -1,33 +1,185 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="4" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-05-26" time="20:19:12">
-  <environment os-version="10.0.22631" cwd="H:\OSDCloudCustomBuilder" platform="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" user-domain="SYSTEKLENO" nunit-version="2.5.8.0" user="ofayese" machine-name="SYSTEKLENO" clr-version="9.0.4" />
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="22" errors="0" failures="22" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-05-26" time="22:12:54">
+  <environment user-domain="SYSTEKLENO" user="ofayese" os-version="10.0.22631" machine-name="SYSTEKLENO" platform="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" cwd="H:\OSDCloudCustomBuilder" nunit-version="2.5.8.0" clr-version="9.0.4" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="13.776" asserts="0" description="Pester">
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="192.6856" asserts="0" description="Pester">
     <results>
-      <test-suite type="TestFixture" name="H:\OSDCloudCustomBuilder\tests\New-OSDCloudCustomMedia.Integration.Tests.ps1" executed="True" result="Failure" success="False" time="12.6819" asserts="0" description="H:\OSDCloudCustomBuilder\tests\New-OSDCloudCustomMedia.Integration.Tests.ps1">
+      <test-suite type="TestFixture" name="H:\OSDCloudCustomBuilder\tests\All-PublicFunctions.Tests.ps1" executed="True" result="Failure" success="False" time="0.5039" asserts="0" description="H:\OSDCloudCustomBuilder\tests\All-PublicFunctions.Tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="New-OSDCloudCustomMedia Integration Tests" executed="True" result="Failure" success="False" time="11.8777" asserts="0" description="New-OSDCloudCustomMedia Integration Tests">
+          <test-suite type="TestFixture" name="Add-OSDCloudCustomDriver Tests" executed="True" result="Failure" success="False" time="0" asserts="0" description="Add-OSDCloudCustomDriver Tests">
             <results>
-              <test-case description="Should create WinPE media without error" name="New-OSDCloudCustomMedia Integration Tests.Should create WinPE media without error" time="3.6959" asserts="0" success="False" result="Failure" executed="True">
+              <test-case description="Should run Add-OSDCloudCustomDriver without error" name="Add-OSDCloudCustomDriver Tests.Should run Add-OSDCloudCustomDriver without error" time="0" asserts="0" success="False" result="Failure" executed="True">
                 <failure>
-                  <message>Expected no exception to be thrown, but an exception "This function requires administrator privileges." was thrown from H:\OSDCloudCustomBuilder\tests\New-OSDCloudCustomMedia.Integration.Tests.ps1:11 char:11
-    +         { New-OSDCloudCustomMedia -Path "$TestDrive\Media" } | Should …
-    +           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.</message>
-                  <stack-trace>at { New-OSDCloudCustomMedia -Path "$TestDrive\Media" } | Should -Not -Throw, H:\OSDCloudCustomBuilder\tests\New-OSDCloudCustomMedia.Integration.Tests.ps1:11
-at &lt;ScriptBlock&gt;, H:\OSDCloudCustomBuilder\tests\New-OSDCloudCustomMedia.Integration.Tests.ps1:11</stack-trace>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
                 </failure>
               </test-case>
-              <test-case description="Should throw when path is invalid" name="New-OSDCloudCustomMedia Integration Tests.Should throw when path is invalid" time="8.129" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should throw on invalid input" name="Add-OSDCloudCustomDriver Tests.Should throw on invalid input" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
             </results>
           </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="H:\OSDCloudCustomBuilder\tests\Test-StartOSDCloudBuild.Tests.ps1" executed="True" result="Success" success="True" time="0.3505" asserts="0" description="H:\OSDCloudCustomBuilder\tests\Test-StartOSDCloudBuild.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="OSDCloudCustomBuilder Functions" executed="True" result="Success" success="True" time="0.0297" asserts="0" description="OSDCloudCustomBuilder Functions">
+          <test-suite type="TestFixture" name="Add-OSDCloudCustomScript Tests" executed="True" result="Failure" success="False" time="0" asserts="0" description="Add-OSDCloudCustomScript Tests">
             <results>
-              <test-case description="Test-OSDCloudCustomRequirements should exist" name="OSDCloudCustomBuilder Functions.Test-OSDCloudCustomRequirements should exist" time="0.0149" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="New-OSDCloudCustomMedia should exist" name="OSDCloudCustomBuilder Functions.New-OSDCloudCustomMedia should exist" time="0.0085" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should run Add-OSDCloudCustomScript without error" name="Add-OSDCloudCustomScript Tests.Should run Add-OSDCloudCustomScript without error" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+              <test-case description="Should throw on invalid input (if applicable)" name="Add-OSDCloudCustomScript Tests.Should throw on invalid input (if applicable)" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Enable-OSDCloudTelemetry Tests" executed="True" result="Failure" success="False" time="0" asserts="0" description="Enable-OSDCloudTelemetry Tests">
+            <results>
+              <test-case description="Should run Enable-OSDCloudTelemetry without error" name="Enable-OSDCloudTelemetry Tests.Should run Enable-OSDCloudTelemetry without error" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+              <test-case description="Should throw on invalid input (if applicable)" name="Enable-OSDCloudTelemetry Tests.Should throw on invalid input (if applicable)" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Get-PWsh7WrappedContent Tests" executed="True" result="Failure" success="False" time="0" asserts="0" description="Get-PWsh7WrappedContent Tests">
+            <results>
+              <test-case description="Should run Get-PWsh7WrappedContent without error" name="Get-PWsh7WrappedContent Tests.Should run Get-PWsh7WrappedContent without error" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+              <test-case description="Should throw on invalid input (if applicable)" name="Get-PWsh7WrappedContent Tests.Should throw on invalid input (if applicable)" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="New-CustomOSDCloudISO Tests" executed="True" result="Failure" success="False" time="0" asserts="0" description="New-CustomOSDCloudISO Tests">
+            <results>
+              <test-case description="Should run New-CustomOSDCloudISO without error" name="New-CustomOSDCloudISO Tests.Should run New-CustomOSDCloudISO without error" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+              <test-case description="Should throw on invalid input (if applicable)" name="New-CustomOSDCloudISO Tests.Should throw on invalid input (if applicable)" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="New-OSDCloudCustomMedia Tests" executed="True" result="Failure" success="False" time="0" asserts="0" description="New-OSDCloudCustomMedia Tests">
+            <results>
+              <test-case description="Should run New-OSDCloudCustomMedia without error" name="New-OSDCloudCustomMedia Tests.Should run New-OSDCloudCustomMedia without error" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+              <test-case description="Should throw on invalid input (if applicable)" name="New-OSDCloudCustomMedia Tests.Should throw on invalid input (if applicable)" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Set-OSDCloudCustomSettings Tests" executed="True" result="Failure" success="False" time="0" asserts="0" description="Set-OSDCloudCustomSettings Tests">
+            <results>
+              <test-case description="Should run Set-OSDCloudCustomSettings without error" name="Set-OSDCloudCustomSettings Tests.Should run Set-OSDCloudCustomSettings without error" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+              <test-case description="Should throw on invalid input (if applicable)" name="Set-OSDCloudCustomSettings Tests.Should throw on invalid input (if applicable)" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Set-OSDCloudTelemetry Tests" executed="True" result="Failure" success="False" time="0" asserts="0" description="Set-OSDCloudTelemetry Tests">
+            <results>
+              <test-case description="Should run Set-OSDCloudTelemetry without error" name="Set-OSDCloudTelemetry Tests.Should run Set-OSDCloudTelemetry without error" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+              <test-case description="Should throw on invalid input (if applicable)" name="Set-OSDCloudTelemetry Tests.Should throw on invalid input (if applicable)" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Test-OSDCloudCustomRequirements Tests" executed="True" result="Failure" success="False" time="0" asserts="0" description="Test-OSDCloudCustomRequirements Tests">
+            <results>
+              <test-case description="Should run Test-OSDCloudCustomRequirements without error" name="Test-OSDCloudCustomRequirements Tests.Should run Test-OSDCloudCustomRequirements without error" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+              <test-case description="Should throw on invalid input (if applicable)" name="Test-OSDCloudCustomRequirements Tests.Should throw on invalid input (if applicable)" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Update-CustomWimWithPwsh7 Tests" executed="True" result="Failure" success="False" time="0" asserts="0" description="Update-CustomWimWithPwsh7 Tests">
+            <results>
+              <test-case description="Should run Update-CustomWimWithPwsh7 without error" name="Update-CustomWimWithPwsh7 Tests.Should run Update-CustomWimWithPwsh7 without error" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+              <test-case description="Should throw on invalid input (if applicable)" name="Update-CustomWimWithPwsh7 Tests.Should throw on invalid input (if applicable)" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Update-CustomWimWithPwsh7Advanced Tests" executed="True" result="Failure" success="False" time="0" asserts="0" description="Update-CustomWimWithPwsh7Advanced Tests">
+            <results>
+              <test-case description="Should run Update-CustomWimWithPwsh7Advanced without error" name="Update-CustomWimWithPwsh7Advanced Tests.Should run Update-CustomWimWithPwsh7Advanced without error" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
+              <test-case description="Should throw on invalid input (if applicable)" name="Update-CustomWimWithPwsh7Advanced Tests.Should throw on invalid input (if applicable)" time="0" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                  <stack-trace />
+                </failure>
+              </test-case>
             </results>
           </test-suite>
         </results>

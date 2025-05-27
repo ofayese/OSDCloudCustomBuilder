@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (05/27/2025 00:19:28)">
-  <sessioninfo id="this" start="1748305155007" dump="1748305168783" />
+<report name="Pester (05/27/2025 02:16:08)">
+  <sessioninfo id="this" start="1748311976178" dump="1748312168864" />
   <package name="OSDCloudCustomBuilder/Private">
     <class name="OSDCloudCustomBuilder/Private/Copy-CustomWimToWorkspace" sourcefilename="Private/Copy-CustomWimToWorkspace.ps1">
       <method name="Copy-CustomWimToWorkspace" desc="()" line="16">
@@ -172,14 +172,14 @@
     </class>
     <class name="OSDCloudCustomBuilder/Private/Test-IsAdmin" sourcefilename="Private/Test-IsAdmin.ps1">
       <method name="Test-IsAdmin" desc="()" line="6">
-        <counter type="INSTRUCTION" missed="0" covered="4" />
-        <counter type="LINE" missed="0" covered="3" />
-        <counter type="METHOD" missed="0" covered="1" />
+        <counter type="INSTRUCTION" missed="4" covered="0" />
+        <counter type="LINE" missed="3" covered="0" />
+        <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <counter type="INSTRUCTION" missed="0" covered="4" />
-      <counter type="LINE" missed="0" covered="3" />
-      <counter type="METHOD" missed="0" covered="1" />
-      <counter type="CLASS" missed="0" covered="1" />
+      <counter type="INSTRUCTION" missed="4" covered="0" />
+      <counter type="LINE" missed="3" covered="0" />
+      <counter type="METHOD" missed="1" covered="0" />
+      <counter type="CLASS" missed="1" covered="0" />
     </class>
     <class name="OSDCloudCustomBuilder/Private/Test-OSDCloudConfig" sourcefilename="Private/Test-OSDCloudConfig.ps1">
       <method name="Test-OSDCloudConfig" desc="()" line="29">
@@ -677,13 +677,13 @@
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
     <sourcefile name="Private/Test-IsAdmin.ps1">
-      <line nr="6" mi="0" ci="1" mb="0" cb="0" />
-      <line nr="7" mi="0" ci="2" mb="0" cb="0" />
-      <line nr="9" mi="0" ci="1" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="0" covered="4" />
-      <counter type="LINE" missed="0" covered="3" />
-      <counter type="METHOD" missed="0" covered="1" />
-      <counter type="CLASS" missed="0" covered="1" />
+      <line nr="6" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="7" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="9" mi="1" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="4" covered="0" />
+      <counter type="LINE" missed="3" covered="0" />
+      <counter type="METHOD" missed="1" covered="0" />
+      <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
     <sourcefile name="Private/Test-OSDCloudConfig.ps1">
       <line nr="29" mi="1" ci="0" mb="0" cb="0" />
@@ -921,10 +921,10 @@
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
-    <counter type="INSTRUCTION" missed="660" covered="4" />
-    <counter type="LINE" missed="569" covered="3" />
-    <counter type="METHOD" missed="25" covered="1" />
-    <counter type="CLASS" missed="17" covered="1" />
+    <counter type="INSTRUCTION" missed="664" covered="0" />
+    <counter type="LINE" missed="572" covered="0" />
+    <counter type="METHOD" missed="26" covered="0" />
+    <counter type="CLASS" missed="18" covered="0" />
   </package>
   <package name="OSDCloudCustomBuilder/Public">
     <class name="OSDCloudCustomBuilder/Public/Add-OSDCloudCustomDriver" sourcefilename="Public/Add-OSDCloudCustomDriver.ps1">
@@ -1024,12 +1024,12 @@
     </class>
     <class name="OSDCloudCustomBuilder/Public/New-OSDCloudCustomMedia" sourcefilename="Public/New-OSDCloudCustomMedia.ps1">
       <method name="New-OSDCloudCustomMedia" desc="()" line="66">
-        <counter type="INSTRUCTION" missed="40" covered="3" />
-        <counter type="LINE" missed="21" covered="2" />
+        <counter type="INSTRUCTION" missed="43" covered="0" />
+        <counter type="LINE" missed="23" covered="0" />
         <counter type="METHOD" missed="1" covered="0" />
       </method>
-      <counter type="INSTRUCTION" missed="40" covered="3" />
-      <counter type="LINE" missed="21" covered="2" />
+      <counter type="INSTRUCTION" missed="43" covered="0" />
+      <counter type="LINE" missed="23" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </class>
@@ -1375,8 +1375,8 @@
     </sourcefile>
     <sourcefile name="Public/New-OSDCloudCustomMedia.ps1">
       <line nr="66" mi="1" ci="0" mb="0" cb="0" />
-      <line nr="79" mi="0" ci="2" mb="0" cb="0" />
-      <line nr="80" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="79" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="80" mi="1" ci="0" mb="0" cb="0" />
       <line nr="81" mi="1" ci="0" mb="0" cb="0" />
       <line nr="84" mi="3" ci="0" mb="0" cb="0" />
       <line nr="90" mi="1" ci="0" mb="0" cb="0" />
@@ -1397,8 +1397,8 @@
       <line nr="123" mi="1" ci="0" mb="0" cb="0" />
       <line nr="124" mi="1" ci="0" mb="0" cb="0" />
       <line nr="129" mi="3" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="40" covered="3" />
-      <counter type="LINE" missed="21" covered="2" />
+      <counter type="INSTRUCTION" missed="43" covered="0" />
+      <counter type="LINE" missed="23" covered="0" />
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
@@ -1834,8 +1834,8 @@
       <counter type="METHOD" missed="1" covered="0" />
       <counter type="CLASS" missed="1" covered="0" />
     </sourcefile>
-    <counter type="INSTRUCTION" missed="813" covered="3" />
-    <counter type="LINE" missed="658" covered="2" />
+    <counter type="INSTRUCTION" missed="816" covered="0" />
+    <counter type="LINE" missed="660" covered="0" />
     <counter type="METHOD" missed="23" covered="0" />
     <counter type="CLASS" missed="11" covered="0" />
   </package>
@@ -1893,8 +1893,8 @@
     <counter type="METHOD" missed="3" covered="0" />
     <counter type="CLASS" missed="1" covered="0" />
   </package>
-  <counter type="INSTRUCTION" missed="1498" covered="7" />
-  <counter type="LINE" missed="1248" covered="5" />
-  <counter type="METHOD" missed="51" covered="1" />
-  <counter type="CLASS" missed="29" covered="1" />
+  <counter type="INSTRUCTION" missed="1505" covered="0" />
+  <counter type="LINE" missed="1253" covered="0" />
+  <counter type="METHOD" missed="52" covered="0" />
+  <counter type="CLASS" missed="30" covered="0" />
 </report>

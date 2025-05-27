@@ -12,16 +12,50 @@ BeforeAll {
     # Initialize the logger with proper setup
     Initialize-TestLogger
 
+    # Explicitly make Test-IsAdmin mock available in the OSDCloudCustomBuilder module
+    Mock -CommandName Test-IsAdmin -ModuleName OSDCloudCustomBuilder -MockWith {
+        return $true
+    } -Verifiable
+
+    # Also make it available in the global scope
+    Mock -CommandName Test-IsAdmin -MockWith {
+        return $true
+    } -Verifiable
+
     # Setup shared mock file system paths for tests
-    Initialize-MockFileSystem -MockedDirectories @(
-        'C:\TestDrivers',
-        'C:\TestScripts',
-        'C:\TestMedia',
-        'C:\TestWim'
-    ) -MockedFiles @(
-        'C:\TestWim\boot.wim',
-        'C:\TestScripts\script.ps1'
-    )
+    try {
+        # Define a function to initialize mock filesystem directly in this scope
+        function Initialize-FileSystemMocks {
+            [CmdletBinding()]
+            param(
+                [string[]]$MockedDirectories = @(),
+                [hashtable]$MockedFiles = @{}
+            )
+
+            # Create mocks for each directory
+            foreach ($dir in $MockedDirectories) {
+                Mock -CommandName Test-Path -ParameterFilter { $Path -eq $dir } -MockWith { return $true }
+            }
+
+            # Create mocks for each file
+            foreach ($file in $MockedFiles.Keys) {
+                Mock -CommandName Test-Path -ParameterFilter { $Path -eq $file } -MockWith { return $true }
+                Mock -CommandName Get-Content -ParameterFilter { $Path -eq $file } -MockWith { return $MockedFiles[$file] }
+            }
+        }
+
+        Initialize-FileSystemMocks -MockedDirectories @(
+            'C:\TestDrivers',
+            'C:\TestScripts',
+            'C:\TestMedia',
+            'C:\TestWim'
+        ) -MockedFiles @{
+            'C:\TestWim\boot.wim'       = 'WIM Content'
+            'C:\TestScripts\script.ps1' = 'Script Content'
+        }
+    } catch {
+        Write-Warning "Failed to initialize file system mocks: $_"
+    }
 
     # Common mocks needed across tests
     Mock -CommandName Invoke-OSDCloudLogger -ModuleName OSDCloudCustomBuilder

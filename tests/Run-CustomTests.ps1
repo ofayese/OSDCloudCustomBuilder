@@ -29,19 +29,17 @@ function Initialize-TestEnvironment {
         DriverPath = "C:\TestDrivers"
         ScriptPath = "C:\TestScripts"
         WimPath    = "C:\TestWim"
-    }
-
-    # Initialize mock file system
-    Initialize-MockFileSystem -MockedDirectories @(
+    }    # Initialize mock file system
+    Initialize-FileSystemMocks -MockedDirectories @(
         $script:TestPaths.MediaPath,
         $script:TestPaths.DriverPath,
         $script:TestPaths.ScriptPath,
         $script:TestPaths.WimPath
-    ) -MockedFiles @(
-        "$($script:TestPaths.WimPath)\boot.wim",
-        "$($script:TestPaths.WimPath)\install.wim",
-        "$($script:TestPaths.ScriptPath)\script.ps1"
-    )
+    ) -MockedFiles @{
+        "$($script:TestPaths.WimPath)\boot.wim"      = "Boot WIM Content"
+        "$($script:TestPaths.WimPath)\install.wim"   = "Install WIM Content"
+        "$($script:TestPaths.ScriptPath)\script.ps1" = "Script Content"
+    }
 
     # Define common test output function
     function script:Test-Assert {

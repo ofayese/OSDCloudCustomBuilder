@@ -17,14 +17,14 @@ BeforeAll {
     $script:TestName = "TestMedia"
 
     # Initialize mock file system with our test paths
-    Initialize-MockFileSystem -MockedDirectories @(
+    Initialize-FileSystemMocks -MockedDirectories @(
         $script:TestMediaPath,
         "C:\TestWim",
         "C:\TestDrivers"
-    ) -MockedFiles @(
-        "C:\TestWim\boot.wim",
-        "C:\TestWim\install.wim"
-    )
+    ) -MockedFiles @{
+        "C:\TestWim\boot.wim"    = "Boot WIM Content"
+        "C:\TestWim\install.wim" = "Install WIM Content"
+    }
 
     # Mock the Test-IsAdmin function directly to ensure it works
     # This is an extra safety measure in case Set-TestAdminContext doesn't work
@@ -35,11 +35,23 @@ BeforeAll {
 
 Describe "New-OSDCloudCustomMedia Tests" {
     BeforeEach {
+        # Set up mocked parameters - ensure TestName and TestMediaPath are set
+        if ([string]::IsNullOrEmpty($script:TestName)) {
+            $script:TestName = "TestMedia"
+        }
+
+        if ([string]::IsNullOrEmpty($script:TestMediaPath)) {
+            $script:TestMediaPath = "C:\TestMedia"
+        }
+
         # Set up mocked parameters
         Set-MockedParameter -CommandName 'New-OSDCloudCustomMedia' -Parameters @{
             Name = $script:TestName
             Path = $script:TestMediaPath
         }
+
+        # Ensure Test-IsAdmin is properly mocked for each test
+        Mock -CommandName Test-IsAdmin -ModuleName OSDCloudCustomBuilder -MockWith { return $true }
 
         # Additional mocks for specific functions used in New-OSDCloudCustomMedia
         Mock -CommandName Test-ValidPath -ModuleName OSDCloudCustomBuilder -MockWith {
