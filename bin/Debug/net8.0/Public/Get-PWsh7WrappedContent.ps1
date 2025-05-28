@@ -1,5 +1,23 @@
 <#
 .SYNOPSIS
+    Get-PWsh7WrappedContent - Performs a key function for OSDCloud customization.
+
+.DESCRIPTION
+    Detailed explanation for Get-PWsh7WrappedContent. This function plays a role in OSDCloud automation and system prep workflows.
+
+.EXAMPLE
+    PS> Get-PWsh7WrappedContent -Param1 Value1
+
+.PARAMETER true
+    Description of `true` parameter.
+
+.NOTES
+    Author: OSDCloud Team
+    Date: 2025-05-26
+#>
+
+<#
+.SYNOPSIS
     takes - Brief summary of what the function does.
 
 .DESCRIPTION

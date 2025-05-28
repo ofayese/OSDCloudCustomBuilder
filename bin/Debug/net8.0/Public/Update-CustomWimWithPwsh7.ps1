@@ -1,5 +1,23 @@
 <#
 .SYNOPSIS
+    Update-CustomWimWithPwsh7 - Performs a key function for OSDCloud customization.
+
+.DESCRIPTION
+    Detailed explanation for Update-CustomWimWithPwsh7. This function plays a role in OSDCloud automation and system prep workflows.
+
+.EXAMPLE
+    PS> Update-CustomWimWithPwsh7 -Param1 Value1
+
+.PARAMETER true
+    Description of `true` parameter.
+
+.NOTES
+    Author: OSDCloud Team
+    Date: 2025-05-26
+#>
+
+<#
+.SYNOPSIS
     creates - Brief summary of what the function does.
 
 .DESCRIPTION

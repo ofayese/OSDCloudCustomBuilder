@@ -1,5 +1,23 @@
 <#
 .SYNOPSIS
+    New-OSDCloudCustomMedia - Performs a key function for OSDCloud customization.
+
+.DESCRIPTION
+    Detailed explanation for New-OSDCloudCustomMedia. This function plays a role in OSDCloud automation and system prep workflows.
+
+.EXAMPLE
+    PS> New-OSDCloudCustomMedia -Param1 Value1
+
+.PARAMETER true
+    Description of `true` parameter.
+
+.NOTES
+    Author: OSDCloud Team
+    Date: 2025-05-26
+#>
+
+<#
+.SYNOPSIS
     New-OSDCloudCustomMedia - Brief summary of what the function does.
 
 .DESCRIPTION

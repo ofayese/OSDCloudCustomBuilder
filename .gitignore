@@ -24,3 +24,5 @@ coverage/
 # Node
 node_modules/
 dist/
+
+.fake
