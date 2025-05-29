@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LGGAMVf0QOo=",
+  "dgSpecHash": "eULrcqWccB0=",
   "success": true,
-  "projectFilePath": "H:\\OSDCloudCustomBuilder\\OSDCloudCustomBuilder.csproj",
+  "projectFilePath": "H:\\dockerdev\\OSDCloudCustomBuilder\\OSDCloudCustomBuilder.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ofayese\\.nuget\\packages\\jetbrains.annotations\\2021.2.0\\jetbrains.annotations.2021.2.0.nupkg.sha512",
     "C:\\Users\\ofayese\\.nuget\\packages\\json.more.net\\1.9.3\\json.more.net.1.9.3.nupkg.sha512",

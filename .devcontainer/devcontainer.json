@@ -73,17 +73,16 @@
             ]
         }
     },
-    // Use the existing postCreate script
-    "postCreateCommand": "bash .devcontainer/postCreate.sh",
-    // Simplified startup message
+    // Use the new postCreate script for dev modules
+    "postCreateCommand": "pwsh -NoProfile -File .devcontainer/setup-modules.ps1",
     "postStartCommand": "pwsh -NoProfile -Command 'Write-Host \"🚀 OSDCloudCustomBuilder DevContainer Ready!\"'",
-    // Essential mounts only
-    "mounts": [
-        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
-        "source=${localWorkspaceFolder}/.devcontainer/cache,target=/home/vscode/.cache,type=bind,consistency=cached"
+"mounts": [
+        "source=osdcloud-cache,target=/home/vscode/.cache,type=volume",
+        "source=osdcloud-output,target=/workspaces/OSDCloudCustomBuilder/Output,type=volume",
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
     ],
     "remoteUser": "vscode",
-    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "workspaceFolder": "/workspaces/OSDCloudCustomBuilder",
     "shutdownAction": "stopContainer",
-    "initializeCommand": "bash -c 'mkdir -p \"${localWorkspaceFolder}/.devcontainer/cache\" 2>/dev/null || powershell -Command \"New-Item -ItemType Directory -Force -Path \\\"${localWorkspaceFolder}\\.devcontainer\\cache\\\"\" 2>/dev/null || true'"
+    "initializeCommand": "powershell -NoProfile -Command \"docker volume create osdcloud-cache 2>$null; docker volume create osdcloud-output 2>$null\""
 }

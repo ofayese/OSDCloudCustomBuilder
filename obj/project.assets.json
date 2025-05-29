@@ -6570,11 +6570,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "H:\\OSDCloudCustomBuilder\\OSDCloudCustomBuilder.csproj",
+      "projectUniqueName": "H:\\dockerdev\\OSDCloudCustomBuilder\\OSDCloudCustomBuilder.csproj",
       "projectName": "OSDCloudCustomBuilder",
-      "projectPath": "H:\\OSDCloudCustomBuilder\\OSDCloudCustomBuilder.csproj",
+      "projectPath": "H:\\dockerdev\\OSDCloudCustomBuilder\\OSDCloudCustomBuilder.csproj",
       "packagesPath": "C:\\Users\\ofayese\\.nuget\\packages\\",
-      "outputPath": "H:\\OSDCloudCustomBuilder\\obj\\",
+      "outputPath": "H:\\dockerdev\\OSDCloudCustomBuilder\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

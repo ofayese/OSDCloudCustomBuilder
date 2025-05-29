@@ -51,40 +51,23 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
+# Create PowerShell module directory and set permissions
+RUN mkdir -p /home/$USERNAME/.local/share/powershell/Modules \
+    && chown -R $USERNAME:$USERNAME /home/$USERNAME/.local/share/powershell
+
 # Switch to the non-root user
 USER $USERNAME
 
 # Set PowerShell as the default shell for the user
 RUN echo 'exec pwsh -NoLogo' >> ~/.bashrc
 
-# Install PowerShell modules for development and testing
+# Install ONLY core PowerShell modules during build (for reliability)
 RUN pwsh -NoProfile -Command \
     'Set-PSRepository -Name PSGallery -InstallationPolicy Trusted; \
-    $modules = @( \
-        @{Name="Pester"; Version="5.5.0"}, \
-        @{Name="PSScriptAnalyzer"; Version="1.21.0"}, \
-        @{Name="PSReadLine"; Version="2.3.4"}, \
-        @{Name="PSFramework"; Version="1.7.270"}, \
-        @{Name="PSDepend"; Version="0.3.8"}, \
-        @{Name="InvokeBuild"; Version="5.10.4"}, \
-        @{Name="ModuleBuilder"; Version="2.0.0"}, \
-        @{Name="PSModuleDevelopment"; Version="2.2.9.94"}, \
-        @{Name="Plaster"; Version="1.1.3"}, \
-        @{Name="PowerShellGet"; Version="2.2.5"}, \
-        @{Name="PackageManagement"; Version="1.4.8.1"}, \
-        @{Name="PSRule"; Version="2.9.0"}, \
-        @{Name="PSRule.Rules.Azure"; Version="1.30.1"}, \
-        @{Name="OSD"; Version="23.5.26.1"}, \
-        @{Name="PowerShellProTools"; Version="5.8.6"} \
-    ); \
-    foreach ($module in $modules) { \
-        Write-Host "Installing $($module.Name) v$($module.Version)..."; \
-        try { \
-            Install-Module -Name $module.Name -RequiredVersion $module.Version -Scope AllUsers -Force -AllowClobber -ErrorAction Stop; \
-            Write-Host "✅ $($module.Name) installed successfully"; \
-        } catch { \
-            Write-Warning "❌ Failed to install $($module.Name): $_"; \
-        } \
+    $coreModules = @("PowerShellGet", "PackageManagement", "PSReadLine"); \
+    foreach ($module in $coreModules) { \
+    Write-Host "Installing core module: $module"; \
+    Install-Module -Name $module -Scope AllUsers -Force -AllowClobber; \
     }'
 
 # Set up .NET global tools
@@ -102,8 +85,36 @@ RUN git config --global init.defaultBranch main \
 WORKDIR /workspaces/OSDCloudCustomBuilder
 RUN sudo chown -R $USERNAME:$USERNAME /workspaces
 
-# Expose ports for potential web interfaces or debugging
-EXPOSE 8080 5000 5001
+# Create a utility script for finding available ports
+RUN echo '#!/usr/bin/env pwsh\n\
+    function Find-AvailablePorts {\n\
+    param([int]$StartPort = 3000, [int]$Count = 3)\n\
+    $availablePorts = @()\n\
+    $currentPort = $StartPort\n\
+    while ($availablePorts.Count -lt $Count) {\n\
+    $tcpListener = New-Object System.Net.Sockets.TcpListener $currentPort\n\
+    try {\n\
+    $tcpListener.Start()\n\
+    $availablePorts += $currentPort\n\
+    Write-Host "Port $currentPort is available"\n\
+    } catch {\n\
+    Write-Host "Port $currentPort is in use"\n\
+    } finally {\n\
+    $tcpListener.Stop()\n\
+    }\n\
+    $currentPort++\n\
+    }\n\
+    return $availablePorts\n\
+    }\n\
+    \n\
+    $ports = Find-AvailablePorts -StartPort 3000 -Count 3\n\
+    Write-Host "Available ports: $ports"\n\
+    return $ports\n\
+    ' | sudo tee /usr/local/bin/find-ports.ps1 > /dev/null \
+    && sudo chmod +x /usr/local/bin/find-ports.ps1
+
+# Expose ports - a range instead of specific ones
+EXPOSE 3000-5002 8080-8090
 
 # Set the default command
 CMD ["pwsh", "-NoLogo"]
