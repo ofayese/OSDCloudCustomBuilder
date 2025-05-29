@@ -2,6 +2,19 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Start Containers",
+            "type": "shell",
+            "command": "docker-compose up -d",
+            "problemMatcher": []
+        },
+        {
+            "label": "Launch Jupyter and Open Tabs",
+            "type": "shell",
+            "command": "bash .vscode/startup.sh",
+            "problemMatcher": [],
+            "isBackground": true
+        },
+        {
             "label": "Build",
             "type": "shell",
             "command": "pwsh",
@@ -30,6 +43,15 @@
             }
         },
         {
+            "label": "Run Endpoint Tests",
+            "type": "shell",
+            "command": "./test_endpoints.sh",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
             "label": "Analyze",
             "type": "shell",
             "command": "pwsh",
@@ -37,6 +59,16 @@
                 "-File",
                 "./build.ps1",
                 "Analyze"
+            ]
+        },
+        {
+            "label": "Build Documentation",
+            "type": "shell",
+            "command": "pwsh",
+            "args": [
+                "-File",
+                "./build.ps1",
+                "Docs"
             ]
         },
         {
@@ -50,14 +82,10 @@
             ]
         },
         {
-            "label": "Build Documentation",
+            "label": "Stop Containers",
             "type": "shell",
-            "command": "pwsh",
-            "args": [
-                "-File",
-                "./build.ps1",
-                "Docs"
-            ]
+            "command": "docker-compose down",
+            "problemMatcher": []
         }
     ]
 }

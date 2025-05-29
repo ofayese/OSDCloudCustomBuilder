@@ -1,0 +1,62 @@
+version: '3.9'
+
+services:
+  gordon:
+    image: docker/gordon:latest
+    volumes:
+      - ./gordon-mcp.yml:/root/.gordon/gordon-mcp.yml
+    tty: true
+    stdin_open: true
+    depends_on:
+      - llm
+      - postgres
+      - sqlite
+      - filesystem
+      - git
+      - github
+      - fetch
+      - time
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+
+  llm:
+    image: ai/mistral
+    ports:
+      - "11434:11434"
+    command: ["serve"]
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: dev
+    ports:
+      - "5433:5432"
+
+  sqlite:
+    image: mcp/sqlite
+    command: /data/database.db
+    volumes:
+      - ./data:/data
+
+  filesystem:
+    image: mcp/filesystem
+    command: ["/rootfs"]
+    volumes:
+      - .:/rootfs
+
+  git:
+    image: mcp/git
+    command: /repo
+    volumes:
+      - ./repo:/repo
+
+  github:
+    image: mcp/github
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+
+  fetch:
+    image: mcp/fetch
+
+  time:
+    image: mcp/time
